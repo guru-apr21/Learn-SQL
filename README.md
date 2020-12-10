@@ -145,3 +145,18 @@ JOIN order_item_notes oin
 ```
 When there is two primary key in a table it is known as composite primary keys.  
 To join two tables based on two columns we use compound join conditions. We have multiple condition to join these two tables.
+
+### Implicit Join syntax
+```sql
+SELECT *
+FROM orders o
+JOIN customers c
+	ON o.customer_id = c.customer_id;
+
+SELECT *
+FROM orders o, customers c
+WHERE o.customer_id = c.customer_id;
+```
+Both syntax are equivalent. This is what we call implicit join syntax, the one without the JOIN phrase.  
+Eventhough the both qyery return the same result it is always better to use explicit join syntax that is using JOIN phrase.  
+Because In case if we forget adding WHERE clause it will result in a cross join.
