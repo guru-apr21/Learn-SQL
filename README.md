@@ -85,4 +85,16 @@ SELECT * FROM tableName
   JOIN orders o
   ON o.customer_id = c.customer_id
  ```
- Alternatively we alias instead using the entire table names
+ Alternatively we can use alias instead using the entire table names.
+
+ ### Joining across Databases
+```sql
+USE sql_inventory;
+
+SELECT * 
+  FROM sql_store.order_items oi
+	JOIN products p
+  ON oi.product_id=p.product_id
+```
+To join tables across different databases prefix the table with the database name.
+Here too I am usig alias.
