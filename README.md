@@ -202,3 +202,31 @@ SELECT *
 Both syntax are equivalent. This is what we call implicit join syntax, the one without the JOIN phrase.  
 Eventhough the both qyery return the same result it is always better to use explicit join syntax that is using JOIN phrase.  
 Because In case if we forget adding WHERE clause it will result in a cross join.
+
+## Outer Join
+
+The Inner keyword is optional. So whenever you are using a JOIN you are using a inner JOIN.  
+
+```sql
+SELECT c.customer_id, c.first_name, o.order_id
+	FROM customers c
+    	JOIN orders o
+		ON c.customer_id = o.customer_id
+	ORDER BY c.customer_id
+```
+This query returns only the customers who has placed an order. What if we want to see all the customers whether they have a order or not.  
+That is when we use an Outer JOIN. In SQL there are two types of Outer JOINS.
+* LEFT JOIN
+* RIGHT JOIN
+
+```sql
+SELECT c.customer_id, c.first_name, o.order_id
+	FROM orders o
+		LEFT JOIN customers c
+		ON c.customer_id = o.customer_id
+	ORDER BY c.customer_id
+```
+
+When we use a LEFT JOIN all the records from the left table in this case orders will be returned whether the ON condition is true or not.  
+Similary for the RIGHT JOIN. You cann swap the order of the table as you wish. 
+We don't have to explicitly type RIGHT OUTER JOIN or LEFT OUTER JOIN. It's optional and more of a personal preference.
