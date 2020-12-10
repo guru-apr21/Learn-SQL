@@ -320,3 +320,22 @@ SELECT o.order_id, c.first_name
 ```
 With natural joins we don't explicitly specify the table names, So the database engine will look up to these two tables and join them based on the common columns.  
 Sometimes it produces unexpected results because we don't have control over it.
+
+### CROSS JOIN 
+
+```sql
+SELECT p.name AS products, c.first_name AS customer
+	FROM customers c
+	CROSS JOIN products p 
+```
+We use cross join to combine every record from the first table with the every record in the second table.
+A real example for using cross joins is where you have table of sizes S, M, L and table of colors like White, Red, Yellow and  
+then you want to combine all the sizes with all the colors.  
+What we have here is the explicit way of using cross joins, insted we can do something like this-
+
+```sql
+SELECT p.name AS products, c.first_name AS customer
+	FROM customers c, products p
+```
+
+Both the queries returns the same results.
