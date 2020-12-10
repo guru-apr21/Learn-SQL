@@ -276,3 +276,37 @@ To join a table with itself we use Self joins. The employee table has a column r
 This query joins the table with itself and selects the employee name and his manager. Use different alias for the tablename.  
 Since every column in the employee table is repeated twice we need to prefix each column with table name.  
 To retrieve the record of the manager who doesn't report to anyone we use LEFT OUTER JOIN.
+
+## USING clause
+
+```sql
+SELECT o.order_id, c.first_name
+	FROM orders o
+    	JOIN customers c
+		ON c.customer_id = o.customer_id 
+```
+```sql
+SELECT o.order_id, c.first_name
+	FROM orders o
+    	JOIN customers c
+		USING (customer_id)
+```
+
+As you can see two queries are equivalent to each other and provides exact same result.  
+If the column name are exactly same across tables we can replace ON clause with USING caluse which shorter and simpler.
+Type out USING and in paranthesis we type out the column name.  Also the USING keyword only works if the column name are same across different tables.
+
+```sql
+SELECT *
+FROM order_items as oi
+JOIN order_item_notes as oin
+	ON oi.order_id = oin.order_id
+    AND oi.product_id = oin.order_id
+```
+```sql
+SELECT *
+FROM order_items as oi
+JOIN order_item_notes as oin
+	USING(order_id, product_id)
+```
+Also if we want to join tables with multiple conditions pass the column names inside the paranthesis.
