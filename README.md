@@ -352,5 +352,19 @@ SELECT order_id, order_date, "Archived" as status
 	FROM orders
 	WHERE order_date < "2019-01-01" 
 ```
+```sql
+SELECT customer_id, first_name, points, "Bronze" AS type 
+	FROM customers
+	WHERE points < 2000
+UNION
+SELECT customer_id, first_name, points, "Silver" AS type 
+	FROM customers
+	WHERE points BETWEEN 2000 AND 3000
+UNION
+SELECT customer_id, first_name, points, "Silver" AS type 
+	FROM customers
+	WHERE points > 3000
+	ORDER BY first_name
+```
 Using the UNION operator we can combine the records from multiple queries. The number of columns each queries return should be equal.  
 Otherwise SQL will throw an error. The name of the column will be based on the first query.
