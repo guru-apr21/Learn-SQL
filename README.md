@@ -283,8 +283,9 @@ To retrieve the record of the manager who doesn't report to anyone we use LEFT O
 SELECT o.order_id, c.first_name
 	FROM orders o
     	JOIN customers c
-		ON c.customer_id = o.customer_id 
+		ON c.customer_id = o.customer_id
 ```
+
 ```sql
 SELECT o.order_id, c.first_name
 	FROM orders o
@@ -294,7 +295,7 @@ SELECT o.order_id, c.first_name
 
 As you can see two queries are equivalent to each other and provides exact same result.  
 If the column name are exactly same across tables we can replace ON clause with USING caluse which shorter and simpler.
-Type out USING and in paranthesis we type out the column name.  Also the USING keyword only works if the column name are same across different tables.
+Type out USING and in paranthesis we type out the column name. Also the USING keyword only works if the column name are same across different tables.
 
 ```sql
 SELECT *
@@ -303,12 +304,14 @@ JOIN order_item_notes as oin
 	ON oi.order_id = oin.order_id
     AND oi.product_id = oin.order_id
 ```
+
 ```sql
 SELECT *
 FROM order_items as oi
 JOIN order_item_notes as oin
 	USING(order_id, product_id)
 ```
+
 Also if we want to join tables with multiple conditions pass the column names inside the paranthesis.
 
 ### Natural JOIN
@@ -318,16 +321,18 @@ SELECT o.order_id, c.first_name
 	FROM customers c
 	NATURAL JOIN orders o
 ```
+
 With natural joins we don't explicitly specify the table names, So the database engine will look up to these two tables and join them based on the common columns.  
 Sometimes it produces unexpected results because we don't have control over it.
 
-### CROSS JOIN 
+### CROSS JOIN
 
 ```sql
 SELECT p.name AS products, c.first_name AS customer
 	FROM customers c
-	CROSS JOIN products p 
+	CROSS JOIN products p
 ```
+
 We use cross join to combine every record from the first table with the every record in the second table.
 A real example for using cross joins is where you have table of sizes S, M, L and table of colors like White, Red, Yellow and  
 then you want to combine all the sizes with all the colors.  
@@ -343,6 +348,7 @@ Both the queries returns the same results.
 ## UNION operator
 
 In SQL we use unions to combine rows from multiple tables
+
 ```sql
 SELECT order_id, order_date, "Active" as status
 	FROM orders
@@ -350,21 +356,23 @@ SELECT order_id, order_date, "Active" as status
 UNION
 SELECT order_id, order_date, "Archived" as status
 	FROM orders
-	WHERE order_date < "2019-01-01" 
+	WHERE order_date < "2019-01-01"
 ```
+
 ```sql
-SELECT customer_id, first_name, points, "Bronze" AS type 
+SELECT customer_id, first_name, points, "Bronze" AS type
 	FROM customers
 	WHERE points < 2000
 UNION
-SELECT customer_id, first_name, points, "Silver" AS type 
+SELECT customer_id, first_name, points, "Silver" AS type
 	FROM customers
 	WHERE points BETWEEN 2000 AND 3000
 UNION
-SELECT customer_id, first_name, points, "Silver" AS type 
+SELECT customer_id, first_name, points, "Silver" AS type
 	FROM customers
 	WHERE points > 3000
 	ORDER BY first_name
 ```
+
 Using the UNION operator we can combine the records from multiple queries. The number of columns each queries return should be equal.  
 Otherwise SQL will throw an error. The name of the column will be based on the first query.
