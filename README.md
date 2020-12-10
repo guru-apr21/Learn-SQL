@@ -111,3 +111,26 @@ SELECT e.employee_id, e.first_name, m.first_name AS manager
 To join a table with itself we use Self joins. The employee table has a column reports_to which is the id of the manager he/she reports to.  
 This query joins the table with itself and selects the employee name and his manager. Use different alias for the tablename.  
 Since every column in the employee table is repeated twice we need to prefix each column with table name.
+
+### Joining Multiple Tables
+```sql
+USE sql_store;
+SELECT o.order_id, o.order_date, c.first_name, os.name as status
+	FROM orders o
+    	JOIN customers c
+    	ON o.customer_id = c.customer_id
+    	JOIN order_statuses os
+    	ON os.order_status_id = o.status
+```
+```sql
+USE sql_invoicing;
+SELECT p.payment_id, c.name, p.date, p.amount, pm.name as payment_method
+	FROM payments p
+    	JOIN clients c
+    	ON p.client_id = c.client_id
+    	JOIN payment_methods pm
+    	ON p.payment_method = pm.payment_method_id
+
+```
+We can use multiple JOIN phrase to join multiple tables and don't forget to prefix the column name with their respective table names or alias.  
+In a real world problem there may be situations where we join more than 10 tables.
