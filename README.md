@@ -134,3 +134,14 @@ SELECT p.payment_id, c.name, p.date, p.amount, pm.name as payment_method
 ```
 We can use multiple JOIN phrase to join multiple tables and don't forget to prefix the column name with their respective table names or alias.  
 In a real world problem there may be situations where we join more than 10 tables.
+
+### Compound join conditions
+```sql
+SELECT *
+FROM order_items oi
+JOIN order_item_notes oin
+	ON oi.order_id = oin.order_id
+    	AND oi.product_id = oin.product_id
+```
+When there is two primary key in a table it is known as composite primary keys.  
+To join two tables based on two columns we use compound join conditions. We have multiple condition to join these two tables.
