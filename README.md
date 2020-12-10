@@ -1,5 +1,5 @@
 # Learn-SQL
-###-Shorthand SQL commands
+### Shorthand SQL commands
 SQL commands are not case sensitive, but using uppercase is considered as best practice.
 
 # Retrieving Data from Single Table
