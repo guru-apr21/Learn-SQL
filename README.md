@@ -258,3 +258,18 @@ SELECT o.order_date, o.order_id, c.first_name, s.name AS shipper, os.name as sta
 
 This query combines multiple tables and returns the records even if some of it's column contains null value.  
 As a best practice always use LEFT JOIN so that it'll would be easy to visualize what we are doing.  
+
+### Self Outer JOIN
+
+Similar like inner self joins we can use outer self joins.  
+
+```sql
+SELECT e.employee_id, e.first_name , m.first_name as manager
+	FROM employees e
+	LEFT JOIN employees m
+		ON e.reports_to = m.employee_id
+```
+To join a table with itself we use Self joins. The employee table has a column reports_to which is the id of the manager he/she reports to.  
+This query joins the table with itself and selects the employee name and his manager. Use different alias for the tablename.  
+Since every column in the employee table is repeated twice we need to prefix each column with table name.  
+To retrieve the record of the manager who doesn't report to anyone we use LEFT OUTER JOIN.
