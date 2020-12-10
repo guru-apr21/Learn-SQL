@@ -97,7 +97,7 @@ SELECT *
 	ON oi.product_id=p.product_id
 ```
 To join tables across different databases prefix the table with the database name.
-Here too I am usig alias.
+Here too I am using alias.
 
 ### Self Join
 ```sql
