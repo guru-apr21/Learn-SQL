@@ -339,3 +339,18 @@ SELECT p.name AS products, c.first_name AS customer
 ```
 
 Both the queries returns the same results.
+
+## UNION operator
+
+In SQL we use unions to combine rows from multiple tables
+```sql
+SELECT order_id, order_date, "Active" as status
+	FROM orders
+	WHERE order_date >= "2019-01-01"
+UNION
+SELECT order_id, order_date, "Archived" as status
+	FROM orders
+	WHERE order_date < "2019-01-01" 
+```
+Using the UNION operator we can combine the records from multiple queries. The number of columns each queries return should be equal.  
+Otherwise SQL will throw an error. The name of the column will be based on the first query.
