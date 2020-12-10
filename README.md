@@ -72,18 +72,18 @@ SELECT * FROM tableName
  So with this query we are telling mySQL whenever you join orders table with the customers table make sure the customer_id column in the orders table equals customer_id column in the customers table.
  
   ```sql
- SELECT first_name,last_name,customers.customer_id
-  FROM customers 
-  JOIN orders
-  ON orders.customer_id = customers.customer_id
+ SELECT first_name,last_name,customers.customer_id 
+ 	FROM customers 
+	JOIN orders 
+	ON orders.customer_id = customers.customer_id
  ```
  If you want to retrieve a column that is present is both the tables make sure you prefix the column name with either one of the table names.  
  Otherwise sql will throw an error.
   ```sql
  SELECT * 
-  FROM customers c
-  JOIN orders o
-  ON o.customer_id = c.customer_id
+ 	FROM customers c 
+	JOIN orders o 
+	ON o.customer_id = c.customer_id
  ```
  Alternatively we can use alias instead using the entire table names.
 
@@ -92,9 +92,9 @@ SELECT * FROM tableName
 USE sql_inventory;
 
 SELECT * 
-  FROM sql_store.order_items oi
-	JOIN products p
-  ON oi.product_id=p.product_id
+	FROM sql_store.order_items oi 
+	JOIN products p 
+	ON oi.product_id=p.product_id
 ```
 To join tables across different databases prefix the table with the database name.
 Here too I am usig alias.
