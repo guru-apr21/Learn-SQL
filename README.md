@@ -109,4 +109,5 @@ SELECT e.employee_id, e.first_name, m.first_name AS manager
     	ON e.reports_to = m.employee_id
 ```
 To join a table with itself we use Self joins. The employee table has a column reports_to which is the id of the manager he/she reports to.  
-This query joins the table with itself and selects the employee name and his manager. Use different alias for the tablename
+This query joins the table with itself and selects the employee name and his manager. Use different alias for the tablename.  
+Since every column in the employee table is repeated twice we need to prefix each column with table name.
