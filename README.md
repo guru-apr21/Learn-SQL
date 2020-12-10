@@ -98,3 +98,16 @@ SELECT *
 ```
 To join tables across different databases prefix the table with the database name.
 Here too I am usig alias.
+
+### Self Join
+```sql
+USE sql_hr;
+
+SELECT e.employee_id, e.first_name, m.first_name AS manager 
+	FROM employees e 
+    	JOIN employees m 
+    	ON e.reports_to = m.employee_id
+```
+To join a table with itself we use Self joins.  
+The employee table has a column reports_to which is the id of the manager he/she reports to.  
+This query joins the table with itself and selects the employee name and his manager.
