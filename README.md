@@ -230,3 +230,31 @@ SELECT c.customer_id, c.first_name, o.order_id
 When we use a LEFT JOIN all the records from the left table in this case orders will be returned whether the ON condition is true or not.  
 Similary for the RIGHT JOIN. You cann swap the order of the table as you wish. 
 We don't have to explicitly type RIGHT OUTER JOIN or LEFT OUTER JOIN. It's optional and more of a personal preference.
+
+### Outer JOIN Between Multiple Tables
+
+Similar like inner joins we can use outer joins between multiple tables.
+
+```sql
+SELECT c.customer_id, c.first_name, o.order_id, s.name
+	FROM customers c
+    	LEFT JOIN  orders o
+		ON c.customer_id = o.customer_id
+	LEFT JOIN shippers s
+		ON s.shipper_id = o.shipper_id
+	ORDER BY c.customer_id 
+```
+
+```sql
+SELECT o.order_date, o.order_id, c.first_name, s.name AS shipper, os.name as status
+	FROM orders o
+    	JOIN customers c
+		ON o.customer_id = c.customer_id
+	LEFT JOIN shippers s
+		ON s.shipper_id = o.shipper_id
+	JOIN order_statuses os
+		ON o.status = os.order_status_id
+```
+
+This query combines multiple tables and returns the records even if some of it's column contains null value.  
+As a best practice always use LEFT JOIN so that it'll would be easy to visualize what we are doing.  
