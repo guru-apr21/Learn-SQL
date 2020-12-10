@@ -58,3 +58,31 @@ Returns only the column with null value
 SELECT * FROM tableName 
   WHERE columnName IS NULL
 ```
+
+# Retrieving data from multiple tables
+
+## Inner Join - Used to join two different table data
+ ```sql
+ SELECT * 
+  FROM customers 
+  JOIN orders
+  ON orders.customer_id = customers.customer_id
+ ```
+ Here the ON phrase defines on what basis we want to combine the table. Provide a condition after the ON phrase.  
+ So with this query we are telling mySQL whenever you join orders table with the customers table make sure the customer_id column in the orders table equals customer_id column in the customers table.
+ 
+  ```sql
+ SELECT first_name,last_name,customers.customer_id
+  FROM customers 
+  JOIN orders
+  ON orders.customer_id = customers.customer_id
+ ```
+ If you want to retrieve a column that is present is both the tables make sure you prefix the column name with either one of the table names.  
+ Otherwise sql will throw an error.
+  ```sql
+ SELECT * 
+  FROM customers c
+  JOIN orders o
+  ON o.customer_id = c.customer_id
+ ```
+ Alternatively we alias instead using the entire table names
