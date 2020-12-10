@@ -277,7 +277,7 @@ This query joins the table with itself and selects the employee name and his man
 Since every column in the employee table is repeated twice we need to prefix each column with table name.  
 To retrieve the record of the manager who doesn't report to anyone we use LEFT OUTER JOIN.
 
-## USING clause
+### USING clause
 
 ```sql
 SELECT o.order_id, c.first_name
@@ -310,3 +310,13 @@ JOIN order_item_notes as oin
 	USING(order_id, product_id)
 ```
 Also if we want to join tables with multiple conditions pass the column names inside the paranthesis.
+
+### Natural JOIN
+
+```sql
+SELECT o.order_id, c.first_name
+	FROM customers c
+	NATURAL JOIN orders o
+```
+With natural joins we don't explicitly specify the table names, So the database engine will look up to these two tables and join them based on the common columns.  
+Sometimes it produces unexpected results because we don't have control over it.
