@@ -205,7 +205,7 @@ Because In case if we forget adding WHERE clause it will result in a cross join.
 
 ## Outer Join
 
-The Inner keyword is optional. So whenever you are using a JOIN you are using a inner JOIN.  
+The Inner keyword is optional. So whenever you are using a JOIN you are using a inner JOIN.
 
 ```sql
 SELECT c.customer_id, c.first_name, o.order_id
@@ -214,10 +214,12 @@ SELECT c.customer_id, c.first_name, o.order_id
 		ON c.customer_id = o.customer_id
 	ORDER BY c.customer_id
 ```
+
 This query returns only the customers who has placed an order. What if we want to see all the customers whether they have a order or not.  
 That is when we use an Outer JOIN. In SQL there are two types of Outer JOINS.
-* LEFT JOIN
-* RIGHT JOIN
+
+- LEFT JOIN
+- RIGHT JOIN
 
 ```sql
 SELECT c.customer_id, c.first_name, o.order_id
@@ -228,7 +230,7 @@ SELECT c.customer_id, c.first_name, o.order_id
 ```
 
 When we use a LEFT JOIN all the records from the left table in this case orders will be returned whether the ON condition is true or not.  
-Similary for the RIGHT JOIN. You cann swap the order of the table as you wish. 
+Similary for the RIGHT JOIN. You cann swap the order of the table as you wish.
 We don't have to explicitly type RIGHT OUTER JOIN or LEFT OUTER JOIN. It's optional and more of a personal preference.
 
 ### Outer JOIN Between Multiple Tables
@@ -242,7 +244,7 @@ SELECT c.customer_id, c.first_name, o.order_id, s.name
 		ON c.customer_id = o.customer_id
 	LEFT JOIN shippers s
 		ON s.shipper_id = o.shipper_id
-	ORDER BY c.customer_id 
+	ORDER BY c.customer_id
 ```
 
 ```sql
@@ -257,11 +259,11 @@ SELECT o.order_date, o.order_id, c.first_name, s.name AS shipper, os.name as sta
 ```
 
 This query combines multiple tables and returns the records even if some of it's column contains null value.  
-As a best practice always use LEFT JOIN so that it'll would be easy to visualize what we are doing.  
+As a best practice always use LEFT JOIN so that it'll would be easy to visualize what we are doing.
 
 ### Self Outer JOIN
 
-Similar like inner self joins we can use outer self joins.  
+Similar like inner self joins we can use outer self joins.
 
 ```sql
 SELECT e.employee_id, e.first_name , m.first_name as manager
@@ -269,6 +271,7 @@ SELECT e.employee_id, e.first_name , m.first_name as manager
 	LEFT JOIN employees m
 		ON e.reports_to = m.employee_id
 ```
+
 To join a table with itself we use Self joins. The employee table has a column reports_to which is the id of the manager he/she reports to.  
 This query joins the table with itself and selects the employee name and his manager. Use different alias for the tablename.  
 Since every column in the employee table is repeated twice we need to prefix each column with table name.  
