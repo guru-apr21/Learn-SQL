@@ -385,3 +385,39 @@ Otherwise SQL will throw an error. The name of the column will be based on the f
  For example if the customer first_name is five characters long, we only store those five characters eventhough the max value is 50.  
  In contrast we have CHAR datatype, here if the customer name is only five characters long MYSQL will insert additional 45 empty spaces to fill this column.  
  This is a waste of space. So as a best practice we use VARCHAR to store string or textual value.
+
+## Inserting a Single Row 
+
+```sql
+INSERT INTO customers
+VALUES (
+    DEFAULT,
+    "Guru",
+    "Prakash",
+    "1999-04-21",
+    NULL,
+    "Kovilpatti",
+    "Tuticorin",
+    "TN",
+    DEFAULT
+)
+```
+We use INSERT INTO statement and next the table name where we want to insert followed by the VALUES clause.  
+In paranthesis we supply values for column in the table, by providing the DEFAULT keyword SQL will take care of generating the value.  
+For eg the auto increment of customer_id which uniquely identifies every customer.
+
+```sql
+INSERT INTO customers (first_name, last_name, birth_date, city, address, state)
+VALUES (
+    "Guru",
+    "Prakash",
+    "1999-04-21",
+    "Tuticorin",
+    "Kovilpatti",
+    "TN"
+)
+```
+
+This is another way to write this query. After the table name we can optionally supply the list of columns that we want to insert values into.  
+With this change we dont have to supply default or null values. With this change we can re-order the column we dont have to list them in the same order  
+as they are defined in the table.
