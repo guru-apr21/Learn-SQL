@@ -420,3 +420,19 @@ VALUES (
 
 This is another way to write this query. After the table name we can optionally supply the list of columns that we want to insert values into.  
 With this change we dont have to supply default or null values. With this change we can re-order the column we dont have to list them in the same order as they are defined in the table.
+
+## Inserting Multiple Rows
+
+```sql
+INSERT INTO shippers(name)
+VALUES  ("shipper1"),
+	("shipper2")
+```
+```sql
+INSERT INTO products(name, quantity_in_stock, unit_price)
+VALUES  ("Panner", 5, 48.11),
+	("Chesse", 4, 96.16),
+        ("Soda", 7, 79.87)
+```
+
+To insert multiple rows in one go all you have to do is add a comma next to the paranthesis followed by another pair of paranthesis.
