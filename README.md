@@ -376,3 +376,12 @@ SELECT customer_id, first_name, points, "Silver" AS type
 
 Using the UNION operator we can combine the records from multiple queries. The number of columns each queries return should be equal.  
 Otherwise SQL will throw an error. The name of the column will be based on the first query.
+
+# Inserting, Updating and Deleting Data
+
+## Column Attributes
+
+ VARCHAR is shortname for variable characters. Inside the paranthesis we specify the maximum value the column can take.  
+ For example if the customer first_name is five characters long, we only store those five characters eventhough the max value is 50.  
+ In contrast we have CHAR datatype, here if the customer name is only five characters long MYSQL will insert additional 45 empty spaces to fill this column.  
+ This is a waste of space. So as a best practice we use VARCHAR to store string or textual value.
