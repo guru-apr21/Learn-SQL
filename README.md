@@ -509,3 +509,28 @@ WHERE invoice_id = 3
 ```
 
 We can also use expressions when setting the column value. Here the client paid 40 percent of the invoice_total on due_date
+
+## Updating Multiple Rows
+
+```sql
+UPDATE invoices
+SET payment_total = invoice_total*0.4, payment_date = due_date
+WHERE client_id = 1
+```
+To update multiple rows the syntax is exactly same as updating single rows but the condition should be more general.  
+This query will update every row with client_id 1
+
+```sql
+UPDATE invoices
+SET payment_total = invoice_total , payment_date = due_date
+WHERE client_id IN (2,3)
+```
+Here we can also use an IN operator to specify the client_id. All the operators that can be used with WHERE clause are valid here.
+
+```sql
+USE sql_store;
+UPDATE customers
+SET points = points + 100
+WHERE birth_date < "1990-01-01"
+```
+This query adds 50 extra points to any customers born before 1990.
