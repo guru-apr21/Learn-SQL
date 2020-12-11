@@ -534,3 +534,42 @@ SET points = points + 100
 WHERE birth_date < "1990-01-01"
 ```
 This query adds 50 extra points to any customers born before 1990.
+
+## Using Subqueries in Updates
+
+```sql
+USE sql_invoicing;
+UPDATE invoices
+SET payment_total = invoice_total,
+	payment_date = invoice_date
+WHERE client_id = 
+		(SELECT client_id FROM clients
+		WHERE name = "Yadel")
+```
+In the above query SELECT statement is a sub query in a update statement.  
+As I told before a Sub query is a SELECT statement that is part of another SQL statement. Here we are the sub query to find the client_id by his/her name.  
+So MYSQL will execute the sub query first since it is in a paranthesis and returns the client_id.
+
+```sql
+
+USE sql_invoicing;
+UPDATE invoices
+SET payment_total = invoice_total,
+	payment_date = invoice_date
+WHERE client_id IN 
+		(SELECT client_id FROM clients
+		WHERE state IN ("CA","NY"))
+```
+If the sub query return multiple values we use IN operator in the WHERE clause.  
+As a best practice before updating a table run your query to see what data you are gonna update. 
+
+
+```sql
+USE sql_store;
+UPDATE orders
+SET comments = "Gold"
+WHERE customer_id IN 
+		(SELECT customer_id FROM customers 
+		WHERE points > 3000)
+```
+This query updates the comments for orders for customers who have more than 3000 points. If they had placed an order update the comment as gold.
