@@ -547,8 +547,7 @@ WHERE client_id =
 		WHERE name = "Yadel")
 ```
 In the above query SELECT statement is a sub query in a update statement.  
-As I told before a Sub query is a SELECT statement that is part of another SQL statement. Here we are the sub query to find the client_id by his/her name.  
-So MYSQL will execute the sub query first since it is in a paranthesis and returns the client_id.
+As I told before a Sub query is a SELECT statement that is part of another SQL statement. Here we are the sub query to find the client_id by his/her name. So MYSQL will execute the sub query first since it is in a paranthesis and returns the client_id.
 
 ```sql
 
