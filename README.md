@@ -579,3 +579,23 @@ WHERE customer_id IN
 		WHERE points > 3000)
 ```
 This query updates the comments for orders for customers who have more than 3000 points. If they had placed an order update the comment as gold.
+
+## DELETING ROWS
+
+```sql
+DELETE FROM invoices
+WHERE invoice_id = 1
+```
+
+We use the DELETE FROM statement to delete records from the table. Optionally we can add search condition to identify the records that we want to delete.  
+If we dont provide a WHERE clause with this statement we delete all the records in the table.
+
+```sql
+USE sql_invoicing;
+DELETE FROM invoices
+WHERE client_id = 
+	(SELECT client_id FROM clients
+	WHERE name = "Myworks")
+```
+
+We can also use a sub-query along with DELETE statement.  
