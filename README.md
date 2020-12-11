@@ -436,3 +436,21 @@ VALUES  ("Panner", 5, 48.11),
 ```
 
 To insert multiple rows in one go all you have to do is add a comma next to the paranthesis followed by another pair of paranthesis.
+
+## Inserting Hierarchial Rows
+
+In our database a parent child relationship is established between orders and order_items table.  The actual order items for each orders are in the order_items table which we can uniquely identify using the combination of product_id and order_id.  So an actual order can have one or more order items. Orders table is the parent and order_items table is the child. One row in orders table can have one or more children in order_items table. 
+
+```sql
+INSERT INTO orders (customer_id, order_date, status)
+	VALUES (3,"2020-01-21",1);
+
+INSERT INTO order_items
+	VALUES 
+		(LAST_INSERT_ID(), 2, 3, 41.89),
+		(LAST_INSERT_ID(), 4, 1, 36.7)
+```
+
+In MYSQL we have bunch of functions and function is basically a piece of code which we can reuse.  
+In this query as soon as we create an order, an order_id will be generated then we can retrieve that order_id calling LAST_INSERT_ID function.  
+Now we know the id of the parent record we can use that id to insert the parent record. Since we need to fill every column there is no need to specify the column name in the INSERT statement.
