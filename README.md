@@ -483,3 +483,29 @@ JOIN clients c
 WHERE i.payment_date IS NOT NULL
 ```
 This query creates a new table invoices_archived and copy the invoices that do have a payment
+
+## Updataing a Single Row
+
+```sql
+UPDATE invoices
+SET payment_total = 78.99, payment_date = "2020-12-05"
+WHERE invoice_id = 1
+```
+
+We use UPDATE statement to update one or more records in the table. Next we use SET clause this is where we specify new values for one or more columns.  
+We use comma to add more columns.
+
+```sql
+UPDATE invoices
+SET payment_total = DEFAULT, payment_date = NULL
+WHERE invoice_id = 1
+```
+We can use the NULL keyword to insert the null value in a column that accepts NULL value.
+
+```sql
+UPDATE invoices
+SET payment_total = invoice_total*0.4, payment_date = due_date
+WHERE invoice_id = 3
+```
+
+We can also use expressions when setting the column value. Here the client paid 40 percent of the invoice_total on due_date
