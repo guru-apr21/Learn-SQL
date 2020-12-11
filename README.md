@@ -454,3 +454,32 @@ INSERT INTO order_items
 In MYSQL we have bunch of functions and function is basically a piece of code which we can reuse.  
 In this query as soon as we create an order, an order_id will be generated then we can retrieve that order_id calling LAST_INSERT_ID function.  
 Now we know the id of the parent record we can use that id to insert the parent record. Since we need to fill every column there is no need to specify the column name in the INSERT statement.
+
+## Creating A Copy Of A Table
+
+```sql
+CREATE TABLE orders_archived AS
+	SELECT * FROM orders
+```
+This query will create a new table with all the data in the orders table. But this new table do not have a primary key.  
+When we create a new table using this technique MYSQL will ignore few column attributes. We refer the above SELECT statement as a Sub query.  
+A Sub query is a SELECT statement that is part of another SQL statement. We can also use Sub query in a INSERT statement
+
+```sql
+INSERT INTO orders_archived
+SELECT *
+FROM orders
+WHERE order_date < "2019-01-01"
+```
+This query will only returns the orders that are placed before 2019. The SELECT statement is used as a Sub query.
+
+```sql
+USE sql_invoicing;
+CREATE TABLE invoices_archived AS 
+SELECT i.invoice_id, i.number, c.name AS client_name, i.invoice_total, i.payment_total, i.invoice_date, i.due_date, i.payment_date
+FROM invoices i
+JOIN clients c
+	USING(client_id)
+WHERE i.payment_date IS NOT NULL
+```
+This query creates a new table invoices_archived and copy the invoices that do have a payment
