@@ -748,3 +748,26 @@ HAVING amount_spent > 100
 
 This query returns the customers located in Virginia who have spent more than $100.  
 As a rule of thumb whenever you have a aggregate function in SELECT statement, when grouping your data you should group by all the columns in the SELECT clause.
+
+## The ROLLUP operator
+```sql
+SELECT 
+	client_id,
+	SUM(invoice_total) AS total_sales
+FROM invoices
+GROUP BY client_id WITH ROLLUP
+```
+In MYSQL we have a powerfull operator to summarize data known as WITH ROLLUP. The ROLLUP operator applies only to the columns that aggregate values.  
+We can also ROLLUP operator when grouping by multiple columns. It is only availabe in MYSQL and not part of the standard SQL language.
+
+```sql
+USE sql_invoicing;
+SELECT 
+	pm.name AS payment_method,
+    SUM(p.amount) as total
+FROM payments p
+JOIN payment_methods pm
+	ON p.payment_method = pm.payment_method_id
+GROUP BY pm.name WITH ROLLUP 
+```
+When we use the ROLL UP operator we cannot use the column alias in the GROUP BY clause. So we nned to type the actual name of the column.
