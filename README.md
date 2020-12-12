@@ -700,3 +700,51 @@ GROUP BY p.date, pm.name
 ORDER BY p.date
 ```
 This query generates a report that has three columns date, payment_method and total payments. Returns the total payment for each date and payment method combination.
+
+## HAVING clause
+
+```sql
+SELECT
+	client_id, 
+	SUM(invoice_total) AS total_sales
+FROM invoices
+GROUP BY client_id
+HAVING total_sales > 400
+```
+
+This query returns only the clients who have total sales more than 400 dollars.  
+Here we cannot use WHERE clause because WHERE clause executes before the grouping of data. That's why we use the HAVING clause which filters data after we group our rows.  
+With WHERE clause we can group the data before our rows are grouped and with the HAVING clause we can filter the data after our rows are grouped.  
+
+```sql
+SELECT
+	client_id, 
+	SUM(invoice_total) AS total_sales,
+    	COUNT(*) AS number_of_invoices
+FROM invoices
+GROUP BY client_id
+HAVING total_sales > 500 AND number_of_invoices > 5
+```
+This query returns clients having total sales greater than 500 and number of invoices greater than 5. The columns that we use in HAVING clause have to be part of the SELECT clause.
+
+```sql
+SELECT 
+	c.customer_id,
+	c.first_name, 
+	c.state,
+    	SUM(oi.quantity * oi.unit_price) AS amount_spent
+    	FROM customers c
+JOIN orders o
+	USING(customer_id)
+JOIN order_items oi
+	USING(order_id)
+WHERE c.state = "VA"
+GROUP BY c.customer_id,
+	 c.first_name, 
+	 c.state
+HAVING amount_spent > 100
+
+```
+
+This query returns the customers located in Virginia who have spent more than $100.  
+As a rule of thumb whenever you have a aggregate function in SELECT statement, when grouping your data you should group by all the columns in the SELECT clause.
