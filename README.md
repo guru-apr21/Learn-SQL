@@ -381,12 +381,12 @@ Otherwise SQL will throw an error. The name of the column will be based on the f
 
 ## Column Attributes
 
- VARCHAR is shortname for variable characters. Inside the paranthesis we specify the maximum value the column can take.  
+VARCHAR is shortname for variable characters. Inside the paranthesis we specify the maximum value the column can take.  
  For example if the customer first_name is five characters long, we only store those five characters eventhough the max value is 50.  
  In contrast we have CHAR datatype, here if the customer name is only five characters long MYSQL will insert additional 45 empty spaces to fill this column.  
  This is a waste of space. So as a best practice we use VARCHAR to store string or textual value.
 
-## Inserting a Single Row 
+## Inserting a Single Row
 
 ```sql
 INSERT INTO customers
@@ -402,6 +402,7 @@ VALUES (
     DEFAULT
 )
 ```
+
 We use INSERT INTO statement and next the table name where we want to insert followed by the VALUES clause.  
 In paranthesis we supply values for column in the table, by providing the DEFAULT keyword SQL will take care of generating the value.  
 For eg the auto increment of customer_id which uniquely identifies every customer.
@@ -428,6 +429,7 @@ INSERT INTO shippers(name)
 VALUES  ("shipper1"),
 	("shipper2")
 ```
+
 ```sql
 INSERT INTO products(name, quantity_in_stock, unit_price)
 VALUES  ("Panner", 5, 48.11),
@@ -439,14 +441,14 @@ To insert multiple rows in one go all you have to do is add a comma next to the 
 
 ## Inserting Hierarchial Rows
 
-In our database a parent child relationship is established between orders and order_items table.  The actual order items for each orders are in the order_items table which we can uniquely identify using the combination of product_id and order_id.  So an actual order can have one or more order items. Orders table is the parent and order_items table is the child. One row in orders table can have one or more children in order_items table. 
+In our database a parent child relationship is established between orders and order_items table. The actual order items for each orders are in the order_items table which we can uniquely identify using the combination of product_id and order_id. So an actual order can have one or more order items. Orders table is the parent and order_items table is the child. One row in orders table can have one or more children in order_items table.
 
 ```sql
 INSERT INTO orders (customer_id, order_date, status)
 	VALUES (3,"2020-01-21",1);
 
 INSERT INTO order_items
-	VALUES 
+	VALUES
 		(LAST_INSERT_ID(), 2, 3, 41.89),
 		(LAST_INSERT_ID(), 4, 1, 36.7)
 ```
@@ -461,6 +463,7 @@ Now we know the id of the parent record we can use that id to insert the parent 
 CREATE TABLE orders_archived AS
 	SELECT * FROM orders
 ```
+
 This query will create a new table with all the data in the orders table. But this new table do not have a primary key.  
 When we create a new table using this technique MYSQL will ignore few column attributes. We refer the above SELECT statement as a Sub query.  
 A Sub query is a SELECT statement that is part of another SQL statement. We can also use Sub query in a INSERT statement
@@ -471,24 +474,26 @@ SELECT *
 FROM orders
 WHERE order_date < "2019-01-01"
 ```
+
 This query will only returns the orders that are placed before 2019. The SELECT statement is used as a Sub query.
 
 ```sql
 USE sql_invoicing;
-CREATE TABLE invoices_archived AS 
-SELECT i.invoice_id, 
-	i.number, 
-	c.name AS client_name, 
-	i.invoice_total, 
-	i.payment_total, 
-	i.invoice_date, 
-	i.due_date, 
+CREATE TABLE invoices_archived AS
+SELECT i.invoice_id,
+	i.number,
+	c.name AS client_name,
+	i.invoice_total,
+	i.payment_total,
+	i.invoice_date,
+	i.due_date,
 	i.payment_date
 FROM invoices i
 JOIN clients c
 	USING(client_id)
 WHERE i.payment_date IS NOT NULL
 ```
+
 This query creates a new table invoices_archived and copy the invoices that do have a payment
 
 ## Updataing a Single Row
@@ -507,6 +512,7 @@ UPDATE invoices
 SET payment_total = DEFAULT, payment_date = NULL
 WHERE invoice_id = 1
 ```
+
 We can use the NULL keyword to insert the null value in a column that accepts NULL value.
 
 ```sql
@@ -524,6 +530,7 @@ UPDATE invoices
 SET payment_total = invoice_total*0.4, payment_date = due_date
 WHERE client_id = 1
 ```
+
 To update multiple rows the syntax is exactly same as updating single rows but the condition should be more general.  
 This query will update every row with client_id 1
 
@@ -532,6 +539,7 @@ UPDATE invoices
 SET payment_total = invoice_total , payment_date = due_date
 WHERE client_id IN (2,3)
 ```
+
 Here we can also use an IN operator to specify the client_id. All the operators that can be used with WHERE clause are valid here.
 
 ```sql
@@ -540,6 +548,7 @@ UPDATE customers
 SET points = points + 100
 WHERE birth_date < "1990-01-01"
 ```
+
 This query adds 50 extra points to any customers born before 1990.
 
 ## Using Subqueries in Updates
@@ -549,10 +558,11 @@ USE sql_invoicing;
 UPDATE invoices
 SET payment_total = invoice_total,
 	payment_date = invoice_date
-WHERE client_id = 
+WHERE client_id =
 		(SELECT client_id FROM clients
 		WHERE name = "Yadel")
 ```
+
 In the above query SELECT statement is a sub query in a update statement.  
 As I told before a Sub query is a SELECT statement that is part of another SQL statement. Here we are the sub query to find the client_id by his/her name. So MYSQL will execute the sub query first since it is in a paranthesis and returns the client_id.
 
@@ -562,22 +572,23 @@ USE sql_invoicing;
 UPDATE invoices
 SET payment_total = invoice_total,
 	payment_date = invoice_date
-WHERE client_id IN 
+WHERE client_id IN
 		(SELECT client_id FROM clients
 		WHERE state IN ("CA","NY"))
 ```
-If the sub query return multiple values we use IN operator in the WHERE clause.  
-As a best practice before updating a table run your query to see what data you are gonna update. 
 
+If the sub query return multiple values we use IN operator in the WHERE clause.  
+As a best practice before updating a table run your query to see what data you are gonna update.
 
 ```sql
 USE sql_store;
 UPDATE orders
 SET comments = "Gold"
-WHERE customer_id IN 
-		(SELECT customer_id FROM customers 
+WHERE customer_id IN
+		(SELECT customer_id FROM customers
 		WHERE points > 3000)
 ```
+
 This query updates the comments for orders for customers who have more than 3000 points. If they had placed an order update the comment as gold.
 
 ## DELETING ROWS
@@ -593,12 +604,12 @@ If we dont provide a WHERE clause with this statement we delete all the records 
 ```sql
 USE sql_invoicing;
 DELETE FROM invoices
-WHERE client_id = 
+WHERE client_id =
 	(SELECT client_id FROM clients
 	WHERE name = "Myworks")
 ```
 
-We can also use a sub-query along with DELETE statement.  
+We can also use a sub-query along with DELETE statement.
 
 # Summarizing DATA
 
@@ -607,11 +618,11 @@ We can also use a sub-query along with DELETE statement.
 Function is a piece of code that we can reuse. MySQL comes with a bunch of built-in functions some of these functions are known as aggregate functions.  
 Because they take a series of values and aggregate them to produce a single value.
 
-* MAX()   - To calculate the maximum of the series of values
-* MIN()   - To calculate the minimum of the series of values
-* AVG()   - To calculate the average of the series of values
-* SUM()   - To calculate the sum of the series of values
-* COUNT() - To calculate the total count of the series of values
+- MAX() - To calculate the maximum of the series of values
+- MIN() - To calculate the minimum of the series of values
+- AVG() - To calculate the average of the series of values
+- SUM() - To calculate the sum of the series of values
+- COUNT() - To calculate the total count of the series of values
 
 As you can see we need to use paranthesis to call or execute them.
 
@@ -624,6 +635,7 @@ SELECT
     	COUNT(invoice_total) AS number_of_invoices
 FROM invoices
 ```
+
 In this query I am applying these functions on a column that has a numeric values but we can apply them in date and strings too.
 
 ```sql
@@ -632,52 +644,54 @@ SELECT
     COUNT(DISTINCT client_id) AS total_clients
 FROM invoices
 ```
+
 Aggregate functions operates on only non-null values. If we have a null value in the columns it is not going to be included in the function.
-If you want to get the total number of records in the table irrespective of the non-null values. Use * as a argument to the COUNT function.  
+If you want to get the total number of records in the table irrespective of the non-null values. Use \* as a argument to the COUNT function.  
 By default all these aggregate functions take duplicate values. If you want to exclude duplicate values you'll have to use DISTINCT keyword.
 
 ```sql
-SELECT 
+SELECT
 	"First half of 2019" AS date_range,
     	SUM(invoice_total) AS total_sales,
     	SUM(payment_total) AS total_payments,
     	SUM(invoice_total - payment_total) AS what_we_expect
 FROM invoices
-WHERE invoice_date 
+WHERE invoice_date
 	BETWEEN "2019-01-01" AND "2019-06-30"
 UNION
-SELECT 
+SELECT
 	"Second half of 2019" AS date_range,
     	SUM(invoice_total) AS total_sales,
    	SUM(payment_total) AS total_payments,
     	SUM(invoice_total-payment_total) AS what_we_expect
 FROM invoices
-WHERE invoice_date 
+WHERE invoice_date
 	BETWEEN "2019-07-01" AND "2019-12-31"
 UNION
-SELECT 
+SELECT
 	"Total" AS date_range,
     	SUM(invoice_total) AS total_sales,
     	SUM(payment_total) AS total_payments,
     	SUM(invoice_total-payment_total) AS what_we_expect
 FROM invoices
-WHERE invoice_date 
+WHERE invoice_date
 	BETWEEN "2019-01-01" AND "2019-12-31"
 ```
 
 ## GROUP BY clause
 
 ```sql
-SELECT 
+SELECT
 	SUM(invoice_total) AS total_sales
 FROM invoices i
 GROUP BY client_id
 ```
+
 We use GROUP BY clause to group date by one or more columns. Right after the from clause we use the GROUP BY clause followed by one or more columns for grouping data.  
 The GROUP BY clause should be placed after the FROM and WHERE clauses and before the ORDER BY clause. Otherwise SQL will throw an error.
 
 ```sql
-SELECT 
+SELECT
     	city,
     	state,
 	SUM(invoice_total) AS total_sales
@@ -686,12 +700,13 @@ JOIN clients c
 	USING(client_id)
 GROUP BY state, city
 ```
+
 In this query data is grouped by multiple columns. This results in total sales for each state and city combination
 
 ```sql
-SELECT 
-	p.date, 
-    	pm.name AS payment_method, 
+SELECT
+	p.date,
+    	pm.name AS payment_method,
     	SUM(p.amount) AS total_payments
 FROM payments p
 JOIN payment_methods pm
@@ -699,13 +714,14 @@ JOIN payment_methods pm
 GROUP BY p.date, pm.name
 ORDER BY p.date
 ```
+
 This query generates a report that has three columns date, payment_method and total payments. Returns the total payment for each date and payment method combination.
 
 ## HAVING clause
 
 ```sql
 SELECT
-	client_id, 
+	client_id,
 	SUM(invoice_total) AS total_sales
 FROM invoices
 GROUP BY client_id
@@ -714,23 +730,24 @@ HAVING total_sales > 400
 
 This query returns only the clients who have total sales more than 400 dollars.  
 Here we cannot use WHERE clause because WHERE clause executes before the grouping of data. That's why we use the HAVING clause which filters data after we group our rows.  
-With WHERE clause we can group the data before our rows are grouped and with the HAVING clause we can filter the data after our rows are grouped.  
+With WHERE clause we can group the data before our rows are grouped and with the HAVING clause we can filter the data after our rows are grouped.
 
 ```sql
 SELECT
-	client_id, 
+	client_id,
 	SUM(invoice_total) AS total_sales,
     	COUNT(*) AS number_of_invoices
 FROM invoices
 GROUP BY client_id
 HAVING total_sales > 500 AND number_of_invoices > 5
 ```
+
 This query returns clients having total sales greater than 500 and number of invoices greater than 5. The columns that we use in HAVING clause have to be part of the SELECT clause.
 
 ```sql
-SELECT 
+SELECT
 	c.customer_id,
-	c.first_name, 
+	c.first_name,
 	c.state,
     	SUM(oi.quantity * oi.unit_price) AS amount_spent
     	FROM customers c
@@ -740,7 +757,7 @@ JOIN order_items oi
 	USING(order_id)
 WHERE c.state = "VA"
 GROUP BY c.customer_id,
-	 c.first_name, 
+	 c.first_name,
 	 c.state
 HAVING amount_spent > 100
 
@@ -750,24 +767,27 @@ This query returns the customers located in Virginia who have spent more than $1
 As a rule of thumb whenever you have a aggregate function in SELECT statement, when grouping your data you should group by all the columns in the SELECT clause.
 
 ## The ROLLUP operator
+
 ```sql
-SELECT 
+SELECT
 	client_id,
 	SUM(invoice_total) AS total_sales
 FROM invoices
 GROUP BY client_id WITH ROLLUP
 ```
+
 In MYSQL we have a powerfull operator to summarize data known as WITH ROLLUP. The ROLLUP operator applies only to the columns that aggregate values.  
 We can also ROLLUP operator when grouping by multiple columns. It is only availabe in MYSQL and not part of the standard SQL language.
 
 ```sql
 USE sql_invoicing;
-SELECT 
+SELECT
 	pm.name AS payment_method,
     SUM(p.amount) as total
 FROM payments p
 JOIN payment_methods pm
 	ON p.payment_method = pm.payment_method_id
-GROUP BY pm.name WITH ROLLUP 
+GROUP BY pm.name WITH ROLLUP
 ```
+
 When we use the ROLL UP operator we cannot use the column alias in the GROUP BY clause. So we nned to type the actual name of the column.
