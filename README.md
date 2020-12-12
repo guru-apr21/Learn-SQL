@@ -690,14 +690,13 @@ In this query data is grouped by multiple columns. This results in total sales f
 
 ```sql
 SELECT 
-	payment_date AS date, 
-    	name AS payment_method, 
-    	SUM(payment_total) AS total_payments
-FROM payments
-JOIN invoices
-	USING(invoice_id)
+	p.date, 
+    	pm.name AS payment_method, 
+    	SUM(p.amount) AS total_payments
+FROM payments p
 JOIN payment_methods pm
-	ON payment_method = payment_method_id
-GROUP BY payment_date, pm.name
+	ON p.payment_method = pm.payment_method_id
+GROUP BY p.date, pm.name
+ORDER BY p.date
 ```
 This query generates a report that has three columns date, payment_method and total payments. Returns the total payment for each date and payment method combination.
