@@ -599,3 +599,68 @@ WHERE client_id =
 ```
 
 We can also use a sub-query along with DELETE statement.  
+
+# Summarizing DATA
+
+## Aggregate Functions
+
+Function is a piece of code that we can reuse. MySQL comes with a bunch of built-in functions some of these functions are known as aggregate functions.  
+Because they take a series of values and aggregate them to produce a single value.
+
+* MAX()   - To calculate the maximum of the series of values
+* MIN()   - To calculate the minimum of the series of values
+* AVG()   - To calculate the average of the series of values
+* SUM()   - To calculate the sum of the series of values
+* COUNT() - To calculate the total count of the series of values
+
+As you can see we need to use paranthesis to call or execute them.
+
+```sql
+SELECT
+	MAX(invoice_total) AS highest,
+	MIN(invoice_total) AS lowest,
+    	AVG(invoice_total) AS average,
+    	SUM(invoice_total) AS sum,
+    	COUNT(invoice_total) AS number_of_invoices
+FROM invoices
+```
+In this query I am applying these functions on a column that has a numeric values but we can apply them in date and strings too.
+
+```sql
+SELECT
+    COUNT(*) AS total_records,
+    COUNT(DISTINCT client_id) AS total_clients
+FROM invoices
+```
+Aggregate functions operates on only non-null values. If we have a null value in the columns it is not going to be included in the function.
+If you want to get the total number of records in the table irrespective of the non-null values. Use * as a argument to the COUNT function.  
+By default all these aggregate functions take duplicate values. If you want to exclude duplicate values you'll have to use DISTINCT keyword.
+
+```sql
+SELECT 
+	"First half of 2019" AS date_range,
+    	SUM(invoice_total) AS total_sales,
+    	SUM(payment_total) AS total_payments,
+    	SUM(invoice_total - payment_total) AS what_we_expect
+FROM invoices
+WHERE invoice_date 
+	BETWEEN "2019-01-01" AND "2019-06-30"
+UNION
+SELECT 
+	"Second half of 2019" AS date_range,
+    	SUM(invoice_total) AS total_sales,
+   	SUM(payment_total) AS total_payments,
+    	SUM(invoice_total-payment_total) AS what_we_expect
+FROM invoices
+WHERE invoice_date 
+	BETWEEN "2019-07-01" AND "2019-12-31"
+UNION
+SELECT 
+	"Total" AS date_range,
+    	SUM(invoice_total) AS total_sales,
+    	SUM(payment_total) AS total_payments,
+    	SUM(invoice_total-payment_total) AS what_we_expect
+FROM invoices
+WHERE invoice_date 
+	BETWEEN "2019-01-01" AND "2019-12-31"
+```
