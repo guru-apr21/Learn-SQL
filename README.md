@@ -664,3 +664,40 @@ FROM invoices
 WHERE invoice_date 
 	BETWEEN "2019-01-01" AND "2019-12-31"
 ```
+
+## GROUP BY clause
+
+```sql
+SELECT 
+	SUM(invoice_total) AS total_sales
+FROM invoices i
+GROUP BY client_id
+```
+We use GROUP BY clause to group date by one or more columns. Right after the from clause we use the GROUP BY clause followed by one or more columns for grouping data.  
+The GROUP BY clause should be placed after the FROM and WHERE clauses and before the ORDER BY clause. Otherwise SQL will throw an error.
+
+```sql
+SELECT 
+    	city,
+    	state,
+	SUM(invoice_total) AS total_sales
+FROM invoices i
+JOIN clients c
+	USING(client_id)
+GROUP BY state, city
+```
+In this query data is grouped by multiple columns. This results in total sales for each state and city combination
+
+```sql
+SELECT 
+	payment_date AS date, 
+    	name AS payment_method, 
+    	SUM(payment_total) AS total_payments
+FROM payments
+JOIN invoices
+	USING(invoice_id)
+JOIN payment_methods pm
+	ON payment_method = payment_method_id
+GROUP BY payment_date, pm.name
+```
+This query generates a report that has three columns date, payment_method and total payments. Returns the total payment for each date and payment method combination.
