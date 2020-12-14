@@ -1052,4 +1052,30 @@ MYSQL have built in functions to work with numeric values. Some of them are
 * REPLACE()   - to replace a character or a sequence of characters. The second argument is what we want to replace and the third argument is with what we want to replace.
 * CONCAT()    - used to concatinate two strings.
 
-[Other functions for working with numeric data can be found here.](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html)
+[Other functions for working with string data can be found here.](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html)
+
+## DATE functions
+
+* NOW() - to get current date and time
+* CURDATE() - return current date without the time component
+* CURTIME() - return current time
+
+SQL have some functions to exatract the certain component from date and time
+
+* YEAR(NOW()) - returns the current year
+* MONTH(NOW()) - returns the current month 
+* DAY(NOW()) - returns the current day
+* HOUR(NOW()) - returns the current hour
+* MINUTE(NOW()) -returns the current minute
+
+All these function returns the integer values but we have two usefull functions which returns a string.
+
+* DAYNAME(NOW()) - returns the day of the week as a string
+* MONTHNAME(NOW()) - returns the month as a string
+
+Apart from these functions we have EXTRACT function which is part of the standard SQL language. 
+
+```sql
+SELECT EXTRACT(DATE FROM NOW())
+```
+When using extract function we type the value that we want to extract followed by the FROM keyword and then the NOW() function.
