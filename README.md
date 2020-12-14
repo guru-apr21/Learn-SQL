@@ -906,3 +906,31 @@ WHERE client_id = ANY
 
 Here we use ANY operator prefixed by the equal to operator this means "equal to any of the returned values from the subqueries".  
 Both the queries return exactly same results.
+
+## Correlated Subqueries
+
+```sql
+SELECT * FROM employees e
+WHERE salary > (
+SELECT 
+	AVG(salary) as average
+FROM employees
+WHERE office_id=e.office_id
+)
+```
+
+Here we are correlated subQuery that is we are referencing the table alias of the outer query inside the subQuery.  
+So the subquery will get executed for each employee record. This may cause performance issue sometimes.  
+In contrast we have un correlated sub queries where the subquery will get executed only once.
+
+```sql
+SELECT * 
+FROM invoices i
+WHERE invoice_total >(
+	SELECT AVG(invoice_total)
+	FROM invoices 
+	WHERE client_id = i.client_id
+)
+```
+This query also uses a correlated subQuery where it reference of the table alias of the outer query.  
+It results in clients with invoice total greater than his average.
