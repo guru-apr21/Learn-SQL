@@ -799,7 +799,25 @@ When we use the ROLL UP operator we cannot use the column alias in the GROUP BY 
 ```sql
 SELECT * FROM employees
 WHERE salary >
-(SELECT AVG(salary) FROM employees)
+	(SELECT AVG(salary) FROM employees)
 ```
 This query returns the employees whose salary is greater than the average.  
 The query within the paranthesis will get executed first whose value is used to compare the salaries.
+
+## IN Operator
+
+```sql
+SELECT * FROM products
+WHERE product_id NOT IN 
+	(SELECT product_id FROM order_items)
+```
+Using IN operator following the WHERE clause and before the subQuery.  
+This query returns products that never been ordered. We are using the NOT operator to retrieve the product that never been ordered.
+
+```sql
+SELECT * FROM clients
+WHERE client_id NOT IN
+	(SELECT client_id FROM invoices )
+```
+This query returns clients who have no invoices.  
+We need to get unique list of clients from the invoices table and we use that to find who don't exist in this list.
