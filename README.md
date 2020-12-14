@@ -857,3 +857,26 @@ WHERE product_id=3
 ```
 
 Both the queries returns the customer who have ordered product with id 3. The first one uses a SubQuery whereas the second one uses JOIN to retrieve the result.
+
+## The ALL keyword
+
+```sql
+SELECT * 
+FROM invoices
+WHERE invoice_total > 
+	(SELECT MAX(invoice_total) 
+	FROM invoices 
+	WHERE client_id = 3)
+```
+Here we are subQuery to find the maximum of all invoices made by client with id and using that value we are retreiving all the invoices greater than the maximum value.  
+We can rewrite this query using the ALL keyword.
+
+```sql
+SELECT * FROM invoices
+WHERE invoice_total > ALL
+	(SELECT invoice_total 
+	FROM invoices 
+	WHERE client_id = 3)
+```
+In this query we remove the MAX function and prefixed the subQuery with the ALL keyword.  
+The subquery here returns multiple value and MYSQL will compare each value with the invoice_total. Both the queries will return exact same results.
