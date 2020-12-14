@@ -801,6 +801,7 @@ SELECT * FROM employees
 WHERE salary >
 	(SELECT AVG(salary) FROM employees)
 ```
+
 This query returns the employees whose salary is greater than the average.  
 The query within the paranthesis will get executed first whose value is used to compare the salaries.
 
@@ -808,9 +809,10 @@ The query within the paranthesis will get executed first whose value is used to 
 
 ```sql
 SELECT * FROM products
-WHERE product_id NOT IN 
+WHERE product_id NOT IN
 	(SELECT product_id FROM order_items)
 ```
+
 Using IN operator following the WHERE clause and before the subQuery.  
 This query returns products that never been ordered. We are using the NOT operator to retrieve the product that never been ordered.
 
@@ -819,6 +821,7 @@ SELECT * FROM clients
 WHERE client_id NOT IN
 	(SELECT client_id FROM invoices )
 ```
+
 This query returns clients who have no invoices.  
 We need to get unique list of clients from the invoices table and we use that to find who don't exist in this list.
 
@@ -830,11 +833,13 @@ LEFT JOIN invoices
 	USING(client_id)
 WHERE invoice_id IS NULL
 ```
+
 ```sql
 SELECT * FROM clients
 WHERE client_id NOT IN
 	(SELECT client_id FROM invoices )
 ```
+
 Here the problem that we are trying to solve is to retrieve the clients who don't have a invoice.  
 We can use either use Subquery or Outer Join to solve this problem. The choice is ours. What more important is the readability of our code.
 
@@ -846,12 +851,13 @@ WHERE customer_id IN
 	JOIN order_items USING(order_id)
 	WHERE product_id=3)
 ```
+
 ```sql
 SELECT *
 FROM customers c
-JOIN orders 
+JOIN orders
 	USING(customer_id)
-JOIN order_items 
+JOIN order_items
 	USING(order_id)
 WHERE product_id=3
 ```
@@ -861,23 +867,25 @@ Both the queries returns the customer who have ordered product with id 3. The fi
 ## The ALL keyword
 
 ```sql
-SELECT * 
+SELECT *
 FROM invoices
-WHERE invoice_total > 
-	(SELECT MAX(invoice_total) 
-	FROM invoices 
+WHERE invoice_total >
+	(SELECT MAX(invoice_total)
+	FROM invoices
 	WHERE client_id = 3)
 ```
+
 Here we are subQuery to find the maximum of all invoices made by client with id and using that value we are retreiving all the invoices greater than the maximum value.  
 We can rewrite this query using the ALL keyword.
 
 ```sql
 SELECT * FROM invoices
 WHERE invoice_total > ALL
-	(SELECT invoice_total 
-	FROM invoices 
+	(SELECT invoice_total
+	FROM invoices
 	WHERE client_id = 3)
 ```
+
 In this query we remove the MAX function and prefixed the subQuery with the ALL keyword.  
 The subquery here returns multiple value and MYSQL will compare each value with the invoice_total. Both the queries will return exact same results.
 
@@ -885,22 +893,23 @@ The subquery here returns multiple value and MYSQL will compare each value with 
 
 ```sql
 SELECT *
-FROM clients 
+FROM clients
 WHERE client_id IN
 	(SELECT client_id
 	FROM invoices
-	GROUP BY client_id 
+	GROUP BY client_id
 	HAVING COUNT(*)>=2)
 ```
+
 This query returns clients with at least two invoices. Also here we are using a SubQuery. Instead of the IN operator we can use ANY operator.
 
 ```sql
 SELECT *
-FROM clients 
+FROM clients
 WHERE client_id = ANY
 	(SELECT client_id
 	FROM invoices
-	GROUP BY client_id 
+	GROUP BY client_id
 	HAVING COUNT(*)>=2)
 ```
 
@@ -912,7 +921,7 @@ Both the queries return exactly same results.
 ```sql
 SELECT * FROM employees e
 WHERE salary > (
-SELECT 
+SELECT
 	AVG(salary) as average
 FROM employees
 WHERE office_id=e.office_id
@@ -924,14 +933,15 @@ So the subquery will get executed for each employee record. This may cause perfo
 In contrast we have un correlated sub queries where the subquery will get executed only once.
 
 ```sql
-SELECT * 
+SELECT *
 FROM invoices i
 WHERE invoice_total >(
 	SELECT AVG(invoice_total)
-	FROM invoices 
+	FROM invoices
 	WHERE client_id = i.client_id
 )
 ```
+
 This query also uses a correlated subQuery where it reference of the table alias of the outer query.  
 It results in clients with invoice total greater than his average.
 
@@ -940,17 +950,18 @@ It results in clients with invoice total greater than his average.
 ```sql
 SELECT * FROM clients
 WHERE client_id IN (
-	SELECT DISTINCT client_id 
+	SELECT DISTINCT client_id
 	FROM invoices
 	WHERE invoice_id IS NOT NULL)
 ```
+
 This query returns the list of clients who have an invoice and we are using a subquery here. We can also use a Inner JOIN to execute this query.  
 Yet another way to execute this query is using the EXISTS operator.
 
 ```sql
 SELECT * FROM clients c
 WHERE EXISTS (
-	SELECT DISTINCT client_id 
+	SELECT DISTINCT client_id
 	FROM invoices
 	WHERE client_id=c.client_id)
 ```
@@ -965,23 +976,25 @@ WHERE NOT EXISTS(
 	WHERE product_id = p.product_id
 )
 ```
+
 This query returns the products that have never been ordered.
 
 ## Subqueries in the SELECT clause
 
 ```sql
-SELECT 
+SELECT
 	invoice_id,
 	invoice_total,
     	(SELECT AVG(invoice_total) FROM invoices) AS invoice_average,
     	invoice_total - (SELECT invoice_average) AS difference
 FROM invoices
 ```
+
 Sub queries are not limted to the WHERE caluse we can also use it in SELECT clause and FROM clause. In this query we are using subqueries to return the invoice average and difference between the invoice total and invoice average.  
 In the difference we cannot use a table alias in a subQuery so we are using a SELECT clause and referencing that subQuery.
 
 ```sql
-SELECT 
+SELECT
 	c.client_id,
     	c.name,
     	(SELECT SUM(invoice_total) FROM invoices WHERE client_id = c.client_id ) AS total_sales,
@@ -996,7 +1009,7 @@ This query returns the sales information for each client.
 
 ```sql
 SELECT * FROM
-	(SELECT 
+	(SELECT
 		c.client_id,
 		c.name,
 		(SELECT SUM(invoice_total) FROM invoices WHERE client_id = c.client_id ) AS total_sales,
@@ -1007,4 +1020,4 @@ WHERE total_sales IS NOT NULL
 ```
 
 In this query I am using a subQuery in the WHERE clause. When we use a sub_query in the WHERE clause we should give a alias which is mandatory.  
-This query returns the sales summary for each client where the total sales is not null. 
+This query returns the sales summary for each client where the total sales is not null.
