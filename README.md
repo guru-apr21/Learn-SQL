@@ -880,3 +880,29 @@ WHERE invoice_total > ALL
 ```
 In this query we remove the MAX function and prefixed the subQuery with the ALL keyword.  
 The subquery here returns multiple value and MYSQL will compare each value with the invoice_total. Both the queries will return exact same results.
+
+## The ANY keyword
+
+```sql
+SELECT *
+FROM clients 
+WHERE client_id IN
+	(SELECT client_id
+	FROM invoices
+	GROUP BY client_id 
+	HAVING COUNT(*)>=2)
+```
+This query returns clients with at least two invoices. Also here we are using a SubQuery. Instead of the IN operator we can use ANY operator.
+
+```sql
+SELECT *
+FROM clients 
+WHERE client_id = ANY
+	(SELECT client_id
+	FROM invoices
+	GROUP BY client_id 
+	HAVING COUNT(*)>=2)
+```
+
+Here we use ANY operator prefixed by the equal to operator this means "equal to any of the returned values from the subqueries".  
+Both the queries return exactly same results.
