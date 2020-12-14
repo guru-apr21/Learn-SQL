@@ -1022,3 +1022,34 @@ WHERE total_sales IS NOT NULL
 In this query I am using a subQuery in the WHERE clause.  
 When we use a sub_query in the WHERE clause we should give a alias which is mandatory.  
 This query returns the sales summary for each client where the total sales is not null.
+
+# Essential MYSQL functions
+
+## Numeric functions
+
+MYSQL have built in functions to work with numeric values. Some of them are 
+
+* ROUND()   - for rounding a number. This function has a optional second argument which we can use to specify the precision for rounding.
+* CEILING() - returns the smallest integer that is greater than or equal to this number.
+* FLOOR()   - returns the greatest integer that is less than or equal to this number.
+* ABS()     - for calculating the absolute value of a function. It always returns a positive value
+* RAND()    - for generating random floating point number between 0 and 1.
+
+[Other functions for working with numeric data can be found here.](https://dev.mysql.com/doc/refman/8.0/en/numeric-functions.html)
+
+## STRING functions
+
+* LENGTH()    - to get number of characters in string.
+* UPPER()     - for converting a string into uppercase.
+* LOWER()     - for converting a string into lowercase.
+* LTRIM()     - removes extra spaces before the string.
+* RTRIM()     - removes extra spaces after the string.
+* TRIMM()     - to remove any leading or trailing spaces.
+* LEFT()      - to return something from left side of the string. Second argument is the number of string to retrieve.
+* RIGHT()     - to return something from right side of the string. Second argument is the number of string to retrieve.
+* SUBSTRING() - to get few character from anywhere in the string. Second argument is the start position and the third argument is the length. Third argument is optional.
+* LOCATE()    - returns the first occurence of the character or sequence of characters. The first argument is the search string and the second argument is the actual string. The search string is not case sensitive. If the search string doesn't exist in the string it return 0 which is different from most programming languages.
+* REPLACE()   - to replace a character or a sequence of characters. The second argument is what we want to replace and the third argument is with what we want to replace.
+* CONCAT()    - used to concatinate two strings.
+
+[Other functions for working with numeric data can be found here.](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html)
