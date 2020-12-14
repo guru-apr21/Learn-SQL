@@ -1019,5 +1019,6 @@ SELECT * FROM
 WHERE total_sales IS NOT NULL
 ```
 
-In this query I am using a subQuery in the WHERE clause. When we use a sub_query in the WHERE clause we should give a alias which is mandatory.  
+In this query I am using a subQuery in the WHERE clause.  
+When we use a sub_query in the WHERE clause we should give a alias which is mandatory.  
 This query returns the sales summary for each client where the total sales is not null.
