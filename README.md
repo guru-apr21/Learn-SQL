@@ -1079,3 +1079,28 @@ Apart from these functions we have EXTRACT function which is part of the standar
 SELECT EXTRACT(DATE FROM NOW())
 ```
 When using extract function we type the value that we want to extract followed by the FROM keyword and then the NOW() function.
+
+## Formatting Dates and Times
+
+In MYSQL we have couple of functions for formatting dates and times in a more user-friendly way.
+
+```sql
+SELECT DATE_FORMAT(NOW(),"%M %d %Y")
+```
+Here we have a function DATE_FORMAT which takes the current date and then a format string which contains special codes for formatting various parts of the date.
+* %M - returns the name of the month.
+* %m - returns the two digits month.
+* %y - displays two digit year.
+* %Y - displays four digit year.
+* %d - returns two digit date
+
+[Here is the reference for format string options.](https://www.w3schools.com/sql/func_mysql_date_format.asp)
+
+```sql
+SELECT TIME_FORMAT(NOW(),"%H:%i %p")
+```
+Here we have a function TIME_FORMAT which takes the current time and then a format string which contains special codes for formatting various parts of the time.
+
+* %H - returns the hour in two digits
+* %i - returns the minutes in two digits
+* %p - specifies whether it is an AM or PM.
