@@ -791,3 +791,15 @@ GROUP BY pm.name WITH ROLLUP
 ```
 
 When we use the ROLL UP operator we cannot use the column alias in the GROUP BY clause. So we nned to type the actual name of the column.
+
+# Writing Complex Query
+
+## SubQueries
+
+```sql
+SELECT * FROM employees
+WHERE salary >
+(SELECT AVG(salary) FROM employees)
+```
+This query returns the employees whose salary is greater than the average.  
+The query within the paranthesis will get executed first whose value is used to compare the salaries.
