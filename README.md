@@ -839,23 +839,21 @@ Here the problem that we are trying to solve is to retrieve the clients who don'
 We can use either use Subquery or Outer Join to solve this problem. The choice is ours. What more important is the readability of our code.
 
 ```sql
-SELECT 
-	c.customer_id, 
-	c.first_name, 
-    	c.last_name FROM customers c
-JOIN orders 
-	USING(customer_id)
-WHERE order_id IN
-	(SELECT order_id FROM order_items WHERE product_id = 3)
+SELECT *
+FROM customers c
+WHERE customer_id IN
+	(SELECT customer_id FROM orders
+	JOIN order_items USING(order_id)
+	WHERE product_id=3)
 ```
 ```sql
-SELECT 
-	c.customer_id, 
-	c.first_name, 
-    	c.last_name FROM customers c
-JOIN orders USING(customer_id)
-JOIN order_items USING(order_id)
-	WHERE product_id=3
+SELECT *
+FROM customers c
+JOIN orders 
+	USING(customer_id)
+JOIN order_items 
+	USING(order_id)
+WHERE product_id=3
 ```
 
 Both the queries returns the customer who have ordered product with id 3. The first one uses a SubQuery whereas the second one uses JOIN to retrieve the result.
