@@ -934,3 +934,35 @@ WHERE invoice_total >(
 ```
 This query also uses a correlated subQuery where it reference of the table alias of the outer query.  
 It results in clients with invoice total greater than his average.
+
+## The EXISTS operator
+
+```sql
+SELECT * FROM clients
+WHERE client_id IN (
+	SELECT DISTINCT client_id 
+	FROM invoices
+	WHERE invoice_id IS NOT NULL)
+```
+This query returns the list of clients who have an invoice and we are using a subquery here. We can also use a Inner JOIN to execute this query.  
+Yet another way to execute this query is using the EXISTS operator.
+
+```sql
+SELECT * FROM clients c
+WHERE EXISTS (
+	SELECT DISTINCT client_id 
+	FROM invoices
+	WHERE client_id=c.client_id)
+```
+
+In this query right after the WHERE caluse I have used a EXISTS operator and as you can see here the subQuery is a correlated SubQuery, it references the table alias of the outer table. Hence the subQuery will get executed for each client.  
+While using the EXISTS operator the subquery does not return a list instead it returns a boolean during each execution. In this case it checks whether it matches the given criteria. For example let's imagine that we have a million of client data, so when using IN operator along with a SUB query it returns a huge list which causes performance issues. So use EXISTS operator in those situations.
+
+```sql
+SELECT * FROM products p
+WHERE NOT EXISTS(
+	SELECT DISTINCT product_id from order_items
+	WHERE product_id = p.product_id
+)
+```
+This query returns the products that have never been ordered.
