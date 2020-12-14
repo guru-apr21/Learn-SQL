@@ -966,3 +966,26 @@ WHERE NOT EXISTS(
 )
 ```
 This query returns the products that have never been ordered.
+
+## Subqueries in the SELECT clause
+
+```sql
+SELECT 
+	invoice_id,
+	invoice_total,
+    	(SELECT AVG(invoice_total) FROM invoices) AS invoice_average,
+    	invoice_total - (SELECT invoice_average) AS difference
+FROM invoices
+```
+Sub queries are not limted to the WHERE caluse we can also use it in SELECT clause and FROM clause. In this query we are using subqueries to return the invoice average and difference between the invoice total and invoice average.  
+In the difference we cannot use a table alias in a subQuery so we are using a SELECT clause and referencing that subQuery.
+
+```sql
+SELECT 
+	c.client_id,
+    	c.name,
+    	(SELECT SUM(invoice_total) FROM invoices WHERE client_id = c.client_id ) AS total_sales,
+    	(SELECT AVG(invoice_total) FROM invoices) as average,
+    	(SELECT total_sales) - (SELECT average) AS difference
+FROM clients c
+```
