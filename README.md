@@ -991,3 +991,20 @@ FROM clients c
 ```
 
 This query returns the sales information for each client.
+
+## Subqueries in the FROM clause
+
+```sql
+SELECT * FROM
+	(SELECT 
+		c.client_id,
+		c.name,
+		(SELECT SUM(invoice_total) FROM invoices WHERE client_id = c.client_id ) AS total_sales,
+		(SELECT AVG(invoice_total) FROM invoices) as average,
+		(SELECT total_sales - average) AS difference
+	FROM clients c) AS sales_summary
+WHERE total_sales IS NOT NULL
+```
+
+In this query I am using a subQuery in the WHERE clause. When we use a sub_query in the WHERE clause we should give a alias which is mandatory.  
+This query returns the sales summary for each client where the total sales is not null. 
