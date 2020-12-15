@@ -1305,3 +1305,47 @@ VIEW `sql_invoicing`.`clients_balance` AS
     	GROUP BY `c`.`client_id` , `c`.`name`
 ```
 MySQL surrounds your table and column names with the backtick characters and that is to prevent the name clash so if you use certain keywords that have speical meaning in SQL, MySQL will treat those just as view or column or table names.
+
+## Updatable Views
+
+So far we have seen that we can use our Views in SELECT statement but we can also use our Views in INSERT, UPDATE, DELETE statements but only under certain circumstances.
+
+* DISTINCT
+* Aggregate Functions (MIN, MAX, SUM, AVG...)
+* GROUP BY / HAVING
+* UNION
+
+If the view does not have a DISTINCT keyword and aggregate functions, GROUP BY or HAVING clauses and finally UNION operator. If we don't use any of these stuffs in a view that view is known as an Updatable view which means that we can update data through it.
+
+```sql
+CREATE OR REPLACE VIEW invoices_with_balance AS
+SELECT 
+	invoice_id,
+    	number,
+    	client_id,
+    	invoice_total,
+    	payment_total,
+    	invoice_total - payment_total AS balance,
+	invoice_date,
+    	due_date,
+    	payment_date
+FROM invoices
+WHERE invoice_total - payment_total > 0
+```
+
+This query creates a view for the invoices table that includes the balance for each invoice. Here we are not using DISTINCT keyword, any aggregate function or GROUP BY neither we are using the UNION operator. So this is an Updatable View so we can use it to modify our DATA.
+
+```sql
+DELETE FROM invoices_with_balance
+WHERE invoice_id = 1
+```
+This query deletes the invoice with id 1 in both the view and the underlying table. We can also update an invoice.
+
+```sql
+UPDATE invoices_with_balance
+SET due_date = DATE_ADD(due_date, INTERVAL 3 DAY)
+WHERE invoice_id = 2
+```
+This query updates the due date of the invoice with id 2. We can also insert a new invoice.  
+But when inserting data our view must have all the record columns in the underlying table. If the view doesn't have a column which has not null attribute in the underlying table MYSQL will throw an error.  
+Most of the times we update data through our tables but there are times that you might not have a direct permission to a table for security reasons and your only option is to modify data through the view only if your views are updatable.
