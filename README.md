@@ -1667,3 +1667,46 @@ Next we need to specify the data type. We can optionally give our variable a def
 We declare two more variables invoices_total and invoices_count. Using the SELECT statement we calculate the count and invoice total and right after the INTO statement we give our two variables which corresponds to the value that we selected before.
 We use the SET statement to set the value of the variable. Finally SELECT the risk_factor variable after the calculation.
 As soon as the stored procedure finish executing the variable we declared inside will go out of memory.
+
+## Functions
+
+In MySQL we can create our own functions. Functions are very similar to stored procedures but the main difference is that the function can only return a single value.  
+So unlike stored procedures they cannot return a result sets with multiple rows and columns.
+
+```sql
+CREATE FUNCTION `get_risk_factor_for_client`(client_id INT) 
+RETURNS INT(11)
+READS SQL DATA
+BEGIN
+	DECLARE risk_factor DECIMAL(9, 2) DEFAULT 0;
+    	DECLARE invoices_total DECIMAL(9, 2);
+    	DECLARE invoices_count INT;
+    
+    	SELECT COUNT(*), SUM(i.invoice_total)
+    	INTO invoices_count, invoices_total
+    	FROM invoices i
+    	WHERE i.client_id = client_id;
+    
+    	SET risk_factor = invoices_total / invoices_count * 5;
+    
+RETURN IFNULL(risk_factor, 0);
+END
+```
+This function returns the risk factor per client. The syntax for creating functions are very similar to the syntax for creating the stored procedures.  
+The RETURNS statement is one of the main differences between the functions and stored procedures which specifies the type of value this function returns.  
+Right after the return statement we need to set the attributes of a function. Every mySQL function should have atleast one attribute.
+
+* DETERMINISTIC - which means if we give this function the same set of values it always returns the same value. This is useful in situations when you are not gonna return the value based on the data in your database because the data can change. It always returns the same output for the same input.  
+
+* READS SQL DATA -  this means that you are gonna have a SELECT statement in your function to read some data.
+
+* MODIFIES SQL DATA - this means that you are gonna have a INSERT, DELETE, UPDATE statement in your function.  
+
+We can have multiple attributes here. In our example the function is not DETERMINISTIC and also we are not gonna modify anything.  
+Finally we should always return a value. Similar to the previous example for stored procedure but here we need to add a WHERE statement to find the risk factor per client.  
+Also return the risk_factor varibale using IFNULL function. We can use this function in SELECT statement just like the built in functions in MySQL.  
+
+```sql
+DROP FUNCTION IF EXISTS get_risk_factor_for_client
+```
+This is how we DROP a function and preferabally we can type IF EXISTS keyword.
