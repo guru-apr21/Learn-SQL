@@ -1547,3 +1547,41 @@ DELIMITER ;
 ```
 
 Here we are creating a stored procedure with two parameters and providing default values for both if they are NULL when this stored procedure is called.
+
+## Parameter validation
+
+We can also use stored_procedure to insert, update and delete data.
+
+```sql
+CREATE PROCEDURE `make_payment`(invoice_id INT, payment_amount DECIMAL(9,2), payment_date DATE)
+BEGIN
+	IF payment_amount <= 0 THEN
+    	SIGNAL SQLSTATE "22003"
+		SET MESSAGE_TEXT = "Invalid payment amount";
+	END IF;
+	UPDATE invoices i
+    	SET 
+		i.payment_total = payment_amount,
+		i.payment_date = payment_date
+	WHERE 
+		i.invoice_id = invoice_id;
+END
+```
+
+Here we use parameter validation to ensure our procedure doesn't accidentally store bad data in our database.  
+The procedure that we created here update the payment details of a invoice with given id. It takes three parameters and in the IF statement we are checking whether the payment amount is a valid amount if the condition evaluates to true MYSQL will signal an error to the user.  
+The SIGNAL statement raises an error. 
+
+```sql
+SIGNAL SQLSTATE "22003"
+		SET MESSAGE_TEXT = "Invalid payment amount";
+```
+
+We use SIGNAL keyword followed by a state keyword and a string literal that contains the error code.
+The first two letter represents the class of the error code. Most of the times in stored procedure we deal with out of range exception whose code is 22003.  
+Note that error code is string. Here we can set an optional error message so that the caller of this procedure will know why something failed.  
+It is a good practice to set a descriptive error message.  
+[Here we can find the complete list of error codes.](https://www.ibm.com/support/knowledgecenter/SSEPEK_11.0.0/codes/src/tpc/db2z_sqlstatevalues.html)
+
+Too much good thing is a bad thing. If we write too much of a validation logic here our stored procedure will end up becoming very bloated and very hard to maintain.  
+So keep your validation logic to bare minimum. We should do a more comprehensive validation in our application.
