@@ -1385,3 +1385,40 @@ A stored procedure is a database object that contains a block of SQL code. In ou
 We use stored procedures to store and organize our SQL code but it also has other benefits.  
 Most DBMS perform some kind of optimization to the code in stored procedures. So the SQL code in stored procedure can sometimes be executed faster also just like views, stored procedures allow us to enforce data security.  
 For example we can remove access to all the tables and allow various operations like inserting, updating and deleting data to be performed via stored procedures. Then we can decide who can execute which stored procedures and this will limit what the user can do with our data. For example we can prevent certain users from deleting our data.
+
+## Creating a Stored Procedure
+
+```sql
+DELIMITER $$
+CREATE PROCEDURE get_clients()
+BEGIN
+	SELECT * FROM clients;
+END $$
+
+DELIMITER ;
+```
+We can create a stored procedure using a CREATE PROCEDURE statement then we give our stored procedure a name after the name we add a pair of paranthesis.
+Then we type BEGIN next to the BEGIN statement we have our query and then we terminate our stored procedure using the END keyword. 
+What we have between the BEGIN and END statement is called the body of the stored procedure. 
+In this query we have only one statement but in the real world the stored procedures that you create can have multiple statements so we have to terminate each statement with a semi colon even if we have a single statement. This is the MYSQL requirement.  
+We have to give all these statement to the MYSQL as a single unit rather than individual statements separated using a semi colon. To make that happen we have to change the default delimeter semi colon to something else.  
+By convention most developers use two $ signs but we can use any sequence of characters that we don't use in our SQL code. Then we need to add the new delimiter after the END statement. Now MYSQL will execute all of these commands as a single unit.  
+Now finally we have to change the default delimeter back to a semi colon.
+
+```sql
+CALL get_clients()
+```
+We use the CALL statement to call or execute the stored procedure.
+
+```sql
+DELIMITER $$
+CREATE PROCEDURE get_invoices_with_balance()
+BEGIN
+	SELECT *
+	FROM invoices_with_balance
+	WHERE balance > 0;
+END$$
+DELIMITER ;
+```
+Here we are creating a stored procedure with the name get_invoices_with_balance which when called returns the invoices with balance greater than 0.  
+Also we using invoice_with_balance view in the body of the stored procedure.
