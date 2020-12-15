@@ -1104,3 +1104,36 @@ Here we have a function TIME_FORMAT which takes the current time and then a form
 * %H - returns the hour in two digits
 * %i - returns the minutes in two digits
 * %p - specifies whether it is an AM or PM.
+
+## Calculating Dates and Times.
+
+MYSQL have built-in functions for performing calculations on dates and times.
+
+```sql
+SELECT DATE_ADD(NOW(), INTERVAL 1 DAY)
+```
+Adds a date part to a date time value. As a first argument we pass current date and time. As a second argument we pass a expression.  
+This query returns the tomorrow's date with same time. We can also return next year with current date time by simply changing the date to year.
+
+```sql
+SELECT DATE_ADD(NOW(), INTERVAL 1 YEAR)
+```
+To go back in time we can either pass a negative value in the second argument or we can either pass a DATE_SUB function.
+```sql
+SELECT DATE_ADD(NOW(), INTERVAL -1 DAY)
+```
+```sql
+SELECT DATE_SUB(NOW(), INTERVAL 1 YEAR)
+```
+
+We can also calculate the difference between two dates using DATEDIFF function
+```sql
+SELECT DATEDIFF("2020-12-05", "2020-11-30")
+```
+This function return the difference only in days. Not in hours or minutes.
+
+Using TIME_TO_SEC function we can calculate the difference between two times and this returns the number of seconds elapsed since midnight.  
+```sql
+SELECT TIME_TO_SEC("09:02") - TIME_TO_SEC("09:00")
+```
+This returns difference between these two time in seconds.
