@@ -1177,14 +1177,46 @@ This query returns the orders that are placed in the current year as Active stat
 
 ```sql
 SELECT 
-	p.product_id,
-    	p.name,
-    	COUNT(p.product_id) AS orders,
-    	IF(COUNT(p.product_id) > 1, "Many times", "Once") AS frequency
-FROM order_items oi
-JOIN products p
+	product_id,
+    	name,
+    	COUNT(*) AS orders,
+    	IF(COUNT(*) > 1, "Many times", "once") AS frequency
+FROM products 
+JOIN order_items
 	USING(product_id)
-GROUP BY p.product_id
+GROUP BY product_id, name
 ```
 
 This query returns each product and the frequency of orders placed for that product.
+
+## The CASE operator
+
+Using IF function function we can test a expression and return different values depending upon the result of that expression.  
+What if we have multiple expression to test and return different values, that's when we use a CASE operator.
+
+```sql
+SELECT 
+	order_id,
+	CASE 
+    		WHEN YEAR(order_date) = YEAR(NOW()) THEN "Active"
+    		WHEN YEAR(order_date) = YEAR(NOW()) - 1 THEN "Last Year"
+    		WHEN YEAR(order_date) < YEAR(NOW()) - 1 THEN "Archived"
+    		ELSE "Future"
+    	END AS category
+FROM orders
+```
+Here we type out case followed by one or more WHEN clauses. Each WHEN caluse includes a test expression next we add THEN, if the expression evaluates to true the value that we put after the THEN clause will be returned. After every test condition we can optionally add ELSE clause if none of the conditions evaluates to true the value given in the ELSE clause will be returned. Finally we have to close the CASE block with the END keyword.
+
+```sql
+SELECT 
+	CONCAT(first_name, " ", last_name) AS customer,
+    	points,
+    	CASE
+		WHEN points > 3000 THEN "Gold"
+        	WHEN points BETWEEN 2000 AND 3000 THEN "Silver"
+        	WHEN points < 2000 THEN "Bronze"
+        	END AS category
+FROM customers
+ORDER BY points DESC
+```
+This query returns the customers and their category based on the points they have scored.
