@@ -1137,3 +1137,27 @@ Using TIME_TO_SEC function we can calculate the difference between two times and
 SELECT TIME_TO_SEC("09:02") - TIME_TO_SEC("09:00")
 ```
 This returns difference between these two time in seconds.
+
+## The IFNULL and COALESCE Functions.
+
+```sql
+SELECT 
+	order_id, 
+	IFNULL(shipper_id, "Not assigned") AS shipper
+FROM orders
+```
+```sql
+SELECT 
+	CONCAT(first_name," ",last_name) AS customers,
+    	IFNULL(phone, "Unknown") AS phone
+FROM customers 
+```
+When using IFNULL function if the first argument is null it will be replaced by the string in the second argument.
+
+Similarly we have another function called COALESCE which returns the first non null value in the list we passed as arguments.
+```sql
+SELECT SELECT 
+	order_id, 
+	COALESCE(shipper_id, comments, "Not assigned") AS shipper
+FROM orders
+```
