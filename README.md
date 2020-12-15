@@ -1221,3 +1221,47 @@ ORDER BY points DESC
 ```
 This query returns the customers and their category based on the points they have scored.
 
+# Views
+
+Queries sometimes gets complex especially when using multiple joins and sub queries. We may need to use those queries in multiple places that's when views come to the rescue.  
+We can save this queries in a view and resuse in a SELECT statement.
+
+## Creating Views
+
+```sql
+CREATE VIEW sales_by_client AS
+SELECT 
+	c.client_id,
+    	c.name,
+    	SUM(i.invoice_total) AS total_sales
+FROM clients c
+JOIN invoices i
+	USING(client_id)
+GROUP BY c.client_id, c.name;
+```
+
+ To create a VIEW we use CREATE VIEW statement and the name of the view followed by the AS keyword, right after the AS we have our SELECT statement.  
+ Executing this query creates a new VIEW object. We can use this view just like a table. 
+ 
+ ```sql
+SELECT * 
+FROM sales_by_client
+JOIN clients 
+	USING(client_id)
+ ```
+ We can use JOIN to join with other tables with mutual columns also we can apply filter and many more. Views are extremely powerfull and it can simplify any future queries.  
+ Views behaves like a virtual table but remember **Views don't store data.**. Our data is actually stored in the table. Our view just provides a view to the underlying table.
+ 
+ ```sql
+CREATE VIEW clients_balance AS 
+SELECT 
+	c.client_id,
+    	c.name,
+    	SUM(i.invoice_total - i.payment_total) AS balance
+FROM clients c
+JOIN invoices i
+	USING(client_id)
+GROUP BY c.client_id, c.name
+ ```
+ 
+ This query creates a view to see the balance for each client.
