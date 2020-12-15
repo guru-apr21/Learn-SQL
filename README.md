@@ -1265,3 +1265,43 @@ GROUP BY c.client_id, c.name
  ```
  
  This query creates a view to see the balance for each client.
+
+## Altering or Dropping Views
+
+Once the view is created and if we want to change the query for that view. There is actually two ways to do it.  
+The first one is using a DROP keyword which drops the view and then we can re-create it.
+
+```sql
+DROP view clients_balance
+```
+This query drops the view if there is one with the given name. Another way is to use a REPLACE keyword.
+
+```sql
+CREATE OR REPLACE VIEW clients_balance AS 
+SELECT 
+	c.client_id,
+    	c.name,
+    	SUM(i.invoice_total - i.payment_total) AS balance
+FROM clients c
+JOIN invoices i
+	USING(client_id)
+GROUP BY c.client_id, c.name
+```
+Here we are using the replace keyword which replaces the view if exists and creates a new one. This is the prefered approach because here we don't need to drop the view explicitly. We can store this query as a script file and put in a repository so that other people can use this view.  
+
+```sql
+CREATE 
+    ALGORITHM = UNDEFINED 
+    DEFINER = `root`@`localhost` 
+    SQL SECURITY DEFINER
+VIEW `sql_invoicing`.`clients_balance` AS
+    SELECT 
+        `c`.`client_id` AS `client_id`,
+        `c`.`name` AS `name`,
+        SUM((`i`.`invoice_total` - `i`.`payment_total`)) AS `balance`
+    FROM
+        (`sql_invoicing`.`clients` `c`
+        JOIN `sql_invoicing`.`invoices` `i` ON ((`c`.`client_id` = `i`.`client_id`)))
+    	GROUP BY `c`.`client_id` , `c`.`name`
+```
+MySQL surrounds your table and column names with the backtick characters and that is to prevent the name clash so if you use certain keywords that have speical meaning in SQL, MySQL will treat those just as view or column or table names.
