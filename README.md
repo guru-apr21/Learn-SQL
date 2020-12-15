@@ -1161,3 +1161,30 @@ SELECT SELECT
 	COALESCE(shipper_id, comments, "Not assigned") AS shipper
 FROM orders
 ```
+
+## The IF function
+
+*IF(expression, first, second)* If the expression we passed as a first argument evaluates to be true it returns the first value or else it returns the second value.
+
+```sql
+SELECT 
+	order_id, 
+	order_date, 
+    	IF(YEAR(order_date)=YEAR(NOW()), "Active", "Archived") AS status
+FROM orders
+```
+This query returns the orders that are placed in the current year as Active status or else as Archived.
+
+```sql
+SELECT 
+	p.product_id,
+    	p.name,
+    	COUNT(p.product_id) AS orders,
+    	IF(COUNT(p.product_id) > 1, "Many times", "Once") AS frequency
+FROM order_items oi
+JOIN products p
+	USING(product_id)
+GROUP BY p.product_id
+```
+
+This query returns each product and the frequency of orders placed for that product.
