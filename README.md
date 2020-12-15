@@ -1710,3 +1710,54 @@ Also return the risk_factor varibale using IFNULL function. We can use this func
 DROP FUNCTION IF EXISTS get_risk_factor_for_client
 ```
 This is how we DROP a function and preferabally we can type IF EXISTS keyword.
+
+# Triggers
+
+A trigger is a block of SQL code that automatically gets executed before or after an INSERT, UPDATE OR DELETE statement.  
+Quite often we use triggers to enforce data consistency. In our sql_invoicing database we can have multiple payments towards our invoice.  
+In the invoices table we have the payment_total column and the value of this column is equal to sum of all the payments made to that invoice.  
+So whenever we insert a new record in the payments table we should make sure that payment_total in the invoices table gets updated.  
+This is where we use a trigger.
+
+## Creating a Trigger
+```sql
+DELIMITER $$
+CREATE TRIGGER payments_after_insert
+	AFTER INSERT ON payments
+    	FOR EACH ROW
+BEGIN
+	UPDATE invoices
+    	SET payment_total = payment_total + NEW.amount 
+    	WHERE invoice_id = NEW.invoice_id;
+END$$
+DELIMITER ;
+```
+First we need to change the default delimiter then we use the CREATE TRIGGER statement then we give the trigger a name here payments_after_insert,  
+this means that this payment is associated with the payments table and is fired after we insert a record. Next we have AFTER INSERT ON payments,  
+here we could also use BEFORE and instead INSERT we could also use UPDATE OR DELETE depending on what we are trying to implement.  
+But in this example we are using AFTER and INSERT. Next we need to type FOR EACH ROW and this means that this trigger will gets fired for each row that is get affected. 
+We add BEGIN and END to indicate the body of the trigger. In the body of the trigger we can write any SQL code that modify our data for consistency.  
+In this example we want to update the invoices table and increase the payment total amount.  
+To get the new value i.e the new payment amount we use NEW keyword which returns the newly inserted row we also have OLD which is useful for updating or deleting the row, so the OLD keyword returns the OLD row or OLD values. Using the dot after NEW keyword we can access the individual attributes in this case amount. Next we add a WHERE clause.
+In this trigger we can modify any table except the table that this trigger is for. Other wise we'll end up in infinite loop because this trigger will fire itself.  
+
+```sql
+INSERT INTO payments
+VALUES(DEFAULT, 5, 3, "2020-12-01", 10, 1)
+```
+When executing this query the trigger will  kick in automatically after the query was executed. This will automatically update the payment_total column in invoices table.  
+
+```sql
+DROP TRIGGER IF EXISTS payments_after_delete;
+DELIMITER $$
+CREATE TRIGGER payments_after_delete
+	AFTER DELETE ON payments
+    	FOR EACH ROW
+BEGIN
+	UPDATE invoices
+    	SET payment_total = payment_total - OLD.amount
+	WHERE invoice_id = OLD.invoice_id;
+END$$
+DELIMITER ;
+```
+This trigger gets fired when we delete a payment.
