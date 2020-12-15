@@ -1480,3 +1480,70 @@ END$$
 DELIMITER ;
 ```
 This stored procedure that we create here will take client id as a parameter and return the invoices for that client. 
+
+## Parameters with Default Values
+
+If the caller of our stored procedure doesn't provide a value to the parameter we need to set a default parameter.
+
+```sql
+DELIMITER $$
+CREATE PROCEDURE get_clients_by_state(state CHAR(2))
+BEGIN
+	IF state IS NULL THEN
+		SET state = "CA";
+    	END IF;
+    
+	SELECT *
+	FROM clients c
+	WHERE c.state = state;
+END$$
+DELIMITER ;
+```
+Here before executing the SELECT statement we write an IF statement which evaluates the state and if it is null it sets "CA" as state parameter's default value.  
+Whenever we use a IF statement we should always terminate with END IF. This is because we might have multiple statements after the IF statement so we need to tell MySQL where the IF statement ends.
+
+```sql
+DELIMITER $$
+CREATE PROCEDURE get_clients_by_state(state CHAR(2))
+BEGIN
+	IF state IS NULL THEN
+		SELECT * FROM clients;
+	ELSE
+		SELECT *
+		FROM clients c
+		WHERE c.state = state;
+    	END IF;
+END$$
+DELIMITER ;
+```
+
+What if we want to return the entire clients if the state parameter is NULL. Instead of giving the parameter a default value we can return the entire clients using a SELECT statement. Then we add an ELSE statement when the first condition is not true then we want to return the client in given state.  
+This code can be further simplified.
+
+```sql
+DELIMITER $$
+CREATE PROCEDURE get_clients_by_state(state CHAR(2))
+BEGIN
+	SELECT *
+	FROM clients c
+	WHERE c.state = IFNULL(state, c.state);
+END$$
+DELIMITER ; 
+```
+Here we use the IFNULL function and pass the state parameter as the first argument and c.state as the second argument.  
+As we learned earlier the IFNULL function returns the value of the second argument if the value of the first argument is NULL.
+
+```sql
+DELIMITER $$
+CREATE PROCEDURE get_payments(client_id INT(11), payment_method_id TINYINT(4))
+BEGIN
+	SELECT * FROM payments p
+    	WHERE 
+		p.client_id = IFNULL(client_id, p.client_id) 
+		AND 
+		p.payment_method = IFNULL(payment_method_id, p.payment_method);
+END$$
+DELIMITER ;
+```
+
+Here we are creating a stored procedure with two parameters and providing default values for both if they are NULL when this stored procedure is called.
