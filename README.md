@@ -1447,3 +1447,36 @@ DELIMITER ;
 ```
 To prevent the error we can use IF EXISTS keyword and it'll DROP the procedure only if it exists.  
 As I said before it is a good practice to store the stored procedure code in a file and put it in a source control like git. So this is a basic template fo creating a stored procedure.
+
+## Parameters
+
+We use parameter to pass a value to a stored procedure but we can also use parameters to send value to the calling program.  
+
+```sql
+DELIMITER $$
+CREATE PROCEDURE get_clients_by_state(state CHAR(2))
+BEGIN
+	SELECT *
+	FROM clients c
+	WHERE c.state = state;
+END$$
+DELIMITER ;
+```
+This stored procedure that we create here will take name of the state as a parameter and return the clients in that state.  
+In between the paranthesis after the name of the stored procedure we define our parameter and set it's data type.
+We can add multiple parameters to a stored procedure. In our query we compare the state column in the client table with the state parameter.
+If we don't supply a value for the parameter we'll get an error. By default in MySQL all parameters are required.
+
+```sql
+DROP PROCEDURE IF EXISTS get_invoices_by_client;
+
+DELIMITER $$
+CREATE PROCEDURE get_invoices_by_client(client_id INT(11))
+BEGIN
+	SELECT * FROM invoices i
+    	WHERE i.client_id = client_id;
+END$$
+
+DELIMITER ;
+```
+This stored procedure that we create here will take client id as a parameter and return the invoices for that client. 
