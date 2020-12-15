@@ -1585,3 +1585,50 @@ It is a good practice to set a descriptive error message.
 
 Too much good thing is a bad thing. If we write too much of a validation logic here our stored procedure will end up becoming very bloated and very hard to maintain.  
 So keep your validation logic to bare minimum. We should do a more comprehensive validation in our application.
+
+## Output Parameters
+
+We can also use parameters to return values to the calling program.
+
+```sql
+CREATE PROCEDURE `get_unpaid_invoices_for_client`(client_id INT)
+BEGIN
+	SELECT COUNT(*), SUM(invoice_total) 
+	FROM invoices i
+    	WHERE i.client_id = client_id AND payment_total = 0;
+END
+```
+
+When calling this stored procedure it returns the count and sum of all unpaid invocie total for a given client. We pass client_id as a parameter to our stored procedure function. We can also recieve the returned values through parameters.
+
+```sql
+CREATE DEFINER=`root`@`localhost` PROCEDURE `get_unpaid_invoices_for_client`(
+	client_id INT, 
+    	OUT invoices_count INT, 
+    	OUT invoices_total DECIMAL(9,2)
+)
+BEGIN
+	SELECT COUNT(*), SUM(invoice_total)
+    	INTO invoices_count, invoices_total
+    	FROM invoices i
+    	WHERE i.client_id = client_id AND payment_total = 0;
+END
+```
+
+We need to add couple more parameters here invoice_count and invoice_total of type INT and DECIMAL(9,2) respectively.  
+By default all these parameters in the stored procedures are input parameters which means we can use them only to pass values to our procedures.  
+So here we need to prefix the parameters with OUT keyword and this marks this parameters as output parameters. So we can use them to get values out of the procedure.  
+In our SELECT statement we need to select the values INTO invoices_count, invoices_total. We are reading the values and copying them into the output parameters.
+
+```sql
+SET invoices_count = 0;
+SET invoices_total = 0;
+CALL sql_invoicing.get_unpaid_invoices_for_client(3, @invoices_count, @invoices_total);
+SELECT @invoices_count, @invoices_total;
+```
+This is the code that we need to write to call the procedure with output parameters.  
+In this case first we need to define two variables invoices_count and invoices_total, these are what we call a user defined variables.  
+A variable is basically a object which we can use to store a value in memory. To define a variable we need to prefix it with @ sign.  
+Here using the SET statement we are defining two variables and initializing them to 0.  
+And when calling the procedure we need to pass these variables. The first arg is the client_id and the other arguments here are the variables that we defined earlier.
+After calling the procedure we need to read the variables using a SELECT statement which will return the results.
