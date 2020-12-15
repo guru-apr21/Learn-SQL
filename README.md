@@ -1621,8 +1621,8 @@ So here we need to prefix the parameters with OUT keyword and this marks this pa
 In our SELECT statement we need to select the values INTO invoices_count, invoices_total. We are reading the values and copying them into the output parameters.
 
 ```sql
-SET invoices_count = 0;
-SET invoices_total = 0;
+SET @invoices_count = 0;
+SET @invoices_total = 0;
 CALL sql_invoicing.get_unpaid_invoices_for_client(3, @invoices_count, @invoices_total);
 SELECT @invoices_count, @invoices_total;
 ```
@@ -1632,3 +1632,38 @@ A variable is basically a object which we can use to store a value in memory. To
 Here using the SET statement we are defining two variables and initializing them to 0.  
 And when calling the procedure we need to pass these variables. The first arg is the client_id and the other arguments here are the variables that we defined earlier.
 After calling the procedure we need to read the variables using a SELECT statement which will return the results.
+
+## Variables
+
+```sql
+SET @invoices_count = 0
+```
+We define a variable using the SET statement and prefix them using a @ sign. Quite often we these variables when we call stored procedures that have output parameters.  
+We pass these variables to get the value of the output parameter. These variables will be in the memory during the entire client's session.  
+Once the client disconnect from the server these varaibles are freed out. So we refer to these as User or session variables.  
+
+In MySQL we also have another type of variable called local variable and these are the variables that we define inside of the stored procedures or a function.  
+These local variables don't stay in memory for the entire user's session. As soon as our stored procedure finish execution these variables are freed out.  Quite often we use these type of variables to perform calculation in stored procedure.
+
+```sql
+CREATE PROCEDURE `get_risk_factor`()
+BEGIN
+	DECLARE risk_factor DECIMAL(9,2) DEFAULT 0;
+    	DECLARE invoices_total DECIMAL(9,2);
+	DECLARE invoices_count INT;
+    
+    	SELECT COUNT(*), SUM(invoice_total)
+    	INTO invoices_count, invoices_total
+    	FROM invoices;
+    
+    	SET risk_factor = invoices_total / invoices_count * 5;
+    
+    	SELECT risk_factor;
+END
+```
+
+To calculate the risk factor first we need to declare variables on the top right after the BEGIN statement. We use DECLARE statement to declare a variable followed by the name. 
+Next we need to specify the data type. We can optionally give our variable a default value otherwise it is gonna be null.  
+We declare two more variables invoices_total and invoices_count. Using the SELECT statement we calculate the count and invoice total and right after the INTO statement we give our two variables which corresponds to the value that we selected before.
+We use the SET statement to set the value of the variable. Finally SELECT the risk_factor variable after the calculation.
+As soon as the stored procedure finish executing the variable we declared inside will go out of memory.
