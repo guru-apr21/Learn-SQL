@@ -1349,3 +1349,33 @@ WHERE invoice_id = 2
 This query updates the due date of the invoice with id 2. We can also insert a new invoice.  
 But when inserting data our view must have all the record columns in the underlying table. If the view doesn't have a column which has not null attribute in the underlying table MYSQL will throw an error.  
 Most of the times we update data through our tables but there are times that you might not have a direct permission to a table for security reasons and your only option is to modify data through the view only if your views are updatable.
+
+## WITH CHECK OPTION clause
+
+```sql
+UPDATE invoices_with_balance
+SET payment_total = invoice_total
+WHERE invoice_id = 2
+```
+
+When executing the query the invoice with id 2 disappears.  
+This is the default behaviour of views so when you update or delete data through view some of the rows might disappear. To prevent this from happening we add WITH CHECK OPTION clause at the very end after our SELECT statement when creating the VIEW.  
+
+```sql
+CREATE OR REPLACE VIEW invoices_with_balance AS
+SELECT 
+	invoice_id,
+    	number,
+    	client_id,
+    	invoice_total,
+    	payment_total,
+    	invoice_total - payment_total AS balance,
+	invoice_date,
+    	due_date,
+    	payment_date
+FROM invoices
+WHERE invoice_total - payment_total > 0
+WITH CHECK OPTION
+```
+By applying this clause it'll prevent update or delete statements from excluding rows from the view. Now when we update something that may exclude data from the view MYSQL will throw an error.
+
