@@ -1379,3 +1379,9 @@ WITH CHECK OPTION
 ```
 By applying this clause it'll prevent update or delete statements from excluding rows from the view. Now when we update something that may exclude data from the view MYSQL will throw an error.
 
+# Stored Procedures
+
+A stored procedure is a database object that contains a block of SQL code. In our application code we simply call these functions to get or save the data. 
+We use stored procedures to store and organize our SQL code but it also has other benefits.  
+Most DBMS perform some kind of optimization to the code in stored procedures. So the SQL code in stored procedure can sometimes be executed faster also just like views, stored procedures allow us to enforce data security.  
+For example we can remove access to all the tables and allow various operations like inserting, updating and deleting data to be performed via stored procedures. Then we can decide who can execute which stored procedures then we can decide who can execute which stored procedures and this will limit what the user can do with our data. For example we can prevent certain users from deleting our data.
