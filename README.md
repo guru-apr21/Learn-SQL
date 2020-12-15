@@ -1422,3 +1422,28 @@ DELIMITER ;
 ```
 Here we are creating a stored procedure with the name get_invoices_with_balance which when called returns the invoices with balance greater than 0.  
 Also we using invoice_with_balance view in the body of the stored procedure.
+
+## Dropping Procedures
+
+```sql
+DROP PROCEDURE get_invoices_with_balance
+```
+
+We use DROP PROCEDURE statement followed by the name of the procedure.  
+If we execute this statement one more time we'll get an error because MYSQL doesn't allow us to drop a procedure that doesn't exist. 
+
+```sql
+DROP PROCEDURE IF EXISTS get_invoices_with_balance;
+
+DELIMITER $$
+CREATE PROCEDURE get_invoices_with_balance()
+BEGIN
+	SELECT *
+	FROM invoices_with_balance
+	WHERE balance > 0;
+END$$
+DELIMITER ;
+
+```
+To prevent the error we can use IF EXISTS keyword and it'll DROP the procedure only if it exists.  
+As I said before it is a good practice to store the stored procedure code in a file and put it in a source control like git. So this is a basic template fo creating a stored procedure.
