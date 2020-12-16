@@ -2221,5 +2221,10 @@ In MySQL we have three types for storing numbers with a decimal point.
 	* FIXED
 
 * FLOAT : 4b
-* DOUBLE : 8b
+* DOUBLE : 8b  
 These two are used for performing scientific calculations. These types don't store the exact value they store the approximation.
+
+## Boolean Types
+
+In MySQL we have a data type called BOOLEAN or BOOL and this datatype is a synonym for TINYINT.  
+The TRUE keyword is internally represented as a 1 and false is represented as a 0.
