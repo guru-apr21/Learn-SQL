@@ -1973,10 +1973,49 @@ So if a transaction tries to modify a row or multiple rows it puts lock on these
 
 Let's look at the common problems concurrency brings.
 
-* Lost Updates - This happens when two transactions try to update the same data and we don't use locks. In this situation the transactions that commits later will override the changes made by the previous transaction. To prevent this from happening we use locks. By default MySQL uses a locking mecahnism to prevent two transactions from updating the same data at the same time. They will run in sequence one after another and we'll have both updates. 
+* Lost Updates   
+This happens when two transactions try to update the same data and we don't use locks. In this situation the transactions that commits later will override the changes made by the previous transaction. To prevent this from happening we use locks. By default MySQL uses a locking mecahnism to prevent two transactions from updating the same data at the same time. They will run in sequence one after another and we'll have both updates. 
 
-* Dirty Reads - A dirty read happens when a transaction reads a data that hasn't been committed yet. To solve this problem we need to provide a level of isolation around our transactions. So that a data modified by a transaction is not immediately visible to the other transactions unless it's committed. The standard SQL defines four transaction isolation levels. One of these is *READ COMMITTED*. When we use this isolation level for a transaction that transaction can only read committed data, with this we don't have dirty reads. So what if our data gets changed after our transaction completes, it doesn't really matter. What matters is that any data that we read is committed at the moment it is read. So when we set the isolation level of a transaction to *READ COMMITED* that transaction will only read committed data.
+* Dirty Reads  
+A dirty read happens when a transaction reads a data that hasn't been committed yet. To solve this problem we need to provide a level of isolation around our transactions. So that a data modified by a transaction is not immediately visible to the other transactions unless it's committed. The standard SQL defines four transaction isolation levels. One of these is *READ COMMITTED*. When we use this isolation level for a transaction that transaction can only read committed data, with this we don't have dirty reads. So what if our data gets changed after our transaction completes, it doesn't really matter. What matters is that any data that we read is committed at the moment it is read. So when we set the isolation level of a transaction to *READ COMMITED* that transaction will only read committed data.
 
-* Non-repeating Reads - By adding more isolation to our transactions we can guarantee that our transaction can only read committed data. But what if during the course of the transaction we read something twice and get different results. The SQL standard defines another isolation level called *REPEATABLE READ*, with this level our reads are repeatable and consistent even if the data gets changed by the other transactions. We'll see the snapshot that was established by the first read.
+* Non-repeating Reads  
+By adding more isolation to our transactions we can guarantee that our transaction can only read committed data. But what if during the course of the transaction we read something twice and get different results. The SQL standard defines another isolation level called *REPEATABLE READ*, with this level our reads are repeatable and consistent even if the data gets changed by the other transactions. We'll see the snapshot that was established by the first read.
 
-* Phantom Reads - Phantom means ghost. So we have data that suddenly appears like a ghost and we missed them in the query because they get added, updated or removed after we execute our query. To solve this problem we have another isolation level called *SERIALIZABLE* and this will guarantee that our transactions will be aware of changes currently being made by other transactions to the data. If there are other transactions modifying the data that can impact our query results, our transactions has to wait for them to complete. So the transaction will be executed sequentially. This is the highest level of isolation that we can apply to our transaction and it gives us the most certainity in our operations but it comes with a cost. The more users and concurrent transactions we have the more waits we are gonna experience and our system is gonna slow down. So this isolation level can affect performance and scalability. For this reason we should reserve this only in scenerios where it's absolutely critical and necessary to prevent phantom reads.
+* Phantom Reads  
+Phantom means ghost. So we have data that suddenly appears like a ghost and we missed them in the query because they get added, updated or removed after we execute our query. To solve this problem we have another isolation level called *SERIALIZABLE* and this will guarantee that our transactions will be aware of changes currently being made by other transactions to the data. If there are other transactions modifying the data that can impact our query results, our transactions has to wait for them to complete. So the transaction will be executed sequentially. This is the highest level of isolation that we can apply to our transaction and it gives us the most certainity in our operations but it comes with a cost. The more users and concurrent transactions we have the more waits we are gonna experience and our system is gonna slow down. So this isolation level can affect performance and scalability. For this reason we should reserve this only in scenerios where it's absolutely critical and necessary to prevent phantom reads.
+
+## Transaction Isolation Levels
+
+Let's review the isolation level one more time and also summarize everything in a way that we can easily remember.
+
+![Transaction Isolation Levels](https://github.com/guru-apr21/Learn-SQL/blob/main/5-%20Transaction%20Isolation%20Levels.mp4%20-%20VLC%20media%20player%2016-12-2020%2014_50_10.png)  
+
+*READ UNCOMMITED* doesn't really protect us from any of this problems because our transactions are not isolated from each other and they can read uncommited changes by each other.  
+*SERIALIZABLE* puts overhead on the server because it needs extra resources in terms of memory and CPU to manage the transactions that have to wait.  
+So the more we increase the isolation level the more performance and scalability problems we are gonna experience because more locks will be invloved to isolate the transactions. So to recap a lower isolation level gives us more concurrency so more users can access the same data at the same time but more concurrency means more concurrency problems. On the flip side we achieve a better performance because we need fewer locks to isolate transactions from each other.  
+A higer isolation level restreak concurrency and that means fewer concurrency problems but at the cost of decreased performance and scalability because we need more locks and resources.  
+The fastest isolation level is read uncommitted because it doesn't set any locks and it ignores the locks set by other transactions for this reason we may experience all concurrency problems. As we go down this list we get better protection from concurrency problems but that also means we are gonna use more locks and this requires more resorces which can hurt performance and scalability.  
+In MySQL the default transaction isolation level is *REPEATABLE READ* which work well in most scenerios. It is faster than *SERIALIZABLE* and prevents most concurrency problems 
+except phantom reads.
+
+```sql
+SHOW VARIABLES LIKE "transaction_isolation";
+SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;
+```
+
+This query returns the current isolation level which is *REPEATABLE READ* this is the default in MySQL.  
+To change the transaction isolation level we use the SET TRANSACTION ISOLATION LEVEL statement followed by the name of the new isolation level. This will set the isolation level for next transaction.  
+
+```sql
+SET SESSION TRANSACTION ISOLATION LEVEL SERIALIZABLE;
+```
+
+We can also set the isolation level for all future transaction in the current session or connection, so we add the SESSION keyword next to the SET keyword. So as long as we have the session or connection open all the future transactions will have the given isolation level.  
+
+```sql
+SET GLOBAL TRANSACTION ISOLATION LEVEL SERIALIZABLE;
+```
+
+We can also set the isolation level globally for all new transactions in all sessions for that we use the GLOBAL keyword right after the SET keyword. 
+ 
