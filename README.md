@@ -2076,3 +2076,39 @@ Here we start a transaction because we have two select statements. In the first 
 Now start the transaction and read the points for first SELECT statement. Before executing the second SELECT statement go to the second session and update the points value.  
 Now if we go back to the first session and read the points again we get different value. At this isolation level we have non repeatable or in-consistent reads.  
 To solve this problem we need to increase the isolation level for this transaction.
+
+## REPEATABLE READ Isolation level
+
+With this Isolation level our reads are gonna be consistent and repeatable.
+
+```sql
+USE sql_store;
+SET TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+START TRANSACTION;
+SELECT points FROM customers WHERE customer_id = 1;
+SELECT points FROM customers WHERE customer_id = 1;
+COMMIT;
+```
+Just change the isolation level to *REPEATABLE READ*.Now let's execute the line 2 and then start a new transaction after that execute the SELECT statement and read the value.  
+Now before executing the second SELECT statement go back to the second session and update the points to some other value.  
+Now bact to the first session when we execute the second SELECT statement we are gonna see the same value. So our reads are repeatable and consistent.  
+So this is benefit of this isolation level. As I mentioned earlier this is the default isolation level of the MySQL that solves most of the concurrency problems.  
+But at this level we have one problem that is phantom reads.
+
+```sql
+SET TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+START TRANSACTION;
+SELECT * FROM customers WHERE state = "VA";
+COMMIT;
+```
+
+```sql
+START TRANSACTION;
+UPDATE customers
+SET state = "VA"
+WHERE customer_id = 1;
+COMMIT;
+```
+
+So the scenerio that we are simulating here is that one client tries to read the customers that are located in Virginia and at the same time another client is updating the data such that the customer with id 1 should be included in the query that client no 1 is executing.  
+So even if we change the state of the customer to Virginia, the SELECT statement do not return the customer because with the repeatable reads our reads are going to be consistent. This is what we call a phantom read.
