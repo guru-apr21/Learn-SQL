@@ -2228,3 +2228,10 @@ These two are used for performing scientific calculations. These types don't sto
 
 In MySQL we have a data type called BOOLEAN or BOOL and this datatype is a synonym for TINYINT.  
 The TRUE keyword is internally represented as a 1 and false is represented as a 0.
+
+## Enum and Set Types
+
+Enums are used when we want to restrict the values for the columns to a limited list of strings. If though it look appealing enums are generally and better avoid them.  
+Changing the members of the enum can be expensive and also enums are not reusable. A better approach is to create a separate table and store the values.  
+We refer to these kind of tables as lookup table. We also have another similar type called SET(...). A SET can store multiple values.  
+So similar to ENUMS we specify the list of allowable values and then we can store multiple values in the column.
