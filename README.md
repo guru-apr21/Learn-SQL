@@ -2019,3 +2019,27 @@ SET GLOBAL TRANSACTION ISOLATION LEVEL SERIALIZABLE;
 
 We can also set the isolation level globally for all new transactions in all sessions for that we use the GLOBAL keyword right after the SET keyword. 
  
+## READ UNCOMMITTED ISOLATION LEVEL
+
+```sql
+USE sql_store;
+SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
+SELECT points FROM customers WHERE customer_id = 1
+```
+
+Open two new connections to simulate two new clients. In the first session set the transaction isolation level to *READ UNCOMMITTED*. So with this isolation level we are gonna read uncommitted data i.e, we are gonna have dirty reads. Then select the points for customer with id 1.  
+
+```sql
+USE sql_store;
+START TRANSACTION;
+UPDATE customers
+SET points = 2293
+WHERE customer_id = 1;
+COMMIT;
+```
+
+In the second session start a transaction and update the points of the customer with the id 1 and then finally commit.  
+In the first session execute only the SET transaction statement so the next transaction is gonna have *READ UNCOMMITTED* isolation level.  
+Now in the second session execute all the statements line by line except commit. Now execute the SELECT statemet in the first session.  
+This returns the uncommitted data because we set the isolation level to *READ UNCOMMITTED*. 
+*READ UNCOMMITTED* is the lowest isolation level and with this isolation level we may experience all concurrency problems.
