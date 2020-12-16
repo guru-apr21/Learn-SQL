@@ -1761,3 +1761,12 @@ END$$
 DELIMITER ;
 ```
 This trigger gets fired when we delete a payment.
+
+## Viewing Triggers
+
+```sql
+SHOW TRIGGERS LIKE "..."
+-- table_after_insert
+```
+We can use the show triggers statement to list the triggers that we created earlier.  
+If we follow the convention for naming triggers we can use the LIKE operator to find the triggers associated with the given table.
