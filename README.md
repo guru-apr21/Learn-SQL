@@ -2245,3 +2245,13 @@ In MySQL we have four data types for storing date and time values.
 * DATETIME - It's size is 8 bytes so if we want to store dates that go beyond 2038 we should use this type.
 * TIMESTAMP - for keeping track of when a row was created or last updated. It's size is 4 bytes and it can only store the dates upto the year 2038. This is called the year 2038 problem.
 * YEAR - for storing the four digit year.
+
+## Blob Types
+
+We use Blob types to store large amount of binary data like images, videos, pdfs pretty much any binary data.  
+In MySQL we have 4 BLOB types and they differ based on maximum amount of data they can store.  
+
+* TINYBLOB : 255 bytes
+* BLOB : 65 kilobytes
+* MEDIUMBLOB : 16 megabytes
+* LONGBLOB : 4 gigabytes
