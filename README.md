@@ -1777,3 +1777,50 @@ If we follow the convention for naming triggers we can use the LIKE operator to 
 DROP TRIGGER IF EXISTS payments_after_insert
 ```
 Dropping triggers is very similar to dropping stored procedures. We use DROP TRIGGER statement and optionally and ideally we use IF EXISTS keyword followed by the name of the trigger.
+
+## Using Triggers for auditing
+
+Another common usecase for triggers is logging changes to the data for auditing.  
+For example when someone inserts or deletes a record we can log that somewhere so that later we can come back and see who made what changes when.  
+We create a new table payments_audit to log the data when changes happen.
+
+```sql
+DELIMITER $$
+
+DROP TRIGGER IF EXISTS payments_after_insert;
+CREATE TRIGGER payments_after_insert
+	AFTER INSERT ON payments
+    	FOR EACH ROW
+BEGIN
+	UPDATE invoices
+    	SET payment_total = payment_total + NEW.amount
+    	WHERE invoice_id = NEW.invoice_id;
+    
+    	INSERT INTO payments_audit
+    	VALUES(NEW.client_id, NEW.date, NEW.amount, "Insert", NOW());
+END$$
+DELIMITER ;
+```
+
+Here in our trigger we use INSERT statement after the UPDATE statement for invoices table. This insert new row into payment_audit table for each change that takes place.  
+We can make similar changes to the payments_after_delete. Just replace the NEW keyword with the OLD keyword.
+
+```sql
+DELIMITER $$
+
+DROP TRIGGER IF EXISTS payments_after_delete;
+CREATE TRIGGER payments_after_delete
+	AFTER DELETE ON payments
+    	FOR EACH ROW
+BEGIN
+	UPDATE invoices
+    	SET payment_total = payment_total - OLD.amount
+    	WHERE invoice_id = OLD.invoice_id;
+    
+    	INSERT INTO payments_audit
+    	VALUES(OLD.client_id, OLD.date, OLD.amount, "Delete", NOW());
+END$$
+DELIMITER ;
+```
+
+So whenever we insert or delete a payment in the payments table this trigger will kick in and update the payment_total column in the invoices table and also inserts a new record in the payment_audit table. 
