@@ -2235,3 +2235,13 @@ Enums are used when we want to restrict the values for the columns to a limited 
 Changing the members of the enum can be expensive and also enums are not reusable. A better approach is to create a separate table and store the values.  
 We refer to these kind of tables as lookup table. We also have another similar type called SET(...). A SET can store multiple values.  
 So similar to ENUMS we specify the list of allowable values and then we can store multiple values in the column.
+
+## Date and Time Types
+
+In MySQL we have four data types for storing date and time values.  
+
+* DATE - for storing date without the time component.
+* TIME - for storing time value.
+* DATETIME - It's size is 8 bytes so if we want to store dates that go beyond 2038 we should use this type.
+* TIMESTAMP - for keeping track of when a row was created or last updated. It's size is 4 bytes and it can only store the dates upto the year 2038. This is called the year 2038 problem.
+* YEAR - for storing the four digit year.
