@@ -2162,3 +2162,13 @@ In the second session change the order of the update statements.
 When we execute the transactions in both the sessions simultaneously both these transactions will wait for each other and they will never be able to complete.  
 This is what we call a deadlock. In this situation MySQL treats one of the transactions as a victim and rolls it back.  
 We can never completely get rid of them but minimize their likelihood.
+
+# Data Types
+
+It is really important to understand when to use which data types. In MySQL we have several categories of data types.
+
+* String Types
+* Numeric Types
+* Date and Time Types
+* Blob Types - for storing binary data
+* Spatial Types - for storing geometric and geographical values
