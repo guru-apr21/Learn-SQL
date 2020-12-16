@@ -1830,7 +1830,7 @@ So whenever we insert or delete a payment in the payments table this trigger wil
 An Event is a task or a block of SQL code that gets executed according to a schedule. It can get executed once or like a regular basis like every day or once a month.  
 So with events we can automate database maintainence tasks like deleting stale data or copying data from one table to an archived table or aggregating data for generating reports.  
 
-# Creating a Event
+## Creating a Event
 Before we create a event we need to turn on MySQL event_scheduler. That's basically a process that runs in the background and it constantly looks for events to execute.
 
 ```sql
@@ -1860,3 +1860,40 @@ If you want to execute only once here we use AT keyword followed by the date tim
 Or if you want to execute this on a regular basis instead of the AT keyoword we use EVERY keyword with the interval depending on what we implement.  
 Here we can optionally give start and end time. Then we type DO followed by BEGIN and END. In the body of the event we can write our SQL code.  
 In this example we are deleting all the audit records that are older than one year.
+
+## Viewing, Dropping and Altering Events
+
+```sql
+SHOW EVENTS LIKE "..."
+```
+To view the events in the current database we use SHOW EVENTS statements.   
+As I mentioned earlier it is good practice to start the event name with their interval like hourly, monthly, yearly or once for one time events.  
+With this convention we can easily filter events using the LIKE operator.
+
+```sql
+DROP EVENTS IF EXISTS yearly_delete_stale_audit_data
+```
+
+To drop a event we use DROP EVENT statement followed by the name of the event.
+
+```sql
+DELIMITER $$
+
+ALTER EVENT yearly_delete_stale_audit_data
+	ON SCHEDULE
+    	EVERY 1 YEAR STARTS "2020-01-01" ENDS "2030-01-01"
+DO BEGIN
+	DELETE FROM payment_audit
+    	WHERE action_date < NOW() - INTERVAL 1 YEAR;
+END$$
+
+DELIMITER ;
+```
+We also have ALTER EVENT statment to make any changes to the event without any need to drop and recreate it. The syntac is exacly same as the create event statement.  
+Insted of the CREATE statement we use ALTER statement.  
+
+```sql
+ALTER EVENT yearly_delete_stale_audit_data ENABLE;
+```
+
+But we also use ALTER EVENT statement to temporarily ENABLE or DISABLE an event.
