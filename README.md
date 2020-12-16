@@ -1913,3 +1913,35 @@ These transactions have few properties that we need to know. We refer to these p
 * Isolation - That means these transactions are isolated or protected from each other if they try to modify the same data. So they cannot interfere with each other. If multiple transactions try to update the same data the rows that are being affected get locked so only transaction at a time can update those rows. Other transactions have to wait for that transaction to complete.  
 
 * Durability - That means once a transaction is committed, the cahnges made by the transactions are permanent. So if you have a power failure or a system crash you are not gonna lose the changes.  
+
+## Creating Transactions
+
+```sql
+USE sql_store;
+
+START TRANSACTION;
+
+INSERT INTO orders(cusomer_id, order_date, status)
+VALUES(1, "2020-12-01", 1);
+
+INSERT INTO order_items
+VALUES(LAST_INSERT_ID(), 1, 1, 10);
+
+COMMIT;
+```
+
+To create a transaction we use START TRANSACTION statement. Here in this transaction we are inserting a order into the orders table. Next we are inserting the order items.  
+For the order_id I am using the LAST_INSERT_ID() function which returns the id of the newly inserted order. Finally we need to close this transaction with the commit statement. 
+When MySQL sees this COMMIT command it will write all the changes to the database.  
+If one of the changes fails it automatically undo the previous changes and we say the transaction is rolled back.  
+Most of the time this is how we code a transaction we have START TRANSACTION statement on the top and a COMMIT statement down the bottom. 
+But there maybe situation when we need to do error checking and manually roll back a transaction.  
+In those situation instead of the COMMIT statement we use the ROLLBACK statement. This will rollback the situation and undo all the changes.
+
+MySQL wraps every single statement that we write inside a transaction and it will do a commit if that statement didn't return a error.  
+So whenever we have an INSERT, UPDATE or a DELETE statement MySQL wraps this inside a transaction and then it'll do a commit automatically.  
+
+```sql
+SHOW VARIABLES LIKE "autocommit"
+```
+This is controlled by a system variable called auto commit. So whenever we execute a single statement MySQL puts that statement in a transaction and commits it if the statement doesn't raise an error.
