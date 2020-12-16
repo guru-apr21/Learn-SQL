@@ -1897,3 +1897,19 @@ ALTER EVENT yearly_delete_stale_audit_data ENABLE;
 ```
 
 But we also use ALTER EVENT statement to temporarily ENABLE or DISABLE an event.
+
+# Transactions
+
+A Transaction is a group of SQL statements that represent a single unit of work. All these statements should be completed succesfully or the transactions will fail.  
+If the first operation succeeds and the second operation fails we need to roll back or revert the changes by the first operation.  
+We use transactions in situations where we want to make multiple changes to the database and we want all these changes to succedd or fail together as a single unit.  
+
+These transactions have few properties that we need to know. We refer to these properties as **ACID**.  
+
+* Atomicity - This means our transactions are like atoms. They are unbreakable. Each transaction is a single unit of work no matter how many statements it contains. Either all these statements gets executed successfully and the transaction is committed or the transaction is rolled back and all the changes are undone.  
+
+* Consistency - This means that our database will always remain in a consistent state.  
+
+* Isolation - That means these transactions are isolated or protected from each other if they try to modify the same data. So they cannot interfere with each other. If multiple transactions try to update the same data the rows that are being affected get locked so only transaction at a time can update those rows. Other transactions have to wait for that transaction to complete.  
+
+* Durability - That means once a transaction is committed, the cahnges made by the transactions are permanent. So if you have a power failure or a system crash you are not gonna lose the changes.  
