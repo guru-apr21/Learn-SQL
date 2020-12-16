@@ -2192,3 +2192,21 @@ All these types support international characters
 * European - use 2 bytes
 * Middle-eastern - use 2 bytes
 * Asian - use 3 bytes.
+
+## Integer types
+
+We use integers to store whole numbers that don't have a decimal point.  
+In MySQL we have 5 different integer types and these are different in terms of number of bytes they use and thre range of values that they can store.  
+If we mark a column as unsigned we can only store positive values.
+
+* TINYINT : 1b [-128, 127]  
+* UNSIGNED TINYINT : [0, 255]
+* SMALLINT : 2b [-32K, 32K]
+* MEDIUMINT : 3b [-8M, 8M]
+* INT : 4b [-2B, 2B]
+* BIGINT : 8B [-9Z, 9Z]
+
+If we try to store a value outside the range of a columns data type MySQL will throws an error saying our value is out of range.  
+Apart from UNSIGNED numeric types also have another attribute and that is called ZEROFILL.  
+This is usefull in situation where you want to zeropad the values so they always have the same number of digits.  
+As a best practice try to use the smallest data type that suits your needs. With this your database will smaller in size and your queries will execute faster.
