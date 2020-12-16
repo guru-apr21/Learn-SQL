@@ -2138,3 +2138,27 @@ While the first client is trying to read the customers in Virginia, another clie
 So this customer should be included in our query otherwise we are gonna have phantom reads. The transaction will wait for the transaction to finish.  
 This is the result of SERIALIZABLE isolation level. So with the SERIALIZABLE isolation level we can solve all concurrency problems because our transactions are executed sequentially. The more users and more concurrent requests we have the more waits we are gonna experience.  
 So as I mentioned earlier use this isolation level only in the scenerios where you want to prevent the phantom reads.
+
+## Deadlocks
+
+A deadlock happens when different transactions cannot complete because each transaction holds a lock that other needs. So both transaction keeps waiting for each other and never release their lock.
+
+```sql
+USE sql_store;
+START TRANSACTION;
+UPDATE customers SET state = "VA" WHERE customer_id = 1;
+UPDATE orders SET status = 1 WHERE order_id = 1;
+COMMIT;
+```
+```sql
+USE sql_store;
+START TRANSACTION;
+UPDATE orders SET status = 1 WHERE order_id = 1;
+UPDATE customers SET state = "VA" WHERE customer_id = 1;
+COMMIT;
+```
+Here in the first session we are updating one record in the customers table and one record in the orders table.
+In the second session change the order of the update statements.  
+When we execute the transactions in both the sessions simultaneously both these transactions will wait for each other and they will never be able to complete.  
+This is what we call a deadlock. In this situation MySQL treats one of the transactions as a victim and rolls it back.  
+We can never completely get rid of them but minimize their likelihood.
