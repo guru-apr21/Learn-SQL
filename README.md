@@ -2210,3 +2210,16 @@ If we try to store a value outside the range of a columns data type MySQL will t
 Apart from UNSIGNED numeric types also have another attribute and that is called ZEROFILL.  
 This is usefull in situation where you want to zeropad the values so they always have the same number of digits.  
 As a best practice try to use the smallest data type that suits your needs. With this your database will smaller in size and your queries will execute faster.
+
+## Fixed-point and Floating-point Types
+
+In MySQL we have three types for storing numbers with a decimal point.
+
+* DECIMAL(p, s) - for storing the fixed point numbers. These are the numbers which have fixed number of digits after the decimal point. I takes two arguments precison and scale. The precison specifies the maximum number of digits and this can be between 1 and 65. The scale determines the number of digits after the decimal point. The synonym of this data types are
+	* DEC
+	* NUMERIC
+	* FIXED
+
+* FLOAT : 4b
+* DOUBLE : 8b
+These two are used for performing scientific calculations. These types don't store the exact value they store the approximation.
