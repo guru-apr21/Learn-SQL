@@ -2172,3 +2172,23 @@ It is really important to understand when to use which data types. In MySQL we h
 * Date and Time Types
 * Blob Types - for storing binary data
 * Spatial Types - for storing geometric and geographical values
+
+## String Types
+
+In the string category we have bunch of data types the most common ones are 
+
+* CHAR - for storing fixed length strings 
+* VARCHAR - for storing variable length strings. max: 65,535 characters
+	* VARCHAR(50) - for short strings
+	* VARCHAR(255) - for medium-length strings
+* MEDIUMTEXT - max: 16MB (16 million characters), good for storing JSON objects, CSV strings
+* LONGTEXT - max: 4GB (4 Gigabytes of textual data)
+* TINYTEXT - max: 255 bytes(upto 255 characters)
+* TEXT - max: 64KB(upto 65,000 characters) just like VARCHAR but cannot be indexed.
+
+All these types support international characters
+
+* English - letters use 1 byte
+* European - use 2 bytes
+* Middle-eastern - use 2 bytes
+* Asian - use 3 bytes.
