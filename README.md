@@ -2112,3 +2112,29 @@ COMMIT;
 
 So the scenerio that we are simulating here is that one client tries to read the customers that are located in Virginia and at the same time another client is updating the data such that the customer with id 1 should be included in the query that client no 1 is executing.  
 So even if we change the state of the customer to Virginia, the SELECT statement do not return the customer because with the repeatable reads our reads are going to be consistent. This is what we call a phantom read.
+
+SERIALIZABLE Isolation Level
+
+This isolation level provides the highest level of isolation and solves all concurrency problems. At this level our transactions are executed in sequence one after another.  
+We really don't have concurrency, the experience we get is like single user system.  
+One user executing different commands against the database, these commands are executed sequentially.
+
+```sql
+SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;
+START TRANSACTION;
+SELECT * FROM customers WHERE state = "VA";
+COMMIT;
+```
+
+```sql
+START TRANSACTION;
+UPDATE customers
+SET state = "VA"
+WHERE customer_id = 1;
+COMMIT;
+```
+Change the transaction isolation level to *SERIALIZABLE*.  
+While the first client is trying to read the customers in Virginia, another client is updating the customer with id 3.  
+So this customer should be included in our query otherwise we are gonna have phantom reads. The transaction will wait for the transaction to finish.  
+This is the result of SERIALIZABLE isolation level. So with the SERIALIZABLE isolation level we can solve all concurrency problems because our transactions are executed sequentially. The more users and more concurrent requests we have the more waits we are gonna experience.  
+So as I mentioned earlier use this isolation level only in the scenerios where you want to prevent the phantom reads.
