@@ -1824,3 +1824,39 @@ DELIMITER ;
 ```
 
 So whenever we insert or delete a payment in the payments table this trigger will kick in and update the payment_total column in the invoices table and also inserts a new record in the payment_audit table. 
+
+# Events
+
+An Event is a task or a block of SQL code that gets executed according to a schedule. It can get executed once or like a regular basis like every day or once a month.  
+So with events we can automate database maintainence tasks like deleting stale data or copying data from one table to an archived table or aggregating data for generating reports.  
+
+# Creating a Event
+Before we create a event we need to turn on MySQL event_scheduler. That's basically a process that runs in the background and it constantly looks for events to execute.
+
+```sql
+SHOW VARIABLES LIKE "event%";
+SET GLOBAL event_scheduler = ON
+```
+This command returns all the system varibles in the MySQL. Using LIKE operator we can retrieve only the event_scheduler variable.  
+Using the SET GLOBAL statement we can turn on the event_scheduler if it is turned OFF. If you don't want events you can turn this off to save system resources.  
+
+```sql
+DELIMITER $$
+
+CREATE EVENT yearly_delete_stale_audit_data
+	ON SCHEDULE
+    	EVERY 1 YEAR STARTS "2020-01-01" ENDS "2030-01-01"
+DO BEGIN
+	DELETE FROM payment_audit
+    	WHERE action_date < NOW() - INTERVAL 1 YEAR;
+END$$
+
+DELIMITER ;
+```
+
+To create a event we use CREATE EVENT statement followed by the name of the event. By convention always start the event names with the intervals based on the event execution.  
+After the event name we type ON SCHEDULE and here we are gonna provide the schedule for this event, how often we are gonna execute this tasks once or on a regular basis.  
+If you want to execute only once here we use AT keyword followed by the date time value.  
+Or if you want to execute this on a regular basis instead of the AT keyoword we use EVERY keyword with the interval depending on what we implement.  
+Here we can optionally give start and end time. Then we type DO followed by BEGIN and END. In the body of the event we can write our SQL code.  
+In this example we are deleting all the audit records that are older than one year.
