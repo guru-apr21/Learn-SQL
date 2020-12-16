@@ -2019,7 +2019,7 @@ SET GLOBAL TRANSACTION ISOLATION LEVEL SERIALIZABLE;
 
 We can also set the isolation level globally for all new transactions in all sessions for that we use the GLOBAL keyword right after the SET keyword. 
  
-## READ UNCOMMITTED ISOLATION LEVEL
+## READ UNCOMMITTED Isolation Level
 
 ```sql
 USE sql_store;
@@ -2043,3 +2043,36 @@ In the first session execute only the SET transaction statement so the next tran
 Now in the second session execute all the statements line by line except commit. Now execute the SELECT statemet in the first session.  
 This returns the uncommitted data because we set the isolation level to *READ UNCOMMITTED*. 
 *READ UNCOMMITTED* is the lowest isolation level and with this isolation level we may experience all concurrency problems.
+
+## READ COMMITTED Isolation level
+
+```sql
+USE sql_store;
+SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
+SELECT points FROM customers WHERE customer_id = 1
+```
+```sql
+USE sql_store;
+START TRANSACTION;
+UPDATE customers
+SET points = 20
+WHERE customer_id = 1;
+COMMIT;
+```
+Here we set the transaction isolation level to *READ COMMITTED* which returns only the committed data. Unlike the *READ UNCOMMITTED* it doesn't return the uncommitted data.  
+At this isolation level we don't have any dirty reads but we have another problem. We have unrepeatable reads.  
+It is possible that during a transaction we read something twice but get different values each time.
+
+```sql
+USE sql_store;
+SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
+START TRANSACTION;
+SELECT points FROM customers WHERE customer_id = 1;
+SELECT points FROM customers WHERE customer_id = 1;
+COMMIT;
+```
+
+Here we start a transaction because we have two select statements. In the first session once again execute the line 2 to set the isolation level because this only applies to the next transaction. Otherwise it is gonna have the default isolation level which is *REPEATABLE READ*.  
+Now start the transaction and read the points for first SELECT statement. Before executing the second SELECT statement go to the second session and update the points value.  
+Now if we go back to the first session and read the points again we get different value. At this isolation level we have non repeatable or in-consistent reads.  
+To solve this problem we need to increase the isolation level for this transaction.
