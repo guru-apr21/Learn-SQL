@@ -1770,3 +1770,10 @@ SHOW TRIGGERS LIKE "..."
 ```
 We can use the show triggers statement to list the triggers that we created earlier.  
 If we follow the convention for naming triggers we can use the LIKE operator to find the triggers associated with the given table.
+
+## Dropping Triggers
+
+```sql
+DROP TRIGGER IF EXISTS payments_after_insert
+```
+Dropping triggers is very similar to dropping stored procedures. We use DROP TRIGGER statement and optionally and ideally we use IF EXISTS keyword followed by the name of the trigger.
