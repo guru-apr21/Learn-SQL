@@ -1945,3 +1945,26 @@ So whenever we have an INSERT, UPDATE or a DELETE statement MySQL wraps this ins
 SHOW VARIABLES LIKE "autocommit"
 ```
 This is controlled by a system variable called auto commit. So whenever we execute a single statement MySQL puts that statement in a transaction and commits it if the statement doesn't raise an error.
+
+## Concurrency and Locking
+
+So far we've been the only user of the database but in real it quite possible that two or more users will try to access the same data at the same time.  
+This is what we call concurrency. Concurrency can become a problem when one user modifies the data that other users are trying to retrieve or modify.
+
+```sql
+USE sql_store;
+
+START TRANSACTION;
+
+UPDATE customers
+SET points = points + 10
+WHERE customer_id = 1;
+
+COMMIT;
+```
+
+We are gonna simulate two customers trying to update the points for a given customer. To make this work create two separate sessions in MySQL workbench.  
+Copy the code and paste it in new session. Now execute the code line by line but don't commit yet.  
+In the second session you can see a spinner which means the update is running because when we executed the first update MySQL will put a lock on the customer row that we updated.  
+So if another transaction tries to update the same row it has to wait untill the first transaction is complete either committed or rolled back that is why we had a spinner.  
+So if a transaction tries to modify a row or multiple rows it puts lock on these rows and this lock prevents other transaction from modiying these rows untill the first transaction is done either it's commited or rolled back.
