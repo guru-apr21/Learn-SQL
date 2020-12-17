@@ -2255,3 +2255,7 @@ In MySQL we have 4 BLOB types and they differ based on maximum amount of data th
 * BLOB : 65 kilobytes
 * MEDIUMBLOB : 16 megabytes
 * LONGBLOB : 4 gigabytes
+
+## JSON Type
+
+Javascript object notation is actually a lightwieght format for storing and transferring data over the internet. It is used heavily in web and mobile applications.
