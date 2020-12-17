@@ -2371,3 +2371,9 @@ A primary key is a column that uniquely identifies each record in a given table.
 When ever we create a primary key column in MySQL not null is checked by default, so a primary key must have a value to identify each record uniquely.  
 By checking the primary key as an auto increment column MySQL will automatically generate values for these columns.  
 It's just makes it easier for us to insert record in this table, we don't have to worry about the uniqueness of the table.
+
+## Foriegn Keys
+
+![Foriegn Key](https://github.com/guru-apr21/Learn-SQL/blob/main/images/foriegn.png)
+
+Whenever we add a relationship between two tables, one end of the relationship is called a parent or a primary key table and the other end is called a child or a forign key table. A foriegn key is a column in one table that references the primary key of another table.
