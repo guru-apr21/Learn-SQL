@@ -2457,3 +2457,11 @@ We also have staging environment which is very close to the production environme
 Each environment has one or more servers so anytime, we developers wanna make any changes to the database we should be able to replicate the same changes on other databases.  
 So all these databases we have in other environments are consistent. So to achieve that we make our changes on the model and synchronize the model with the database.  
 We use forward engineering when we don't have a database.
+
+## Reverse Engineering a Database
+
+We can create a model for databases which doesn't have one by reverse engineering a model. We use that model for any future changes.  
+In the generated model we can see all our tables and their relationships, this is really helpfull in understanding database design.  
+We can also use this diagrams to identify the problems in our design. When you add relationships between the tables MySQL workbench will enforce the integrity of the data.  
+So in our child tables we can only add values that correspond with the values in our parents table.  
+These models allow us to make any changes to the design and then script those changes to execute on other MySQL databases.
