@@ -2405,7 +2405,14 @@ Most of the time we want to reject the delete operation but in some cases it doe
 
 Before generating database tables we need to make sure that our design is optimal and doesn't allow redundant or duplicated data.  
 Because redudancy increase the size of our database and complicates the INSERT, UPDATE and DELETE operation.  
-For example if the name of someone is repeated in different places and they decide to change their name we have to update several different places.  
-Otherwise we'll have inconsistent data. So that's where normalization comes to the rescue.  
+For example if the name of someone is repeated in different places and they decide to change their name we have to update several different places. Otherwise we'll have inconsistent data. So that's where normalization comes to the rescue.  
 Normalization is the process of reviewing our design and ensuring it follows a few pre defined rules that prevent data duplication.  
 There are basically seven rules also called seven normal forms and each rule assumes that we have applied the previous rules.
+
+### First Normal Form (1NF)
+
+![First Normal Form](https://github.com/guru-apr21/Learn-SQL/blob/main/images/1NF.png)
+
+The First Normal Form says that *each cell in a row should have a single value and we cannot have repeated columns*.  
+The tags column in the courses table is violating this rule because we are gonna store multiple tags in this column.  
+To solve this problem we need to take the tags column out of this table and model it as a separate table called tags and then we add many to many relationship with tags and courses.
