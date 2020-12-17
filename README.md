@@ -2259,3 +2259,14 @@ In MySQL we have 4 BLOB types and they differ based on maximum amount of data th
 ## JSON Type
 
 Javascript object notation is actually a lightwieght format for storing and transferring data over the internet. It is used heavily in web and mobile applications.
+
+# Designing Databases
+
+## Data Modelling
+
+Data modelling is the process of creating a model for the data that we want to store in a database. It invloves four steps.
+
+* Understand the requirements
+* Build a conceptual model
+* Build a logical model -  an abstract data model that is independent of database technology.
+* Build a physical model
