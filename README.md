@@ -2413,6 +2413,6 @@ There are basically seven rules also called seven normal forms and each rule ass
 
 ![First Normal Form](https://github.com/guru-apr21/Learn-SQL/blob/main/images/1NF.png)
 
-The First Normal Form says that *each cell in a row should have a single value and we cannot have repeated columns*.  
+The First Normal Form says that _each cell in a row should have a single value and we cannot have repeated columns_.  
 The tags column in the courses table is violating this rule because we are gonna store multiple tags in this column.  
 To solve this problem we need to take the tags column out of this table and model it as a separate table called tags and then we add many to many relationship with tags and courses.
