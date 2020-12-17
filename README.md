@@ -1027,58 +1027,57 @@ This query returns the sales summary for each client where the total sales is no
 
 ## Numeric functions
 
-MYSQL have built in functions to work with numeric values. Some of them are
+MYSQL have built in functions to work with numeric values. Some of them are 
 
-- ROUND() - for rounding a number. This function has a optional second argument which we can use to specify the precision for rounding.
-- CEILING() - returns the smallest integer that is greater than or equal to this number.
-- FLOOR() - returns the greatest integer that is less than or equal to this number.
-- ABS() - for calculating the absolute value of a function. It always returns a positive value
-- RAND() - for generating random floating point number between 0 and 1.
+* ROUND()   - for rounding a number. This function has a optional second argument which we can use to specify the precision for rounding.
+* CEILING() - returns the smallest integer that is greater than or equal to this number.
+* FLOOR()   - returns the greatest integer that is less than or equal to this number.
+* ABS()     - for calculating the absolute value of a function. It always returns a positive value
+* RAND()    - for generating random floating point number between 0 and 1.
 
 [Other functions for working with numeric data can be found here.](https://dev.mysql.com/doc/refman/8.0/en/numeric-functions.html)
 
 ## STRING functions
 
-- LENGTH() - to get number of characters in string.
-- UPPER() - for converting a string into uppercase.
-- LOWER() - for converting a string into lowercase.
-- LTRIM() - removes extra spaces before the string.
-- RTRIM() - removes extra spaces after the string.
-- TRIMM() - to remove any leading or trailing spaces.
-- LEFT() - to return something from left side of the string. Second argument is the number of string to retrieve.
-- RIGHT() - to return something from right side of the string. Second argument is the number of string to retrieve.
-- SUBSTRING() - to get few character from anywhere in the string. Second argument is the start position and the third argument is the length. Third argument is optional.
-- LOCATE() - returns the first occurence of the character or sequence of characters. The first argument is the search string and the second argument is the actual string. The search string is not case sensitive. If the search string doesn't exist in the string it return 0 which is different from most programming languages.
-- REPLACE() - to replace a character or a sequence of characters. The second argument is what we want to replace and the third argument is with what we want to replace.
-- CONCAT() - used to concatinate two strings.
+* LENGTH()    - to get number of characters in string.
+* UPPER()     - for converting a string into uppercase.
+* LOWER()     - for converting a string into lowercase.
+* LTRIM()     - removes extra spaces before the string.
+* RTRIM()     - removes extra spaces after the string.
+* TRIMM()     - to remove any leading or trailing spaces.
+* LEFT()      - to return something from left side of the string. Second argument is the number of string to retrieve.
+* RIGHT()     - to return something from right side of the string. Second argument is the number of string to retrieve.
+* SUBSTRING() - to get few character from anywhere in the string. Second argument is the start position and the third argument is the length. Third argument is optional.
+* LOCATE()    - returns the first occurence of the character or sequence of characters. The first argument is the search string and the second argument is the actual string. The search string is not case sensitive. If the search string doesn't exist in the string it return 0 which is different from most programming languages.
+* REPLACE()   - to replace a character or a sequence of characters. The second argument is what we want to replace and the third argument is with what we want to replace.
+* CONCAT()    - used to concatinate two strings.
 
 [Other functions for working with string data can be found here.](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html)
 
 ## DATE functions
 
-- NOW() - to get current date and time
-- CURDATE() - return current date without the time component
-- CURTIME() - return current time
+* NOW() - to get current date and time
+* CURDATE() - return current date without the time component
+* CURTIME() - return current time
 
 SQL have some functions to exatract the certain component from date and time
 
-- YEAR(NOW()) - returns the current year
-- MONTH(NOW()) - returns the current month
-- DAY(NOW()) - returns the current day
-- HOUR(NOW()) - returns the current hour
-- MINUTE(NOW()) -returns the current minute
+* YEAR(NOW()) - returns the current year
+* MONTH(NOW()) - returns the current month 
+* DAY(NOW()) - returns the current day
+* HOUR(NOW()) - returns the current hour
+* MINUTE(NOW()) -returns the current minute
 
 All these function returns the integer values but we have two usefull functions which returns a string.
 
-- DAYNAME(NOW()) - returns the day of the week as a string
-- MONTHNAME(NOW()) - returns the month as a string
+* DAYNAME(NOW()) - returns the day of the week as a string
+* MONTHNAME(NOW()) - returns the month as a string
 
-Apart from these functions we have EXTRACT function which is part of the standard SQL language.
+Apart from these functions we have EXTRACT function which is part of the standard SQL language. 
 
 ```sql
 SELECT EXTRACT(DATE FROM NOW())
 ```
-
 When using extract function we type the value that we want to extract followed by the FROM keyword and then the NOW() function.
 
 ## Formatting Dates and Times
@@ -1088,26 +1087,23 @@ In MYSQL we have couple of functions for formatting dates and times in a more us
 ```sql
 SELECT DATE_FORMAT(NOW(),"%M %d %Y")
 ```
-
 Here we have a function DATE_FORMAT which takes the current date and then a format string which contains special codes for formatting various parts of the date.
-
-- %M - returns the name of the month.
-- %m - returns the two digits month.
-- %y - displays two digit year.
-- %Y - displays four digit year.
-- %d - returns two digit date
+* %M - returns the name of the month.
+* %m - returns the two digits month.
+* %y - displays two digit year.
+* %Y - displays four digit year.
+* %d - returns two digit date
 
 [Here is the reference for format string options.](https://www.w3schools.com/sql/func_mysql_date_format.asp)
 
 ```sql
 SELECT TIME_FORMAT(NOW(),"%H:%i %p")
 ```
-
 Here we have a function TIME_FORMAT which takes the current time and then a format string which contains special codes for formatting various parts of the time.
 
-- %H - returns the hour in two digits
-- %i - returns the minutes in two digits
-- %p - specifies whether it is an AM or PM.
+* %H - returns the hour in two digits
+* %i - returns the minutes in two digits
+* %p - specifies whether it is an AM or PM.
 
 ## Calculating Dates and Times.
 
@@ -1116,88 +1112,76 @@ MYSQL have built-in functions for performing calculations on dates and times.
 ```sql
 SELECT DATE_ADD(NOW(), INTERVAL 1 DAY)
 ```
-
 Adds a date part to a date time value. As a first argument we pass current date and time. As a second argument we pass a expression.  
 This query returns the tomorrow's date with same time. We can also return next year with current date time by simply changing the date to year.
 
 ```sql
 SELECT DATE_ADD(NOW(), INTERVAL 1 YEAR)
 ```
-
 To go back in time we can either pass a negative value in the second argument or we can either pass a DATE_SUB function.
-
 ```sql
 SELECT DATE_ADD(NOW(), INTERVAL -1 DAY)
 ```
-
 ```sql
 SELECT DATE_SUB(NOW(), INTERVAL 1 YEAR)
 ```
 
 We can also calculate the difference between two dates using DATEDIFF function
-
 ```sql
 SELECT DATEDIFF("2020-12-05", "2020-11-30")
 ```
-
 This function return the difference only in days. Not in hours or minutes.
 
-Using TIME_TO_SEC function we can calculate the difference between two times and this returns the number of seconds elapsed since midnight.
-
+Using TIME_TO_SEC function we can calculate the difference between two times and this returns the number of seconds elapsed since midnight.  
 ```sql
 SELECT TIME_TO_SEC("09:02") - TIME_TO_SEC("09:00")
 ```
-
 This returns difference between these two time in seconds.
 
 ## The IFNULL and COALESCE Functions.
 
 ```sql
-SELECT
-	order_id,
+SELECT 
+	order_id, 
 	IFNULL(shipper_id, "Not assigned") AS shipper
 FROM orders
 ```
-
 ```sql
-SELECT
+SELECT 
 	CONCAT(first_name," ",last_name) AS customers,
     	IFNULL(phone, "Unknown") AS phone
-FROM customers
+FROM customers 
 ```
-
 When using IFNULL function if the first argument is null it will be replaced by the string in the second argument.
 
 Similarly we have another function called COALESCE which returns the first non null value in the list we passed as arguments.
-
 ```sql
-SELECT SELECT
-	order_id,
+SELECT SELECT 
+	order_id, 
 	COALESCE(shipper_id, comments, "Not assigned") AS shipper
 FROM orders
 ```
 
 ## The IF function
 
-_IF(expression, first, second)_ If the expression we passed as a first argument evaluates to be true it returns the first value or else it returns the second value.
+*IF(expression, first, second)* If the expression we passed as a first argument evaluates to be true it returns the first value or else it returns the second value.
 
 ```sql
-SELECT
-	order_id,
-	order_date,
+SELECT 
+	order_id, 
+	order_date, 
     	IF(YEAR(order_date)=YEAR(NOW()), "Active", "Archived") AS status
 FROM orders
 ```
-
 This query returns the orders that are placed in the current year as Active status or else as Archived.
 
 ```sql
-SELECT
+SELECT 
 	product_id,
     	name,
     	COUNT(*) AS orders,
     	IF(COUNT(*) > 1, "Many times", "once") AS frequency
-FROM products
+FROM products 
 JOIN order_items
 	USING(product_id)
 GROUP BY product_id, name
@@ -1211,9 +1195,9 @@ Using IF function function we can test a expression and return different values 
 What if we have multiple expression to test and return different values, that's when we use a CASE operator.
 
 ```sql
-SELECT
+SELECT 
 	order_id,
-	CASE
+	CASE 
     		WHEN YEAR(order_date) = YEAR(NOW()) THEN "Active"
     		WHEN YEAR(order_date) = YEAR(NOW()) - 1 THEN "Last Year"
     		WHEN YEAR(order_date) < YEAR(NOW()) - 1 THEN "Archived"
@@ -1221,11 +1205,10 @@ SELECT
     	END AS category
 FROM orders
 ```
-
 Here we type out case followed by one or more WHEN clauses. Each WHEN caluse includes a test expression next we add THEN, if the expression evaluates to true the value that we put after the THEN clause will be returned. After every test condition we can optionally add ELSE clause if none of the conditions evaluates to true the value given in the ELSE clause will be returned. Finally we have to close the CASE block with the END keyword.
 
 ```sql
-SELECT
+SELECT 
 	CONCAT(first_name, " ", last_name) AS customer,
     	points,
     	CASE
@@ -1236,7 +1219,6 @@ SELECT
 FROM customers
 ORDER BY points DESC
 ```
-
 This query returns the customers and their category based on the points they have scored.
 
 # Views
@@ -1248,7 +1230,7 @@ We can save this queries in a view and resuse in a SELECT statement.
 
 ```sql
 CREATE VIEW sales_by_client AS
-SELECT
+SELECT 
 	c.client_id,
     	c.name,
     	SUM(i.invoice_total) AS total_sales
@@ -1258,32 +1240,31 @@ JOIN invoices i
 GROUP BY c.client_id, c.name;
 ```
 
-To create a VIEW we use CREATE VIEW statement and the name of the view followed by the AS keyword, right after the AS we have our SELECT statement.  
- Executing this query creates a new VIEW object. We can use this view just like a table.
-
-```sql
-SELECT *
+ To create a VIEW we use CREATE VIEW statement and the name of the view followed by the AS keyword, right after the AS we have our SELECT statement.  
+ Executing this query creates a new VIEW object. We can use this view just like a table. 
+ 
+ ```sql
+SELECT * 
 FROM sales_by_client
-JOIN clients
+JOIN clients 
 	USING(client_id)
-```
-
-We can use JOIN to join with other tables with mutual columns also we can apply filter and many more. Views are extremely powerfull and it can simplify any future queries.  
+ ```
+ We can use JOIN to join with other tables with mutual columns also we can apply filter and many more. Views are extremely powerfull and it can simplify any future queries.  
  Views behaves like a virtual table but remember **Views don't store data.**. Our data is actually stored in the table. Our view just provides a view to the underlying table.
-
-```sql
-CREATE VIEW clients_balance AS
-SELECT
+ 
+ ```sql
+CREATE VIEW clients_balance AS 
+SELECT 
 	c.client_id,
-   	c.name,
-   	SUM(i.invoice_total - i.payment_total) AS balance
+    	c.name,
+    	SUM(i.invoice_total - i.payment_total) AS balance
 FROM clients c
 JOIN invoices i
 	USING(client_id)
 GROUP BY c.client_id, c.name
-```
-
-This query creates a view to see the balance for each client.
+ ```
+ 
+ This query creates a view to see the balance for each client.
 
 ## Altering or Dropping Views
 
@@ -1293,12 +1274,11 @@ The first one is using a DROP keyword which drops the view and then we can re-cr
 ```sql
 DROP view clients_balance
 ```
-
 This query drops the view if there is one with the given name. Another way is to use a REPLACE keyword.
 
 ```sql
-CREATE OR REPLACE VIEW clients_balance AS
-SELECT
+CREATE OR REPLACE VIEW clients_balance AS 
+SELECT 
 	c.client_id,
     	c.name,
     	SUM(i.invoice_total - i.payment_total) AS balance
@@ -1307,16 +1287,15 @@ JOIN invoices i
 	USING(client_id)
 GROUP BY c.client_id, c.name
 ```
-
-Here we are using the replace keyword which replaces the view if exists and creates a new one. This is the prefered approach because here we don't need to drop the view explicitly. We can store this query as a script file and put in a repository so that other people can use this view.
+Here we are using the replace keyword which replaces the view if exists and creates a new one. This is the prefered approach because here we don't need to drop the view explicitly. We can store this query as a script file and put in a repository so that other people can use this view.  
 
 ```sql
-CREATE
-    ALGORITHM = UNDEFINED
-    DEFINER = `root`@`localhost`
+CREATE 
+    ALGORITHM = UNDEFINED 
+    DEFINER = `root`@`localhost` 
     SQL SECURITY DEFINER
 VIEW `sql_invoicing`.`clients_balance` AS
-    SELECT
+    SELECT 
         `c`.`client_id` AS `client_id`,
         `c`.`name` AS `name`,
         SUM((`i`.`invoice_total` - `i`.`payment_total`)) AS `balance`
@@ -1325,23 +1304,22 @@ VIEW `sql_invoicing`.`clients_balance` AS
         JOIN `sql_invoicing`.`invoices` `i` ON ((`c`.`client_id` = `i`.`client_id`)))
     	GROUP BY `c`.`client_id` , `c`.`name`
 ```
-
 MySQL surrounds your table and column names with the backtick characters and that is to prevent the name clash so if you use certain keywords that have speical meaning in SQL, MySQL will treat those just as view or column or table names.
 
 ## Updatable Views
 
 So far we have seen that we can use our Views in SELECT statement but we can also use our Views in INSERT, UPDATE, DELETE statements but only under certain circumstances.
 
-- DISTINCT
-- Aggregate Functions (MIN, MAX, SUM, AVG...)
-- GROUP BY / HAVING
-- UNION
+* DISTINCT
+* Aggregate Functions (MIN, MAX, SUM, AVG...)
+* GROUP BY / HAVING
+* UNION
 
 If the view does not have a DISTINCT keyword and aggregate functions, GROUP BY or HAVING clauses and finally UNION operator. If we don't use any of these stuffs in a view that view is known as an Updatable view which means that we can update data through it.
 
 ```sql
 CREATE OR REPLACE VIEW invoices_with_balance AS
-SELECT
+SELECT 
 	invoice_id,
     	number,
     	client_id,
@@ -1361,7 +1339,6 @@ This query creates a view for the invoices table that includes the balance for e
 DELETE FROM invoices_with_balance
 WHERE invoice_id = 1
 ```
-
 This query deletes the invoice with id 1 in both the view and the underlying table. We can also update an invoice.
 
 ```sql
@@ -1369,7 +1346,6 @@ UPDATE invoices_with_balance
 SET due_date = DATE_ADD(due_date, INTERVAL 3 DAY)
 WHERE invoice_id = 2
 ```
-
 This query updates the due date of the invoice with id 2. We can also insert a new invoice.  
 But when inserting data our view must have all the record columns in the underlying table. If the view doesn't have a column which has not null attribute in the underlying table MYSQL will throw an error.  
 Most of the times we update data through our tables but there are times that you might not have a direct permission to a table for security reasons and your only option is to modify data through the view only if your views are updatable.
@@ -1383,11 +1359,11 @@ WHERE invoice_id = 2
 ```
 
 When executing the query the invoice with id 2 disappears.  
-This is the default behaviour of views so when you update or delete data through view some of the rows might disappear. To prevent this from happening we add WITH CHECK OPTION clause at the very end after our SELECT statement when creating the VIEW.
+This is the default behaviour of views so when you update or delete data through view some of the rows might disappear. To prevent this from happening we add WITH CHECK OPTION clause at the very end after our SELECT statement when creating the VIEW.  
 
 ```sql
 CREATE OR REPLACE VIEW invoices_with_balance AS
-SELECT
+SELECT 
 	invoice_id,
     	number,
     	client_id,
@@ -1401,12 +1377,11 @@ FROM invoices
 WHERE invoice_total - payment_total > 0
 WITH CHECK OPTION
 ```
-
 By applying this clause it'll prevent update or delete statements from excluding rows from the view. Now when we update something that may exclude data from the view MYSQL will throw an error.
 
 # Stored Procedures
 
-A stored procedure is a database object that contains a block of SQL code. In our application code we simply call these functions to get or save the data.
+A stored procedure is a database object that contains a block of SQL code. In our application code we simply call these functions to get or save the data. 
 We use stored procedures to store and organize our SQL code but it also has other benefits.  
 Most DBMS perform some kind of optimization to the code in stored procedures. So the SQL code in stored procedure can sometimes be executed faster also just like views, stored procedures allow us to enforce data security.  
 For example we can remove access to all the tables and allow various operations like inserting, updating and deleting data to be performed via stored procedures. Then we can decide who can execute which stored procedures and this will limit what the user can do with our data. For example we can prevent certain users from deleting our data.
@@ -1422,10 +1397,9 @@ END $$
 
 DELIMITER ;
 ```
-
 We can create a stored procedure using a CREATE PROCEDURE statement then we give our stored procedure a name after the name we add a pair of paranthesis.
-Then we type BEGIN next to the BEGIN statement we have our query and then we terminate our stored procedure using the END keyword.
-What we have between the BEGIN and END statement is called the body of the stored procedure.
+Then we type BEGIN next to the BEGIN statement we have our query and then we terminate our stored procedure using the END keyword. 
+What we have between the BEGIN and END statement is called the body of the stored procedure. 
 In this query we have only one statement but in the real world the stored procedures that you create can have multiple statements so we have to terminate each statement with a semi colon even if we have a single statement. This is the MYSQL requirement.  
 We have to give all these statement to the MYSQL as a single unit rather than individual statements separated using a semi colon. To make that happen we have to change the default delimeter semi colon to something else.  
 By convention most developers use two $ signs but we can use any sequence of characters that we don't use in our SQL code. Then we need to add the new delimiter after the END statement. Now MYSQL will execute all of these commands as a single unit.  
@@ -1434,7 +1408,6 @@ Now finally we have to change the default delimeter back to a semi colon.
 ```sql
 CALL get_clients()
 ```
-
 We use the CALL statement to call or execute the stored procedure.
 
 ```sql
@@ -1447,7 +1420,6 @@ BEGIN
 END$$
 DELIMITER ;
 ```
-
 Here we are creating a stored procedure with the name get_invoices_with_balance which when called returns the invoices with balance greater than 0.  
 Also we using invoice_with_balance view in the body of the stored procedure.
 
@@ -1458,7 +1430,7 @@ DROP PROCEDURE get_invoices_with_balance
 ```
 
 We use DROP PROCEDURE statement followed by the name of the procedure.  
-If we execute this statement one more time we'll get an error because MYSQL doesn't allow us to drop a procedure that doesn't exist.
+If we execute this statement one more time we'll get an error because MYSQL doesn't allow us to drop a procedure that doesn't exist. 
 
 ```sql
 DROP PROCEDURE IF EXISTS get_invoices_with_balance;
@@ -1473,13 +1445,12 @@ END$$
 DELIMITER ;
 
 ```
-
 To prevent the error we can use IF EXISTS keyword and it'll DROP the procedure only if it exists.  
 As I said before it is a good practice to store the stored procedure code in a file and put it in a source control like git. So this is a basic template fo creating a stored procedure.
 
 ## Parameters
 
-We use parameter to pass a value to a stored procedure but we can also use parameters to send value to the calling program.
+We use parameter to pass a value to a stored procedure but we can also use parameters to send value to the calling program.  
 
 ```sql
 DELIMITER $$
@@ -1491,7 +1462,6 @@ BEGIN
 END$$
 DELIMITER ;
 ```
-
 This stored procedure that we create here will take name of the state as a parameter and return the clients in that state.  
 In between the paranthesis after the name of the stored procedure we define our parameter and set it's data type.
 We can add multiple parameters to a stored procedure. In our query we compare the state column in the client table with the state parameter.
@@ -1509,8 +1479,7 @@ END$$
 
 DELIMITER ;
 ```
-
-This stored procedure that we create here will take client id as a parameter and return the invoices for that client.
+This stored procedure that we create here will take client id as a parameter and return the invoices for that client. 
 
 ## Parameters with Default Values
 
@@ -1523,14 +1492,13 @@ BEGIN
 	IF state IS NULL THEN
 		SET state = "CA";
     	END IF;
-
+    
 	SELECT *
 	FROM clients c
 	WHERE c.state = state;
 END$$
 DELIMITER ;
 ```
-
 Here before executing the SELECT statement we write an IF statement which evaluates the state and if it is null it sets "CA" as state parameter's default value.  
 Whenever we use a IF statement we should always terminate with END IF. This is because we might have multiple statements after the IF statement so we need to tell MySQL where the IF statement ends.
 
@@ -1560,9 +1528,8 @@ BEGIN
 	FROM clients c
 	WHERE c.state = IFNULL(state, c.state);
 END$$
-DELIMITER ;
+DELIMITER ; 
 ```
-
 Here we use the IFNULL function and pass the state parameter as the first argument and c.state as the second argument.  
 As we learned earlier the IFNULL function returns the value of the second argument if the value of the first argument is NULL.
 
@@ -1571,9 +1538,9 @@ DELIMITER $$
 CREATE PROCEDURE get_payments(client_id INT(11), payment_method_id TINYINT(4))
 BEGIN
 	SELECT * FROM payments p
-    	WHERE
-		p.client_id = IFNULL(client_id, p.client_id)
-		AND
+    	WHERE 
+		p.client_id = IFNULL(client_id, p.client_id) 
+		AND 
 		p.payment_method = IFNULL(payment_method_id, p.payment_method);
 END$$
 DELIMITER ;
@@ -1593,17 +1560,17 @@ BEGIN
 		SET MESSAGE_TEXT = "Invalid payment amount";
 	END IF;
 	UPDATE invoices i
-    	SET
+    	SET 
 		i.payment_total = payment_amount,
 		i.payment_date = payment_date
-	WHERE
+	WHERE 
 		i.invoice_id = invoice_id;
 END
 ```
 
 Here we use parameter validation to ensure our procedure doesn't accidentally store bad data in our database.  
 The procedure that we created here update the payment details of a invoice with given id. It takes three parameters and in the IF statement we are checking whether the payment amount is a valid amount if the condition evaluates to true MYSQL will signal an error to the user.  
-The SIGNAL statement raises an error.
+The SIGNAL statement raises an error. 
 
 ```sql
 SIGNAL SQLSTATE "22003"
@@ -1626,7 +1593,7 @@ We can also use parameters to return values to the calling program.
 ```sql
 CREATE PROCEDURE `get_unpaid_invoices_for_client`(client_id INT)
 BEGIN
-	SELECT COUNT(*), SUM(invoice_total)
+	SELECT COUNT(*), SUM(invoice_total) 
 	FROM invoices i
     	WHERE i.client_id = client_id AND payment_total = 0;
 END
@@ -1636,8 +1603,8 @@ When calling this stored procedure it returns the count and sum of all unpaid in
 
 ```sql
 CREATE DEFINER=`root`@`localhost` PROCEDURE `get_unpaid_invoices_for_client`(
-	client_id INT,
-    	OUT invoices_count INT,
+	client_id INT, 
+    	OUT invoices_count INT, 
     	OUT invoices_total DECIMAL(9,2)
 )
 BEGIN
@@ -1659,7 +1626,6 @@ SET @invoices_total = 0;
 CALL sql_invoicing.get_unpaid_invoices_for_client(3, @invoices_count, @invoices_total);
 SELECT @invoices_count, @invoices_total;
 ```
-
 This is the code that we need to write to call the procedure with output parameters.  
 In this case first we need to define two variables invoices_count and invoices_total, these are what we call a user defined variables.  
 A variable is basically a object which we can use to store a value in memory. To define a variable we need to prefix it with @ sign.  
@@ -1672,13 +1638,12 @@ After calling the procedure we need to read the variables using a SELECT stateme
 ```sql
 SET @invoices_count = 0
 ```
-
 We define a variable using the SET statement and prefix them using a @ sign. Quite often we these variables when we call stored procedures that have output parameters.  
 We pass these variables to get the value of the output parameter. These variables will be in the memory during the entire client's session.  
-Once the client disconnect from the server these varaibles are freed out. So we refer to these as User or session variables.
+Once the client disconnect from the server these varaibles are freed out. So we refer to these as User or session variables.  
 
 In MySQL we also have another type of variable called local variable and these are the variables that we define inside of the stored procedures or a function.  
-These local variables don't stay in memory for the entire user's session. As soon as our stored procedure finish execution these variables are freed out. Quite often we use these type of variables to perform calculation in stored procedure.
+These local variables don't stay in memory for the entire user's session. As soon as our stored procedure finish execution these variables are freed out.  Quite often we use these type of variables to perform calculation in stored procedure.
 
 ```sql
 CREATE PROCEDURE `get_risk_factor`()
@@ -1686,18 +1651,18 @@ BEGIN
 	DECLARE risk_factor DECIMAL(9,2) DEFAULT 0;
     	DECLARE invoices_total DECIMAL(9,2);
 	DECLARE invoices_count INT;
-
+    
     	SELECT COUNT(*), SUM(invoice_total)
     	INTO invoices_count, invoices_total
     	FROM invoices;
-
+    
     	SET risk_factor = invoices_total / invoices_count * 5;
-
+    
     	SELECT risk_factor;
 END
 ```
 
-To calculate the risk factor first we need to declare variables on the top right after the BEGIN statement. We use DECLARE statement to declare a variable followed by the name.
+To calculate the risk factor first we need to declare variables on the top right after the BEGIN statement. We use DECLARE statement to declare a variable followed by the name. 
 Next we need to specify the data type. We can optionally give our variable a default value otherwise it is gonna be null.  
 We declare two more variables invoices_total and invoices_count. Using the SELECT statement we calculate the count and invoice total and right after the INTO statement we give our two variables which corresponds to the value that we selected before.
 We use the SET statement to set the value of the variable. Finally SELECT the risk_factor variable after the calculation.
@@ -1709,43 +1674,41 @@ In MySQL we can create our own functions. Functions are very similar to stored p
 So unlike stored procedures they cannot return a result sets with multiple rows and columns.
 
 ```sql
-CREATE FUNCTION `get_risk_factor_for_client`(client_id INT)
+CREATE FUNCTION `get_risk_factor_for_client`(client_id INT) 
 RETURNS INT(11)
 READS SQL DATA
 BEGIN
 	DECLARE risk_factor DECIMAL(9, 2) DEFAULT 0;
     	DECLARE invoices_total DECIMAL(9, 2);
     	DECLARE invoices_count INT;
-
+    
     	SELECT COUNT(*), SUM(i.invoice_total)
     	INTO invoices_count, invoices_total
     	FROM invoices i
     	WHERE i.client_id = client_id;
-
+    
     	SET risk_factor = invoices_total / invoices_count * 5;
-
+    
 RETURN IFNULL(risk_factor, 0);
 END
 ```
-
 This function returns the risk factor per client. The syntax for creating functions are very similar to the syntax for creating the stored procedures.  
 The RETURNS statement is one of the main differences between the functions and stored procedures which specifies the type of value this function returns.  
 Right after the return statement we need to set the attributes of a function. Every mySQL function should have atleast one attribute.
 
-- DETERMINISTIC - which means if we give this function the same set of values it always returns the same value. This is useful in situations when you are not gonna return the value based on the data in your database because the data can change. It always returns the same output for the same input.
+* DETERMINISTIC - which means if we give this function the same set of values it always returns the same value. This is useful in situations when you are not gonna return the value based on the data in your database because the data can change. It always returns the same output for the same input.  
 
-- READS SQL DATA - this means that you are gonna have a SELECT statement in your function to read some data.
+* READS SQL DATA -  this means that you are gonna have a SELECT statement in your function to read some data.
 
-- MODIFIES SQL DATA - this means that you are gonna have a INSERT, DELETE, UPDATE statement in your function.
+* MODIFIES SQL DATA - this means that you are gonna have a INSERT, DELETE, UPDATE statement in your function.  
 
 We can have multiple attributes here. In our example the function is not DETERMINISTIC and also we are not gonna modify anything.  
 Finally we should always return a value. Similar to the previous example for stored procedure but here we need to add a WHERE statement to find the risk factor per client.  
-Also return the risk_factor varibale using IFNULL function. We can use this function in SELECT statement just like the built in functions in MySQL.
+Also return the risk_factor varibale using IFNULL function. We can use this function in SELECT statement just like the built in functions in MySQL.  
 
 ```sql
 DROP FUNCTION IF EXISTS get_risk_factor_for_client
 ```
-
 This is how we DROP a function and preferabally we can type IF EXISTS keyword.
 
 # Triggers
@@ -1757,7 +1720,6 @@ So whenever we insert a new record in the payments table we should make sure tha
 This is where we use a trigger.
 
 ## Creating a Trigger
-
 ```sql
 DELIMITER $$
 CREATE TRIGGER payments_after_insert
@@ -1765,27 +1727,25 @@ CREATE TRIGGER payments_after_insert
     	FOR EACH ROW
 BEGIN
 	UPDATE invoices
-    	SET payment_total = payment_total + NEW.amount
+    	SET payment_total = payment_total + NEW.amount 
     	WHERE invoice_id = NEW.invoice_id;
 END$$
 DELIMITER ;
 ```
-
 First we need to change the default delimiter then we use the CREATE TRIGGER statement then we give the trigger a name here payments_after_insert,  
 this means that this payment is associated with the payments table and is fired after we insert a record. Next we have AFTER INSERT ON payments,  
 here we could also use BEFORE and instead INSERT we could also use UPDATE OR DELETE depending on what we are trying to implement.  
-But in this example we are using AFTER and INSERT. Next we need to type FOR EACH ROW and this means that this trigger will gets fired for each row that is get affected.
+But in this example we are using AFTER and INSERT. Next we need to type FOR EACH ROW and this means that this trigger will gets fired for each row that is get affected. 
 We add BEGIN and END to indicate the body of the trigger. In the body of the trigger we can write any SQL code that modify our data for consistency.  
 In this example we want to update the invoices table and increase the payment total amount.  
 To get the new value i.e the new payment amount we use NEW keyword which returns the newly inserted row we also have OLD which is useful for updating or deleting the row, so the OLD keyword returns the OLD row or OLD values. Using the dot after NEW keyword we can access the individual attributes in this case amount. Next we add a WHERE clause.
-In this trigger we can modify any table except the table that this trigger is for. Other wise we'll end up in infinite loop because this trigger will fire itself.
+In this trigger we can modify any table except the table that this trigger is for. Other wise we'll end up in infinite loop because this trigger will fire itself.  
 
 ```sql
 INSERT INTO payments
 VALUES(DEFAULT, 5, 3, "2020-12-01", 10, 1)
 ```
-
-When executing this query the trigger will kick in automatically after the query was executed. This will automatically update the payment_total column in invoices table.
+When executing this query the trigger will  kick in automatically after the query was executed. This will automatically update the payment_total column in invoices table.  
 
 ```sql
 DROP TRIGGER IF EXISTS payments_after_delete;
@@ -1800,7 +1760,6 @@ BEGIN
 END$$
 DELIMITER ;
 ```
-
 This trigger gets fired when we delete a payment.
 
 ## Viewing Triggers
@@ -1809,7 +1768,6 @@ This trigger gets fired when we delete a payment.
 SHOW TRIGGERS LIKE "..."
 -- table_after_insert
 ```
-
 We can use the show triggers statement to list the triggers that we created earlier.  
 If we follow the convention for naming triggers we can use the LIKE operator to find the triggers associated with the given table.
 
@@ -1818,7 +1776,6 @@ If we follow the convention for naming triggers we can use the LIKE operator to 
 ```sql
 DROP TRIGGER IF EXISTS payments_after_insert
 ```
-
 Dropping triggers is very similar to dropping stored procedures. We use DROP TRIGGER statement and optionally and ideally we use IF EXISTS keyword followed by the name of the trigger.
 
 ## Using Triggers for auditing
@@ -1838,7 +1795,7 @@ BEGIN
 	UPDATE invoices
     	SET payment_total = payment_total + NEW.amount
     	WHERE invoice_id = NEW.invoice_id;
-
+    
     	INSERT INTO payments_audit
     	VALUES(NEW.client_id, NEW.date, NEW.amount, "Insert", NOW());
 END$$
@@ -1859,31 +1816,29 @@ BEGIN
 	UPDATE invoices
     	SET payment_total = payment_total - OLD.amount
     	WHERE invoice_id = OLD.invoice_id;
-
+    
     	INSERT INTO payments_audit
     	VALUES(OLD.client_id, OLD.date, OLD.amount, "Delete", NOW());
 END$$
 DELIMITER ;
 ```
 
-So whenever we insert or delete a payment in the payments table this trigger will kick in and update the payment_total column in the invoices table and also inserts a new record in the payment_audit table.
+So whenever we insert or delete a payment in the payments table this trigger will kick in and update the payment_total column in the invoices table and also inserts a new record in the payment_audit table. 
 
 # Events
 
 An Event is a task or a block of SQL code that gets executed according to a schedule. It can get executed once or like a regular basis like every day or once a month.  
-So with events we can automate database maintainence tasks like deleting stale data or copying data from one table to an archived table or aggregating data for generating reports.
+So with events we can automate database maintainence tasks like deleting stale data or copying data from one table to an archived table or aggregating data for generating reports.  
 
 ## Creating a Event
-
 Before we create a event we need to turn on MySQL event_scheduler. That's basically a process that runs in the background and it constantly looks for events to execute.
 
 ```sql
 SHOW VARIABLES LIKE "event%";
 SET GLOBAL event_scheduler = ON
 ```
-
 This command returns all the system varibles in the MySQL. Using LIKE operator we can retrieve only the event_scheduler variable.  
-Using the SET GLOBAL statement we can turn on the event_scheduler if it is turned OFF. If you don't want events you can turn this off to save system resources.
+Using the SET GLOBAL statement we can turn on the event_scheduler if it is turned OFF. If you don't want events you can turn this off to save system resources.  
 
 ```sql
 DELIMITER $$
@@ -1911,8 +1866,7 @@ In this example we are deleting all the audit records that are older than one ye
 ```sql
 SHOW EVENTS LIKE "..."
 ```
-
-To view the events in the current database we use SHOW EVENTS statements.  
+To view the events in the current database we use SHOW EVENTS statements.   
 As I mentioned earlier it is good practice to start the event name with their interval like hourly, monthly, yearly or once for one time events.  
 With this convention we can easily filter events using the LIKE operator.
 
@@ -1935,9 +1889,8 @@ END$$
 
 DELIMITER ;
 ```
-
 We also have ALTER EVENT statment to make any changes to the event without any need to drop and recreate it. The syntac is exacly same as the create event statement.  
-Insted of the CREATE statement we use ALTER statement.
+Insted of the CREATE statement we use ALTER statement.  
 
 ```sql
 ALTER EVENT yearly_delete_stale_audit_data ENABLE;
@@ -1949,17 +1902,17 @@ But we also use ALTER EVENT statement to temporarily ENABLE or DISABLE an event.
 
 A Transaction is a group of SQL statements that represent a single unit of work. All these statements should be completed succesfully or the transactions will fail.  
 If the first operation succeeds and the second operation fails we need to roll back or revert the changes by the first operation.  
-We use transactions in situations where we want to make multiple changes to the database and we want all these changes to succedd or fail together as a single unit.
+We use transactions in situations where we want to make multiple changes to the database and we want all these changes to succedd or fail together as a single unit.  
 
-These transactions have few properties that we need to know. We refer to these properties as **ACID**.
+These transactions have few properties that we need to know. We refer to these properties as **ACID**.  
 
-- Atomicity - This means our transactions are like atoms. They are unbreakable. Each transaction is a single unit of work no matter how many statements it contains. Either all these statements gets executed successfully and the transaction is committed or the transaction is rolled back and all the changes are undone.
+* Atomicity - This means our transactions are like atoms. They are unbreakable. Each transaction is a single unit of work no matter how many statements it contains. Either all these statements gets executed successfully and the transaction is committed or the transaction is rolled back and all the changes are undone.  
 
-- Consistency - This means that our database will always remain in a consistent state.
+* Consistency - This means that our database will always remain in a consistent state.  
 
-- Isolation - That means these transactions are isolated or protected from each other if they try to modify the same data. So they cannot interfere with each other. If multiple transactions try to update the same data the rows that are being affected get locked so only transaction at a time can update those rows. Other transactions have to wait for that transaction to complete.
+* Isolation - That means these transactions are isolated or protected from each other if they try to modify the same data. So they cannot interfere with each other. If multiple transactions try to update the same data the rows that are being affected get locked so only transaction at a time can update those rows. Other transactions have to wait for that transaction to complete.  
 
-- Durability - That means once a transaction is committed, the cahnges made by the transactions are permanent. So if you have a power failure or a system crash you are not gonna lose the changes.
+* Durability - That means once a transaction is committed, the cahnges made by the transactions are permanent. So if you have a power failure or a system crash you are not gonna lose the changes.  
 
 ## Creating Transactions
 
@@ -1978,20 +1931,19 @@ COMMIT;
 ```
 
 To create a transaction we use START TRANSACTION statement. Here in this transaction we are inserting a order into the orders table. Next we are inserting the order items.  
-For the order_id I am using the LAST_INSERT_ID() function which returns the id of the newly inserted order. Finally we need to close this transaction with the commit statement.
+For the order_id I am using the LAST_INSERT_ID() function which returns the id of the newly inserted order. Finally we need to close this transaction with the commit statement. 
 When MySQL sees this COMMIT command it will write all the changes to the database.  
 If one of the changes fails it automatically undo the previous changes and we say the transaction is rolled back.  
-Most of the time this is how we code a transaction we have START TRANSACTION statement on the top and a COMMIT statement down the bottom.
+Most of the time this is how we code a transaction we have START TRANSACTION statement on the top and a COMMIT statement down the bottom. 
 But there maybe situation when we need to do error checking and manually roll back a transaction.  
 In those situation instead of the COMMIT statement we use the ROLLBACK statement. This will rollback the situation and undo all the changes.
 
 MySQL wraps every single statement that we write inside a transaction and it will do a commit if that statement didn't return a error.  
-So whenever we have an INSERT, UPDATE or a DELETE statement MySQL wraps this inside a transaction and then it'll do a commit automatically.
+So whenever we have an INSERT, UPDATE or a DELETE statement MySQL wraps this inside a transaction and then it'll do a commit automatically.  
 
 ```sql
 SHOW VARIABLES LIKE "autocommit"
 ```
-
 This is controlled by a system variable called auto commit. So whenever we execute a single statement MySQL puts that statement in a transaction and commits it if the statement doesn't raise an error.
 
 ## Concurrency and Locking
@@ -2021,30 +1973,30 @@ So if a transaction tries to modify a row or multiple rows it puts lock on these
 
 Let's look at the common problems concurrency brings.
 
-- Lost Updates  
-  This happens when two transactions try to update the same data and we don't use locks. In this situation the transactions that commits later will override the changes made by the previous transaction. To prevent this from happening we use locks. By default MySQL uses a locking mecahnism to prevent two transactions from updating the same data at the same time. They will run in sequence one after another and we'll have both updates.
+* Lost Updates   
+This happens when two transactions try to update the same data and we don't use locks. In this situation the transactions that commits later will override the changes made by the previous transaction. To prevent this from happening we use locks. By default MySQL uses a locking mecahnism to prevent two transactions from updating the same data at the same time. They will run in sequence one after another and we'll have both updates. 
 
-- Dirty Reads  
-  A dirty read happens when a transaction reads a data that hasn't been committed yet. To solve this problem we need to provide a level of isolation around our transactions. So that a data modified by a transaction is not immediately visible to the other transactions unless it's committed. The standard SQL defines four transaction isolation levels. One of these is _READ COMMITTED_. When we use this isolation level for a transaction that transaction can only read committed data, with this we don't have dirty reads. So what if our data gets changed after our transaction completes, it doesn't really matter. What matters is that any data that we read is committed at the moment it is read. So when we set the isolation level of a transaction to _READ COMMITED_ that transaction will only read committed data.
+* Dirty Reads  
+A dirty read happens when a transaction reads a data that hasn't been committed yet. To solve this problem we need to provide a level of isolation around our transactions. So that a data modified by a transaction is not immediately visible to the other transactions unless it's committed. The standard SQL defines four transaction isolation levels. One of these is *READ COMMITTED*. When we use this isolation level for a transaction that transaction can only read committed data, with this we don't have dirty reads. So what if our data gets changed after our transaction completes, it doesn't really matter. What matters is that any data that we read is committed at the moment it is read. So when we set the isolation level of a transaction to *READ COMMITED* that transaction will only read committed data.
 
-- Non-repeating Reads  
-  By adding more isolation to our transactions we can guarantee that our transaction can only read committed data. But what if during the course of the transaction we read something twice and get different results. The SQL standard defines another isolation level called _REPEATABLE READ_, with this level our reads are repeatable and consistent even if the data gets changed by the other transactions. We'll see the snapshot that was established by the first read.
+* Non-repeating Reads  
+By adding more isolation to our transactions we can guarantee that our transaction can only read committed data. But what if during the course of the transaction we read something twice and get different results. The SQL standard defines another isolation level called *REPEATABLE READ*, with this level our reads are repeatable and consistent even if the data gets changed by the other transactions. We'll see the snapshot that was established by the first read.
 
-- Phantom Reads  
-  Phantom means ghost. So we have data that suddenly appears like a ghost and we missed them in the query because they get added, updated or removed after we execute our query. To solve this problem we have another isolation level called _SERIALIZABLE_ and this will guarantee that our transactions will be aware of changes currently being made by other transactions to the data. If there are other transactions modifying the data that can impact our query results, our transactions has to wait for them to complete. So the transaction will be executed sequentially. This is the highest level of isolation that we can apply to our transaction and it gives us the most certainity in our operations but it comes with a cost. The more users and concurrent transactions we have the more waits we are gonna experience and our system is gonna slow down. So this isolation level can affect performance and scalability. For this reason we should reserve this only in scenerios where it's absolutely critical and necessary to prevent phantom reads.
+* Phantom Reads  
+Phantom means ghost. So we have data that suddenly appears like a ghost and we missed them in the query because they get added, updated or removed after we execute our query. To solve this problem we have another isolation level called *SERIALIZABLE* and this will guarantee that our transactions will be aware of changes currently being made by other transactions to the data. If there are other transactions modifying the data that can impact our query results, our transactions has to wait for them to complete. So the transaction will be executed sequentially. This is the highest level of isolation that we can apply to our transaction and it gives us the most certainity in our operations but it comes with a cost. The more users and concurrent transactions we have the more waits we are gonna experience and our system is gonna slow down. So this isolation level can affect performance and scalability. For this reason we should reserve this only in scenerios where it's absolutely critical and necessary to prevent phantom reads.
 
 ## Transaction Isolation Levels
 
 Let's review the isolation level one more time and also summarize everything in a way that we can easily remember.
 
-![Transaction Isolation Levels](https://github.com/guru-apr21/Learn-SQL/blob/main/images/isolation.png)
+![Transaction Isolation Levels](https://github.com/guru-apr21/Learn-SQL/blob/main/5-%20Transaction%20Isolation%20Levels.mp4%20-%20VLC%20media%20player%2016-12-2020%2014_50_10.png)  
 
-_READ UNCOMMITED_ doesn't really protect us from any of this problems because our transactions are not isolated from each other and they can read uncommited changes by each other.  
-_SERIALIZABLE_ puts overhead on the server because it needs extra resources in terms of memory and CPU to manage the transactions that have to wait.  
+*READ UNCOMMITED* doesn't really protect us from any of this problems because our transactions are not isolated from each other and they can read uncommited changes by each other.  
+*SERIALIZABLE* puts overhead on the server because it needs extra resources in terms of memory and CPU to manage the transactions that have to wait.  
 So the more we increase the isolation level the more performance and scalability problems we are gonna experience because more locks will be invloved to isolate the transactions. So to recap a lower isolation level gives us more concurrency so more users can access the same data at the same time but more concurrency means more concurrency problems. On the flip side we achieve a better performance because we need fewer locks to isolate transactions from each other.  
 A higer isolation level restreak concurrency and that means fewer concurrency problems but at the cost of decreased performance and scalability because we need more locks and resources.  
 The fastest isolation level is read uncommitted because it doesn't set any locks and it ignores the locks set by other transactions for this reason we may experience all concurrency problems. As we go down this list we get better protection from concurrency problems but that also means we are gonna use more locks and this requires more resorces which can hurt performance and scalability.  
-In MySQL the default transaction isolation level is _REPEATABLE READ_ which work well in most scenerios. It is faster than _SERIALIZABLE_ and prevents most concurrency problems
+In MySQL the default transaction isolation level is *REPEATABLE READ* which work well in most scenerios. It is faster than *SERIALIZABLE* and prevents most concurrency problems 
 except phantom reads.
 
 ```sql
@@ -2052,21 +2004,21 @@ SHOW VARIABLES LIKE "transaction_isolation";
 SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;
 ```
 
-This query returns the current isolation level which is _REPEATABLE READ_ this is the default in MySQL.  
-To change the transaction isolation level we use the SET TRANSACTION ISOLATION LEVEL statement followed by the name of the new isolation level. This will set the isolation level for next transaction.
+This query returns the current isolation level which is *REPEATABLE READ* this is the default in MySQL.  
+To change the transaction isolation level we use the SET TRANSACTION ISOLATION LEVEL statement followed by the name of the new isolation level. This will set the isolation level for next transaction.  
 
 ```sql
 SET SESSION TRANSACTION ISOLATION LEVEL SERIALIZABLE;
 ```
 
-We can also set the isolation level for all future transaction in the current session or connection, so we add the SESSION keyword next to the SET keyword. So as long as we have the session or connection open all the future transactions will have the given isolation level.
+We can also set the isolation level for all future transaction in the current session or connection, so we add the SESSION keyword next to the SET keyword. So as long as we have the session or connection open all the future transactions will have the given isolation level.  
 
 ```sql
 SET GLOBAL TRANSACTION ISOLATION LEVEL SERIALIZABLE;
 ```
 
-We can also set the isolation level globally for all new transactions in all sessions for that we use the GLOBAL keyword right after the SET keyword.
-
+We can also set the isolation level globally for all new transactions in all sessions for that we use the GLOBAL keyword right after the SET keyword. 
+ 
 ## READ UNCOMMITTED Isolation Level
 
 ```sql
@@ -2075,7 +2027,7 @@ SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
 SELECT points FROM customers WHERE customer_id = 1
 ```
 
-Open two new connections to simulate two new clients. In the first session set the transaction isolation level to _READ UNCOMMITTED_. So with this isolation level we are gonna read uncommitted data i.e, we are gonna have dirty reads. Then select the points for customer with id 1.
+Open two new connections to simulate two new clients. In the first session set the transaction isolation level to *READ UNCOMMITTED*. So with this isolation level we are gonna read uncommitted data i.e, we are gonna have dirty reads. Then select the points for customer with id 1.  
 
 ```sql
 USE sql_store;
@@ -2087,10 +2039,10 @@ COMMIT;
 ```
 
 In the second session start a transaction and update the points of the customer with the id 1 and then finally commit.  
-In the first session execute only the SET transaction statement so the next transaction is gonna have _READ UNCOMMITTED_ isolation level.  
+In the first session execute only the SET transaction statement so the next transaction is gonna have *READ UNCOMMITTED* isolation level.  
 Now in the second session execute all the statements line by line except commit. Now execute the SELECT statemet in the first session.  
-This returns the uncommitted data because we set the isolation level to _READ UNCOMMITTED_.
-_READ UNCOMMITTED_ is the lowest isolation level and with this isolation level we may experience all concurrency problems.
+This returns the uncommitted data because we set the isolation level to *READ UNCOMMITTED*. 
+*READ UNCOMMITTED* is the lowest isolation level and with this isolation level we may experience all concurrency problems.
 
 ## READ COMMITTED Isolation level
 
@@ -2099,7 +2051,6 @@ USE sql_store;
 SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
 SELECT points FROM customers WHERE customer_id = 1
 ```
-
 ```sql
 USE sql_store;
 START TRANSACTION;
@@ -2108,8 +2059,7 @@ SET points = 20
 WHERE customer_id = 1;
 COMMIT;
 ```
-
-Here we set the transaction isolation level to _READ COMMITTED_ which returns only the committed data. Unlike the _READ UNCOMMITTED_ it doesn't return the uncommitted data.  
+Here we set the transaction isolation level to *READ COMMITTED* which returns only the committed data. Unlike the *READ UNCOMMITTED* it doesn't return the uncommitted data.  
 At this isolation level we don't have any dirty reads but we have another problem. We have unrepeatable reads.  
 It is possible that during a transaction we read something twice but get different values each time.
 
@@ -2122,7 +2072,7 @@ SELECT points FROM customers WHERE customer_id = 1;
 COMMIT;
 ```
 
-Here we start a transaction because we have two select statements. In the first session once again execute the line 2 to set the isolation level because this only applies to the next transaction. Otherwise it is gonna have the default isolation level which is _REPEATABLE READ_.  
+Here we start a transaction because we have two select statements. In the first session once again execute the line 2 to set the isolation level because this only applies to the next transaction. Otherwise it is gonna have the default isolation level which is *REPEATABLE READ*.  
 Now start the transaction and read the points for first SELECT statement. Before executing the second SELECT statement go to the second session and update the points value.  
 Now if we go back to the first session and read the points again we get different value. At this isolation level we have non repeatable or in-consistent reads.  
 To solve this problem we need to increase the isolation level for this transaction.
@@ -2139,8 +2089,7 @@ SELECT points FROM customers WHERE customer_id = 1;
 SELECT points FROM customers WHERE customer_id = 1;
 COMMIT;
 ```
-
-Just change the isolation level to _REPEATABLE READ_.Now let's execute the line 2 and then start a new transaction after that execute the SELECT statement and read the value.  
+Just change the isolation level to *REPEATABLE READ*.Now let's execute the line 2 and then start a new transaction after that execute the SELECT statement and read the value.  
 Now before executing the second SELECT statement go back to the second session and update the points to some other value.  
 Now bact to the first session when we execute the second SELECT statement we are gonna see the same value. So our reads are repeatable and consistent.  
 So this is benefit of this isolation level. As I mentioned earlier this is the default isolation level of the MySQL that solves most of the concurrency problems.  
@@ -2184,8 +2133,7 @@ SET state = "VA"
 WHERE customer_id = 1;
 COMMIT;
 ```
-
-Change the transaction isolation level to _SERIALIZABLE_.  
+Change the transaction isolation level to *SERIALIZABLE*.  
 While the first client is trying to read the customers in Virginia, another client is updating the customer with id 3.  
 So this customer should be included in our query otherwise we are gonna have phantom reads. The transaction will wait for the transaction to finish.  
 This is the result of SERIALIZABLE isolation level. So with the SERIALIZABLE isolation level we can solve all concurrency problems because our transactions are executed sequentially. The more users and more concurrent requests we have the more waits we are gonna experience.  
@@ -2202,7 +2150,6 @@ UPDATE customers SET state = "VA" WHERE customer_id = 1;
 UPDATE orders SET status = 1 WHERE order_id = 1;
 COMMIT;
 ```
-
 ```sql
 USE sql_store;
 START TRANSACTION;
@@ -2210,7 +2157,6 @@ UPDATE orders SET status = 1 WHERE order_id = 1;
 UPDATE customers SET state = "VA" WHERE customer_id = 1;
 COMMIT;
 ```
-
 Here in the first session we are updating one record in the customers table and one record in the orders table.
 In the second session change the order of the update statements.  
 When we execute the transactions in both the sessions simultaneously both these transactions will wait for each other and they will never be able to complete.  
@@ -2221,31 +2167,31 @@ We can never completely get rid of them but minimize their likelihood.
 
 It is really important to understand when to use which data types. In MySQL we have several categories of data types.
 
-- String Types
-- Numeric Types
-- Date and Time Types
-- Blob Types - for storing binary data
-- Spatial Types - for storing geometric and geographical values
+* String Types
+* Numeric Types
+* Date and Time Types
+* Blob Types - for storing binary data
+* Spatial Types - for storing geometric and geographical values
 
 ## String Types
 
-In the string category we have bunch of data types the most common ones are
+In the string category we have bunch of data types the most common ones are 
 
-- CHAR - for storing fixed length strings
-- VARCHAR - for storing variable length strings. max: 65,535 characters
-  - VARCHAR(50) - for short strings
-  - VARCHAR(255) - for medium-length strings
-- MEDIUMTEXT - max: 16MB (16 million characters), good for storing JSON objects, CSV strings
-- LONGTEXT - max: 4GB (4 Gigabytes of textual data)
-- TINYTEXT - max: 255 bytes(upto 255 characters)
-- TEXT - max: 64KB(upto 65,000 characters) just like VARCHAR but cannot be indexed.
+* CHAR - for storing fixed length strings 
+* VARCHAR - for storing variable length strings. max: 65,535 characters
+	* VARCHAR(50) - for short strings
+	* VARCHAR(255) - for medium-length strings
+* MEDIUMTEXT - max: 16MB (16 million characters), good for storing JSON objects, CSV strings
+* LONGTEXT - max: 4GB (4 Gigabytes of textual data)
+* TINYTEXT - max: 255 bytes(upto 255 characters)
+* TEXT - max: 64KB(upto 65,000 characters) just like VARCHAR but cannot be indexed.
 
 All these types support international characters
 
-- English - letters use 1 byte
-- European - use 2 bytes
-- Middle-eastern - use 2 bytes
-- Asian - use 3 bytes.
+* English - letters use 1 byte
+* European - use 2 bytes
+* Middle-eastern - use 2 bytes
+* Asian - use 3 bytes.
 
 ## Integer types
 
@@ -2253,12 +2199,12 @@ We use integers to store whole numbers that don't have a decimal point.
 In MySQL we have 5 different integer types and these are different in terms of number of bytes they use and thre range of values that they can store.  
 If we mark a column as unsigned we can only store positive values.
 
-- TINYINT : 1b [-128, 127]
-- UNSIGNED TINYINT : [0, 255]
-- SMALLINT : 2b [-32K, 32K]
-- MEDIUMINT : 3b [-8M, 8M]
-- INT : 4b [-2B, 2B]
-- BIGINT : 8B [-9Z, 9Z]
+* TINYINT : 1b [-128, 127]  
+* UNSIGNED TINYINT : [0, 255]
+* SMALLINT : 2b [-32K, 32K]
+* MEDIUMINT : 3b [-8M, 8M]
+* INT : 4b [-2B, 2B]
+* BIGINT : 8B [-9Z, 9Z]
 
 If we try to store a value outside the range of a columns data type MySQL will throws an error saying our value is out of range.  
 Apart from UNSIGNED numeric types also have another attribute and that is called ZEROFILL.  
@@ -2269,15 +2215,14 @@ As a best practice try to use the smallest data type that suits your needs. With
 
 In MySQL we have three types for storing numbers with a decimal point.
 
-- DECIMAL(p, s) - for storing the fixed point numbers. These are the numbers which have fixed number of digits after the decimal point. I takes two arguments precison and scale. The precison specifies the maximum number of digits and this can be between 1 and 65. The scale determines the number of digits after the decimal point. The synonym of this data types are
+* DECIMAL(p, s) - for storing the fixed point numbers. These are the numbers which have fixed number of digits after the decimal point. I takes two arguments precison and scale. The precison specifies the maximum number of digits and this can be between 1 and 65. The scale determines the number of digits after the decimal point. The synonym of this data types are
+	* DEC
+	* NUMERIC
+	* FIXED
 
-  - DEC
-  - NUMERIC
-  - FIXED
-
-- FLOAT : 4b
-- DOUBLE : 8b  
-  These two are used for performing scientific calculations. These types don't store the exact value they store the approximation.
+* FLOAT : 4b
+* DOUBLE : 8b  
+These two are used for performing scientific calculations. These types don't store the exact value they store the approximation.
 
 ## Boolean Types
 
@@ -2293,23 +2238,23 @@ So similar to ENUMS we specify the list of allowable values and then we can stor
 
 ## Date and Time Types
 
-In MySQL we have four data types for storing date and time values.
+In MySQL we have four data types for storing date and time values.  
 
-- DATE - for storing date without the time component.
-- TIME - for storing time value.
-- DATETIME - It's size is 8 bytes so if we want to store dates that go beyond 2038 we should use this type.
-- TIMESTAMP - for keeping track of when a row was created or last updated. It's size is 4 bytes and it can only store the dates upto the year 2038. This is called the year 2038 problem.
-- YEAR - for storing the four digit year.
+* DATE - for storing date without the time component.
+* TIME - for storing time value.
+* DATETIME - It's size is 8 bytes so if we want to store dates that go beyond 2038 we should use this type.
+* TIMESTAMP - for keeping track of when a row was created or last updated. It's size is 4 bytes and it can only store the dates upto the year 2038. This is called the year 2038 problem.
+* YEAR - for storing the four digit year.
 
 ## Blob Types
 
 We use Blob types to store large amount of binary data like images, videos, pdfs pretty much any binary data.  
-In MySQL we have 4 BLOB types and they differ based on maximum amount of data they can store.
+In MySQL we have 4 BLOB types and they differ based on maximum amount of data they can store.  
 
-- TINYBLOB : 255 bytes
-- BLOB : 65 kilobytes
-- MEDIUMBLOB : 16 megabytes
-- LONGBLOB : 4 gigabytes
+* TINYBLOB : 255 bytes
+* BLOB : 65 kilobytes
+* MEDIUMBLOB : 16 megabytes
+* LONGBLOB : 4 gigabytes
 
 ## JSON Type
 
@@ -2321,7 +2266,18 @@ Javascript object notation is actually a lightwieght format for storing and tran
 
 Data modelling is the process of creating a model for the data that we want to store in a database. It invloves four steps.
 
-- Understand the requirements
-- Build a conceptual model
-- Build a logical model - an abstract data model that is independent of database technology.
-- Build a physical model
+* Understand the requirements
+* Build a conceptual model
+* Build a logical model -  an abstract data model that is independent of database technology.
+* Build a physical model
+
+## Conceptual models
+
+![Conceptual model](https://github.com/guru-apr21/Learn-SQL/blob/main/images/concept.png)
+
+A conceptual model represents the entities or things or concepts in this business and the relationship with each other.  
+To visually see these entities and relationships we can use Entity relationships or UML diagrams. These are both ways for visually expressing concepts.  
+We use conceptual model to communicate with the stakeholders. Data modelling is a iterative process.  
+You need to constantly go back and forth between your concepts and models and keep refining them.  
+This model gives us a very high level overview of the business domain and the things involved in the domain. At this point we don't what is the type of each attribute and neither we know or care what database technology we are gonna use to implement this model.  
+It's just a conceptual model.
