@@ -2271,7 +2271,7 @@ Data modelling is the process of creating a model for the data that we want to s
 * Build a logical model -  an abstract data model that is independent of database technology.
 * Build a physical model
 
-## Conceptual models
+### Conceptual models
 
 ![Conceptual model](https://github.com/guru-apr21/Learn-SQL/blob/main/images/concept.png)
 
@@ -2279,5 +2279,24 @@ A conceptual model represents the entities or things or concepts in this busines
 To visually see these entities and relationships we can use Entity relationships or UML diagrams. These are both ways for visually expressing concepts.  
 We use conceptual model to communicate with the stakeholders. Data modelling is a iterative process.  
 You need to constantly go back and forth between your concepts and models and keep refining them.  
-This model gives us a very high level overview of the business domain and the things involved in the domain. At this point we don't what is the type of each attribute and neither we know or care what database technology we are gonna use to implement this model.  
-It's just a conceptual model.
+This model gives us a very high level overview of the business domain and the things involved in the domain. At this point we don't what is the type of each attribute and neither we know or care what database technology we are gonna use to implement this model. We use this to communicate with the business stakeholders so we know we both are on the same page.
+
+### Logical Models
+
+Let's refine the conceptual model to come up with the data model or a data structure for storing our data. This logical model is independent of the database technologies.  
+It's just a abstract data model that clearly shows our entities and their relationships. Here we specify the type of the attributes.  
+Next we need to specify the type of the relationships between our entities. We have three main types of relationships  
+
+* One-to-one
+* One-to-many
+* Many-to-many
+
+The other types are variation of these types.  
+In the above example we have Many-to-many relationship between student and course, because a student can enroll in multiple courses and a course can have multiple students.  
+Here we have a entity that represents the relationship between the student and the course.  
+A student can have many enrollments but each enrollment is related to one particular student, so here we have one to many relationship between student and the enrollment.  
+Similarly a course can have multiple enrollments but each enrollment is for particular course.  
+
+Comaring conceptual model and logical model, conceptual model doesn't give us a structure for storing data it only represents the business entities and their relationships.  
+Logical model adds more details to our conceptual model so we almost know what structure or what tables we need to store our data.  
+The entities that we have here eventually end up as a table in our database.
