@@ -2364,3 +2364,10 @@ The entities that we have here eventually end up as a table in our database.
 
 A physical model is the implementation of the logical model for a specific database technology. When it comes to naming tables I personally prefer to use plural names.  
 Because a table is a cotainer for several entities like students. In logical models use singular names for the entitites and physical models use plural names for the tables.
+
+## Primary Keys
+
+A primary key is a column that uniquely identifies each record in a given table. A composite primary key is the one that has multiple columns.  
+When ever we create a primary key column in MySQL not null is checked by default, so a primary key must have a value to identify each record uniquely.  
+By checking the primary key as an auto increment column MySQL will automatically generate values for these columns.  
+It's just makes it easier for us to insert record in this table, we don't have to worry about the uniqueness of the table.
