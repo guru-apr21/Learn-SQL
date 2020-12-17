@@ -2388,12 +2388,12 @@ Whenever you have a foriegn key in a table you need to set the constraints on th
 In enrollments table we have two foriegn keys. The combination of student_id and course_id forms primary key in this table.  
 We can set what should happen when the corresponding record in the parent table gets updated or deleted.  
 If the primary key of a table changes we want to make sure that the forign key table is updated.  
-So if the id of a student changes from 1 to 2 we want to make sure that all enrollments for that students also get updated so they reference student id 2.  
+So if the id of a student changes from 1 to 2 we want to make sure that all enrollments for that students also get updated so they reference student id 2.
 
-* CASCADE - with this MySQL automatically updates the record in the child table if the primary key changes. 
-* RESTRICT - this will reject the update from happening.
-* SET NULL - if the id of the student changes this will set the forign key to null and with this we'll end up with a child record that doesn't have a parent. We call this an orphan record. 
-* NO ACTION - it is similar to the RESTRICT it prevents or rejects the update operation.
+- CASCADE - with this MySQL automatically updates the record in the child table if the primary key changes.
+- RESTRICT - this will reject the update from happening.
+- SET NULL - if the id of the student changes this will set the forign key to null and with this we'll end up with a child record that doesn't have a parent. We call this an orphan record.
+- NO ACTION - it is similar to the RESTRICT it prevents or rejects the update operation.
 
 Speaking about the delete scenerio when we set it to CASCADE it means that the child record gets deleted when a parent record is deleted.  
 Choosing this option will depends on the context. RESTRICT and NO ACTION will reject the delete operation.  
