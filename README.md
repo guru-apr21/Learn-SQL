@@ -2416,3 +2416,15 @@ There are basically seven rules also called seven normal forms and each rule ass
 The First Normal Form says that _each cell in a row should have a single value and we cannot have repeated columns_.  
 The tags column in the courses table is violating this rule because we are gonna store multiple tags in this column.  
 To solve this problem we need to take the tags column out of this table and model it as a separate table called tags and then we add many to many relationship with tags and courses.
+
+### Link tables
+
+![First Normal Form](https://github.com/guru-apr21/Learn-SQL/blob/main/images/linkTables.png)
+
+In relational databases we don't have many to many relationships. We only have one to one and one to many relationships.  
+So to implement a many to many relationship between courses and tags table we need to introduce a new table called link table and we are gonna have two one to many relationships with that table exactly like the enrollments table.  
+We need to follow the same approach to implement a many to many relationship with the courses and tags table.  
+In the new table we are gonna have a composite primary key because the combination of the course_id and tag_id should be unique.  
+Everytime we have an update or a delete operation MySQL will lock one or more rows. So with the previous design our rows had to be locked unnecassarily.  
+If you want to rename a tag, the tag row should be the only row that should be locked.
+With these changes our database is now in a First Normal Form.
