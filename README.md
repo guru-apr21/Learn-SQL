@@ -2357,3 +2357,8 @@ Similarly a course can have multiple enrollments but each enrollment is for part
 Comaring conceptual model and logical model, conceptual model doesn't give us a structure for storing data it only represents the business entities and their relationships.  
 Logical model adds more details to our conceptual model so we almost know what structure or what tables we need to store our data.  
 The entities that we have here eventually end up as a table in our database.
+
+### Physical Models
+
+A physical model is the implementation of the logical model for a specific database technology. When it comes to naming tables I personally prefer to use plural names.  
+Because a table is a cotainer for several entities like students. In logical models use singular names for the entitites and physical models use plural names for the tables.
