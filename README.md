@@ -2442,3 +2442,8 @@ Since we have a new foriegn key we need to set the foriegn key constraints.
 ### Third Normal Form (3NF)
 
 The Third Normal Form says a column in a table should not be derived from other columns. It helps us decrease duplication and increase data integrity.
+
+## Forward Engineering a Model 
+
+To convert the physical model into real physical database we forward engineer a model.  
+When we do this MySQL will generate a script file with all the necessary code to create the database. 
