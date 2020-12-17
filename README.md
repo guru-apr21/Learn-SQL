@@ -2428,3 +2428,13 @@ In the new table we are gonna have a composite primary key because the combinati
 Everytime we have an update or a delete operation MySQL will lock one or more rows. So with the previous design our rows had to be locked unnecassarily.  
 If you want to rename a tag, the tag row should be the only row that should be locked.
 With these changes our database is now in a First Normal Form.
+
+### Second Normal Form (2NF)
+
+![Second Normal Form](https://github.com/guru-apr21/Learn-SQL/blob/main/images/2NF.png)
+
+The second normal form says that each table should have single purpose in other words it should represent one and only type of entity and every column in that table should describe that entity.  
+Our courses table is violating the second normal form because the instructors column doesn't belong to this table.  
+If the instructor teaches multiple courses their name is gonna get duplicated in this table. We add a new instructors table.  
+Delete the instructors column in the courses table and add one to many relationship between the instructors and the courses. 
+Since we have a new foriegn key we need to set the foriegn key constraints.
