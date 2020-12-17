@@ -2447,3 +2447,13 @@ The Third Normal Form says a column in a table should not be derived from other 
 
 To convert the physical model into real physical database we forward engineer a model.  
 When we do this MySQL will generate a script file with all the necessary code to create the database. 
+
+## Synchronizing a Model with a Database
+
+Making changes in the design mode only works if you are the only person using the database or in other words it works if you are using this database in your local instance.  
+But in medium to large organizations we often have multiple servers that simulates the production environment.  
+The production environment is where our users access our application or databases.  
+We also have staging environment which is very close to the production environment and we testing environment which is purely used for testing and we also have a development environment.  
+Each environment has one or more servers so anytime, we developers wanna make any changes to the database we should be able to replicate the same changes on other databases.  
+So all these databases we have in other environments are consistent. So to achieve that we make our changes on the model and synchronize the model with the database.  
+We use forward engineering when we don't have a database.
