@@ -2436,5 +2436,5 @@ With these changes our database is now in a First Normal Form.
 The second normal form says that each table should have single purpose in other words it should represent one and only type of entity and every column in that table should describe that entity.  
 Our courses table is violating the second normal form because the instructors column doesn't belong to this table.  
 If the instructor teaches multiple courses their name is gonna get duplicated in this table. We add a new instructors table.  
-Delete the instructors column in the courses table and add one to many relationship between the instructors and the courses. 
+Delete the instructors column in the courses table and add one to many relationship between the instructors and the courses.
 Since we have a new foriegn key we need to set the foriegn key constraints.
