@@ -2367,6 +2367,8 @@ Because a table is a cotainer for several entities like students. In logical mod
 
 ## Primary Keys
 
+![Foriegn Key](https://github.com/guru-apr21/Learn-SQL/blob/main/images/primary.png)
+
 A primary key is a column that uniquely identifies each record in a given table. A composite primary key is the one that has multiple columns.  
 When ever we create a primary key column in MySQL not null is checked by default, so a primary key must have a value to identify each record uniquely.  
 By checking the primary key as an auto increment column MySQL will automatically generate values for these columns.  
