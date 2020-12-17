@@ -2438,3 +2438,7 @@ Our courses table is violating the second normal form because the instructors co
 If the instructor teaches multiple courses their name is gonna get duplicated in this table. We add a new instructors table.  
 Delete the instructors column in the courses table and add one to many relationship between the instructors and the courses.
 Since we have a new foriegn key we need to set the foriegn key constraints.
+
+### Third Normal Form (3NF)
+
+The Third Normal Form says a column in a table should not be derived from other columns. It helps us decrease duplication and increase data integrity.
