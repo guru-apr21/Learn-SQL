@@ -2400,3 +2400,12 @@ Choosing this option will depends on the context. RESTRICT and NO ACTION will re
 So whenever we have a foriegn key we need to set On Update and On Delete constraints and tell MySQL what should happen when the primary key gets updated or deleted.  
 As a rule of thumb we should always cascade on update and for delete it really depends.  
 Most of the time we want to reject the delete operation but in some cases it doesn't really matter it's okay to cascade delete.
+
+## Normalization
+
+Before generating database tables we need to make sure that our design is optimal and doesn't allow redundant or duplicated data.  
+Because redudancy increase the size of our database and complicates the INSERT, UPDATE and DELETE operation.  
+For example if the name of someone is repeated in different places and they decide to change their name we have to update several different places.  
+Otherwise we'll have inconsistent data. So that's where normalization comes to the rescue.  
+Normalization is the process of reviewing our design and ensuring it follows a few pre defined rules that prevent data duplication.  
+There are basically seven rules also called seven normal forms and each rule assumes that we have applied the previous rules.
