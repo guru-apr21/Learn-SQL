@@ -2379,3 +2379,24 @@ It's just makes it easier for us to insert record in this table, we don't have t
 ![Foriegn Key](https://github.com/guru-apr21/Learn-SQL/blob/main/images/foriegn.png)
 
 Whenever we add a relationship between two tables, one end of the relationship is called a parent or a primary key table and the other end is called a child or a forign key table. A foriegn key is a column in one table that references the primary key of another table.
+
+## Foriegn Key Constraint
+
+![Foriegn Key Constraints](https://github.com/guru-apr21/Learn-SQL/blob/main/images/constraints.png)
+
+Whenever you have a foriegn key in a table you need to set the constraints on that foriegn key and that basically protects your data from getting corrupted.  
+In enrollments table we have two foriegn keys. The combination of student_id and course_id forms primary key in this table.  
+We can set what should happen when the corresponding record in the parent table gets updated or deleted.  
+If the primary key of a table changes we want to make sure that the forign key table is updated.  
+So if the id of a student changes from 1 to 2 we want to make sure that all enrollments for that students also get updated so they reference student id 2.  
+
+* CASCADE - with this MySQL automatically updates the record in the child table if the primary key changes. 
+* RESTRICT - this will reject the update from happening.
+* SET NULL - if the id of the student changes this will set the forign key to null and with this we'll end up with a child record that doesn't have a parent. We call this an orphan record. 
+* NO ACTION - it is similar to the RESTRICT it prevents or rejects the update operation.
+
+Speaking about the delete scenerio when we set it to CASCADE it means that the child record gets deleted when a parent record is deleted.  
+Choosing this option will depends on the context. RESTRICT and NO ACTION will reject the delete operation.  
+So whenever we have a foriegn key we need to set On Update and On Delete constraints and tell MySQL what should happen when the primary key gets updated or deleted.  
+As a rule of thumb we should always cascade on update and for delete it really depends.  
+Most of the time we want to reject the delete operation but in some cases it doesn't really matter it's okay to cascade delete.
