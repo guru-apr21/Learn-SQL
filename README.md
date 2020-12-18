@@ -2531,3 +2531,18 @@ The convention for naming the foriegn key is fk_childtable_parenttable, in this 
 In paranthesis we list the columns that we want to add this foriegn key on. Using REFERENCES keyword we tell MySQL that this column references the customer_id column in the customers table. Next we add UPDATE and DELETE behaviour. 
 When we try to drop customers table MySQL will throw an error because now it's a part of a relationship.  
 To delete the customers table first we need to delete the orders table because this table depends on the customers table.
+
+## Altering Primary/ Foreign Keys
+
+```sql
+ALTER TABLE orders
+	DROP PRIMARY KEY,
+	ADD PRIMARY KEY (order_id),
+    	ADD FOREIGN KEY fk_orders_customers (customer_id)
+    	REFERENCES customers (customer_id)
+    	ON UPDATE CASCADE
+    	ON DELETE NO ACTION
+```
+
+To drop or create relationships between table that already exists we use ALTER TABLE statement like dropping columns.  
+To drop primary key there is no need to specisy the column name.
