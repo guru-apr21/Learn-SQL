@@ -2509,3 +2509,25 @@ We can alter the existing table using ALTER TABLE statement followed by the name
 We can add, drop, modify columns along with their data types and constriants. The COLUMN keyword is optional so using it is more of a personal preference.  
 By default any new columns that we add using the alter table statement will be inserted at the end of the table.  
 Using the AFTER keyword we can specify where to insert the new column. Similarly the FIRST keyword will insert the column at first.
+
+## Creating Relationships
+
+```sql
+USE sql_store2;
+DROP TABLE IF EXISTS orders;
+CREATE TABLE IF NOT EXISTS orders
+(
+	order_id INT PRIMARY KEY,
+    	customer_id INT NOT NULL,
+    	FOREIGN KEY fk_orders_customers (customer_id)
+    	REFERENCES customers(customer_id)
+    	ON UPDATE CASCADE
+    	ON DELETE NO ACTION
+);
+```
+
+To define a relationship between orders and customers tables after we list all our columns we type FORIEGN KEY, so we are gonna apply a foriegn key contraint on the customer id column.  
+The convention for naming the foriegn key is fk_childtable_parenttable, in this case orders are our child or foriegn key table and customers are parents or primary key table.  
+In paranthesis we list the columns that we want to add this foriegn key on. Using REFERENCES keyword we tell MySQL that this column references the customer_id column in the customers table. Next we add UPDATE and DELETE behaviour. 
+When we try to drop customers table MySQL will throw an error because now it's a part of a relationship.  
+To delete the customers table first we need to delete the orders table because this table depends on the customers table.
