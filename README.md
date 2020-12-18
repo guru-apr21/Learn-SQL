@@ -2465,3 +2465,15 @@ In the generated model we can see all our tables and their relationships, this i
 We can also use this diagrams to identify the problems in our design. When you add relationships between the tables MySQL workbench will enforce the integrity of the data.  
 So in our child tables we can only add values that correspond with the values in our parents table.  
 These models allow us to make any changes to the design and then script those changes to execute on other MySQL databases.
+
+## Creating and Dropping a Database
+
+```sql
+CREATE DATABASE IF NOT EXISTS sql_store2
+```
+```sql
+DROP DATABASE IF EXISTS sql_store2
+```
+
+To create a database we use CREATE DATABASE statement followed by the name of the name of the database.  
+Similarly to delete a database we use DROP DATABASE statement followed by the name of the database.
