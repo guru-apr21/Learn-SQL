@@ -2562,3 +2562,13 @@ The default collation for utf8 character set is utf8_general_ci.
 ci is short for case insensitive and that means MySQL treats lowercase and uppercase characters the same when it comes to sorting.  
 The maxlength for utf character set is 3 and that means MySQL will reserve maximum of 3 bytes for storing each character.  
 We can change the character set either visually or using SQL. We can set the character set at the time of creating the database or after creating it. 
+
+## Storage Engines
+
+In MySQL there are several storage engines and these storage engines determines how the data is stored and what features are available to use.
+
+```sql
+SHOW ENGINES
+```
+This query returns all storage engines supported by the current version of MYSQL. The two most commonly use storage engines are MyISAM or InnoDB.  
+MyISAM is an older storage engine. InnoDB is a superior storage engine it supports features like transactions and many other. We set storage engine at table level.
