@@ -2477,3 +2477,20 @@ DROP DATABASE IF EXISTS sql_store2
 
 To create a database we use CREATE DATABASE statement followed by the name of the name of the database.  
 Similarly to delete a database we use DROP DATABASE statement followed by the name of the database.
+
+## Creating tables
+
+```sql
+DROP TABLE IF EXISTS customers;
+CREATE TABLE customers(
+	customer_id INT PRIMARY KEY AUTO_INCREMENT,
+    	first_name VARCHAR(50) NOT NULL,
+    	last_name VARCHAR(50) NOT NULL,
+    	email VARCHAR(255) NOT NULL UNIQUE,
+    	birth_date DATETIME NOT NULL,
+    	points INT NOT NULL DEFAULT 0
+);
+```
+
+To create a new table we use CREATE TABLE statement followed by the name of the table.  
+Inside the paranthesis we list each column name followed by their data type and constraints
