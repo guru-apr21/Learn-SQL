@@ -2595,3 +2595,22 @@ Right after that we use the ON keyword followed by the name of the table, within
 Now when we execute the SELECT statement again in the type column we see ref which means MySQL does not scan entire table to get the result.  
 It greatly reduces the number of records that MySQL has to read. In the possible keys we have various indexes that MySQL may consider for executing this query.  
 There may be various indexes but MySQL choose the one which has best performance. In the key column we have actual index or key that was used.
+
+## Viewing indexes
+
+```sql
+SHOW INDEXES IN CUSTOMERS
+```
+
+To view the indexes we use VIEW INDEXES statement followed by IN and then the table name. Primary key of a table is also an index which we call a clustered index.  
+So whenever we add a primary key table MySQL automatically creates an index so that we can quickly look up the table with their id.  
+Collation represents how the data is assigned in the table. A means ascending B means descending. Cardinality represents the estimated number of unique values in the index.
+
+```sql
+ANALYZE TABLE customers
+```
+To get a more accurate cardinality value we use ANALYZE TABLE statement. This will regenerate the statistics for this table.  
+Every table can have a maximum of one clustered index. The other indexes are secondary indexes.  
+Technically whenever we create a secondary index MySQL automatically includes the id or the primary key column in the secondary index.  
+Inside the index we have two values for each entry. All these indexes are of B-TREE types i.e, binary tree types. 
+So whenever we create a relationship between two tables MySQL automatically creates a index on the foriegn keys so we can quickly join our tables.  
