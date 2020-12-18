@@ -2546,3 +2546,19 @@ ALTER TABLE orders
 
 To drop or create relationships between table that already exists we use ALTER TABLE statement like dropping columns.  
 To drop primary key there is no need to specisy the column name.
+
+## Character Sets and Collations
+
+When we store a string like "abc" MySQL will convert each character into its numeric representation using a character set.  
+Character set is a table that maps each character to a number. There are various character sets.
+
+```sql
+SHOW CHARSET
+```
+Executing this query returns all character sets that are supported by the current version of MySQL.  
+utf8 is the default character set in MySQL and with this we can store characters in all languages.  
+A collation is basically a bunch of rules that determines how the characters in the given language are sorted.  
+The default collation for utf8 character set is utf8_general_ci.  
+ci is short for case insensitive and that means MySQL treats lowercase and uppercase characters the same when it comes to sorting.  
+The maxlength for utf character set is 3 and that means MySQL will reserve maximum of 3 bytes for storing each character.  
+We can change the character set either visually or using SQL. We can set the character set at the time of creating the database or after creating it. 
