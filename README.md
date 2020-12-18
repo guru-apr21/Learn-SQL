@@ -2572,3 +2572,26 @@ SHOW ENGINES
 ```
 This query returns all storage engines supported by the current version of MYSQL. The two most commonly use storage engines are MyISAM or InnoDB.  
 MyISAM is an older storage engine. InnoDB is a superior storage engine it supports features like transactions and many other. We set storage engine at table level.
+
+# Indexes
+
+Indexes are extremely important in large databases and high traffic websites because they can improve the performance of our queries dramatically.  
+They are basically a data structure that database engines use to quickly find data. Internally indexes are often stored as binary trees. 
+
+## Creating indexes
+
+```sql
+EXPLAIN SELECT customer_id FROM customers WHERE points > 1000;
+```
+We can prefix the query with EXPLAIN keyword to see how MySQL executes this query.  
+When we see ALL on the type column MySQL is gonna do a full table scan which means it's gonna read or scan every single record in this table.  
+If we a million rows of data this query is gonna take several seconds minutes to execute and can be very slow this is where we use an Index.
+
+```sql
+CREATE INDEX idx_points ON customers (points)
+```
+We use CREATE INDEX statement to create a new index followed by the name of the index.  
+Right after that we use the ON keyword followed by the name of the table, within the paranthesis we type out the name of the columns, we wanna put a index on.
+Now when we execute the SELECT statement again in the type column we see ref which means MySQL does not scan entire table to get the result.  
+It greatly reduces the number of records that MySQL has to read. In the possible keys we have various indexes that MySQL may consider for executing this query.  
+There may be various indexes but MySQL choose the one which has best performance. In the key column we have actual index or key that was used.
