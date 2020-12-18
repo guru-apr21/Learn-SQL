@@ -2493,4 +2493,19 @@ CREATE TABLE customers(
 ```
 
 To create a new table we use CREATE TABLE statement followed by the name of the table.  
-Inside the paranthesis we list each column name followed by their data type and constraints
+Inside the paranthesis we list each column name followed by their data type and constraints.
+
+## Altering Tables
+
+```sql
+ALTER TABLE customers
+	ADD city VARCHAR(50) NOT NULL AFTER last_name,
+	ADD phone VARCHAR(50) NOT NULL FIRST,
+    	DROP COLUMN points,
+    	MODIFY COLUMN last_name VARCHAR(45) NOT NULL
+```
+
+We can alter the existing table using ALTER TABLE statement followed by the name of the table.  
+We can add, drop, modify columns along with their data types and constriants. The COLUMN keyword is optional so using it is more of a personal preference.  
+By default any new columns that we add using the alter table statement will be inserted at the end of the table.  
+Using the AFTER keyword we can specify where to insert the new column. Similarly the FIRST keyword will insert the column at first.
