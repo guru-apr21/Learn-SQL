@@ -2614,3 +2614,23 @@ Every table can have a maximum of one clustered index. The other indexes are sec
 Technically whenever we create a secondary index MySQL automatically includes the id or the primary key column in the secondary index.  
 Inside the index we have two values for each entry. All these indexes are of B-TREE types i.e, binary tree types. 
 So whenever we create a relationship between two tables MySQL automatically creates a index on the foriegn keys so we can quickly join our tables.  
+
+## Prefix Indexes
+
+If we want to create a index on a column that contains string values our index may consumes a lot of space and our indexes won't perform well.  
+Smaller indexes are better because they can fit in memory and it makes our searches faster. So when indexing string columns we don't want to include the entire column in the index we only want to include the first few characters or the prefix of the column so our index will be smaller.
+
+```sql
+CREATE INDEX idx_lastname ON customers (last_name(5));
+```
+Here we are creating an index for customer table's last name column.  
+Because the last name colunm is the string column in the paranthesis we can specify the number of characters that we want to include in the index.  
+It is optional for char and varchar columns but compulsory for text and blob columns. Here I used 5 as the prefix index.  
+To find the optimal prefix index we need to look at our data and we want to include enough character that can uniquely identify each customers.
+
+```sql
+SELECT COUNT(DISTINCT LEFT(last_name, 1)) FROM customers;
+SELECT COUNT(DISTINCT LEFT(last_name, 5)) FROM customers;
+```
+We use COUNT aggregate function along with LEFT string function to find the optimal index that uniquely identifies maximum number of customer's lastname.  
+Our goal here, should be to maximize the number of unique values in our index.
