@@ -2841,3 +2841,23 @@ ORDER BY points;
 ```
 We have an exception to this rule we can go to the particular segment or particular state and sort customer by their points.  
 So if you have composite index there are only three ways that MySQL use to sort our data.
+
+## Covering Indexes
+
+```sql
+EXPLAIN SELECT *
+FROM customers
+```
+When we only select customer id in our query MySQL satisfies this query purely using the index. We get a full table scan if we select all columms.  
+The reason is the composite index that we put in points and state columns contains three pieces of information about each customer. Their id, state and points.  
+Whenever we create a secondary index MySQL automatically includes the primary id in the secondary index. 
+
+```sql
+EXPLAIN SELECT customer_id, points
+FROM customers
+```
+So if we pick only customer id and state MySQL can satisfy our query entirely using our index.  
+This is called a covering index a index that covers everything that a query needs. So using this index MySQL can execute our query without touching the table.  
+This is the fastest performance that we can get. So when designing your indexes look at your WHERE caluse include the most frequently used columns in index.  
+With this we can narrow down the searches. Next look at the order by clause and finally look at columns included in the select clause.  
+If you include these columns as well then you'll get a covering index. So MySQL can use your index to satisfy your query.
