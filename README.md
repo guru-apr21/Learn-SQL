@@ -2634,3 +2634,52 @@ SELECT COUNT(DISTINCT LEFT(last_name, 5)) FROM customers;
 ```
 We use COUNT aggregate function along with LEFT string function to find the optimal index that uniquely identifies maximum number of customer's lastname.  
 Our goal here, should be to maximize the number of unique values in our index.
+
+## Full Text Index
+
+We use full text index to build fast and flexible search engines in our application.  
+
+```sql
+SELECT * FROM posts WHERE title LIKE "%react redux%" OR body LIKE "%react redux%"
+```
+
+The issue with this query is that we don't have an index on columns and as the table grows large this query is gonna get slower.  
+Using a prefix index is not an option because prefix index only use the first few characters of a column.  
+Another problem with this query is that it only returns the record that has *react redux* in sequence. That's not how search engines work.  
+This query is not very helpful when building search engines. This is where we use full text indexes.  
+This full text index work very differently from regular indexes, they include the entire string column so they don't store just a prefix.  
+They ignore any stop words like in, on, the etc. They basically store a list of words and for each word they store a list of rows or documents that these rows appear in. 
+
+```sql
+CREATE FULLTEXT INDEX idx_title_body ON posts (title, body);
+SELECT * FROM posts WHERE MATCH(title, body) AGAINST("react redux");
+``` 
+
+To create a full text index we use CREATE FULLTEXT INDEX statement followed by the name of the index. Right after that we use ON keyword and the table name. 
+Here we are including two columns.  
+
+In the WHERE clause instead of using the LIKE operator we use two built in function to work with full text indexes.  
+First we call the MATCH function and here we pass the name of the columns that we want to search on.  
+Columns that are used to create an index should be included here otherwise MySQL is gonna complain. Next we call the AGAINST function and here we pass the search phrase.  
+Now this query will return one or more posts that have these search phrases in their title or body.  Also full text indexes includes a relevance score.  
+So based on number of factors MySQL calculates a relevancy score for each row that contains a search phrase.  
+The relevancy score is a floating point number between zero to one. Zero means no relevance. These full text indexes has two modes.  
+
+* Natural language mode
+* Boolean mode
+
+The natural language mode is the default mode. With the boolean mode we can include or exclude certain words just like how we use google.
+
+```sql
+SELECT * FROM posts WHERE MATCH(title, body) AGAINST("react -redux +form" IN BOOLEAN MODE);
+```
+
+After the search phrase we include boolean mode.  
+Now we can exclude redux by prefixing it with the minus here we are telling the MySQL to return the posts that has react but not redux.  
+We can also include a word as a requirement that means every row in the result must have the word form either in the title or body.
+
+
+```sql
+SELECT * FROM posts WHERE MATCH(title, body) AGAINST("'handling a form'" IN BOOLEAN MODE);
+```
+We can also search for an exact phrase. By adding a double quote or single quote we can specify the exact phrase that we want to search. 
