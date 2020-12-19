@@ -2713,3 +2713,49 @@ In MySQL a index can have a maximum of 16 columns.
 DROP INDEX idx_points ON customers
 ```
 To drop a index we use DROP INDEX statement followed by the name of the table and the table in which it belongs to.
+
+## Order of columns in a composite index
+
+To set the order of the columns in a composite index we have two basic rules.
+
+* Put the more frequently used columns first
+* Put the columns with higher cardinality first. 
+
+Cardinality represents the number of unique values in the index. These are not hard and fast rules it is just a starting point.  
+We should always take our query and data into our account.
+
+```sql
+SELECT * FROM customers WHERE state = "CA" AND last_name LIKE "A%";
+```
+
+This query returns the customers who are located in california whose last name start with A.  
+To know which column should come first at the index we should look at the cardinality of the columns.
+
+```sql
+CREATE INDEX idx_lastname_state ON customers(last_name, state);
+EXPLAIN SELECT * FROM customers WHERE state = "CA" AND last_name LIKE "A%";
+```
+
+The above query will create an index on columns lastname and state.  
+When executing the EXPLAIN statement out of the possible indexes MySQL uses the new composite index on lastname and state columns.  
+If you put the lastname column first in order to satisfy this query MySQL has to go through each last name that starts with A and in that segmant it has to find the customers located in california.  
+If we put the state first MySQL can quickly go through the segment for california and in that segment it can quickly the customers whose last name starts with A.
+
+```sql
+CREATE INDEX idx_state_lastname ON customers(state, last_name);
+EXPLAIN SELECT * FROM customers WHERE state = "CA" AND last_name LIKE "A%";
+```
+This statement creates the index in the opposite order. Now when executing the query again MySQL decided to use the composite index and this reduced the number of rows scanned.  
+```sql
+EXPLAIN SELECT * 
+FROM customers 
+USE INDEX (idx_lastname_state)
+WHERE state = "CA" AND last_name LIKE "A%";
+```
+We can also force MySQL to use different index instead of the optimal index it chooses.  
+Our rule of cardinality suggested that the last_name column should come first because it has a higher cardinality but we should look at our queries and see how MySQL execute them using different indexes.  
+We only want indexes to optimize the performance critical queries.
+
+To wrap up put the columns that are used more frequently first then look at the cardinality of the columns it's better to put the columns with higher cardinality first but always take your queries into account. Try to understand how MySQL will execute your query with different indexes.  
+As your system grows you might need several indexes on columns in different orders.
+
