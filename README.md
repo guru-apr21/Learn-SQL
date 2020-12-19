@@ -2799,3 +2799,45 @@ EXPLAIN SELECT customer_id FROM customers
 WHERE points > 2000
 ```
 Isolating the columns allows MySQL to utilize the indexes in best possible way.
+
+## Using Indexes for Sorting
+
+```sql
+EXPLAIN SELECT customer_id FROM customers ORDER BY state
+```
+
+We can also use index for sorting data. When you add a index on a column, MySQL grabs all the value in that column, sorts them and store them in the index.  
+So the composite index idx_state_points created earlier already has customers sorted by their state. MySQL scans the entire index reading entries in order.
+
+```sql
+EXPLAIN SELECT customer_id FROM customers ORDER BY first_name
+```
+If we sort by different column that is not in our index, MySQL uses filesort algorithm to sort the data in the table. Filesort is an expensive operation.  
+
+```sql
+SHOW STATUS LIKE "last_query_cost"
+```
+
+This SHOW STATUS statement is used to look at the server variables. The last query cost variable returns the cost of the last query.  
+When we sort by the column that is in our index the last_query_sort value will be much lesser.  
+The last_query_sort value for the filesort operation is almost 10 times more expensive than getting data from an index.  
+So if possible it's good idea to design our indexes so they can be used both for filtering and sorting data.  
+The basic rule of thumb is the column that you have in order by clause should be in the same order as the columns in the index. 
+
+If we have an index on two columns like a and b we can sort by a, a and b, we can sort by a and b in descending order but we cannot mix the direction.  
+Also we cannot put a table in the middle this results in the full table scan.
+
+```sql
+EXPLAIN SELECT customer_id FROM customers ORDER BY points;
+```
+
+If we use the second column in our index in the order by clause MySQL will use filesort, which means that this query is expensive.  
+The reason is in our current index the customers are sorted by their state and within each state they are sorted by their points so MySQL cannot rely on the order of the entries in this index to sort customers by their points.  
+```sql
+EXPLAIN SELECT customer_id 
+FROM customers 
+WHERE state = "CA" 
+ORDER BY points;
+```
+We have an exception to this rule we can go to the particular segment or particular state and sort customer by their points.  
+So if you have composite index there are only three ways that MySQL use to sort our data.
