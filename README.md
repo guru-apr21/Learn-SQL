@@ -2683,3 +2683,33 @@ We can also include a word as a requirement that means every row in the result m
 SELECT * FROM posts WHERE MATCH(title, body) AGAINST("'handling a form'" IN BOOLEAN MODE);
 ```
 We can also search for an exact phrase. By adding a double quote or single quote we can specify the exact phrase that we want to search. 
+This returns the post that has this exact phrase in the title or body.
+
+## Composite indexes
+
+```sql
+EXPLAIN SELECT * FROM customers WHERE state = "CA" AND points > 1000;
+```
+Here we are using the EXPLAIN statement to see how MySQL executes this query. In the possible keys column we have two indexes idx_state and idx_points.  
+Out of two MySQL picks only one. No matter how may indexes we have MySQL will pick maximum of one index.  
+When MySQL executes this query it uses the state index to quickly find customers located in california but then it has go through all this customers and check their points.  
+Because we are reading data from the disk this query will get slow as our customer table grows large. This is where composite index comes to the rescue.  
+With the composite index we can index multiple columns.
+
+```sql
+CREATE INDEX idx_state_points ON customers(state, points);
+``` 
+
+Here we created a composite index on the two columns state and points.  
+Now when executing the explain query in the possible keys we have three candidates idx_state, idx_points and idx_state_points.  
+Out of these three MySQL realizes that the composite index does a better job at optimizing this query.  
+In reality we should use composite indexes because a query can have multiple filters. If you have multiple columns on the index we can also speed up the sorting of the data.  
+Creating separate index on each column does only half of the job and also they take a lot of space and everytime when we modify data in our tables these indexes have to be updated.  
+The more indexes you have the slower your write operatin are gonna be. 
+MySQL automatically includes the primary key of the table in each secondary index so the single column indexes are gonna waste lot of space.  
+In MySQL a index can have a maximum of 16 columns.
+
+```sql
+DROP INDEX idx_points ON customers
+```
+To drop a index we use DROP INDEX statement followed by the name of the table and the table in which it belongs to.
