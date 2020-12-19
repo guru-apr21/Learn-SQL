@@ -2759,3 +2759,43 @@ We only want indexes to optimize the performance critical queries.
 To wrap up put the columns that are used more frequently first then look at the cardinality of the columns it's better to put the columns with higher cardinality first but always take your queries into account. Try to understand how MySQL will execute your query with different indexes.  
 As your system grows you might need several indexes on columns in different orders.
 
+## When Indexes are Ignored
+
+There are situations when you have an index but you still experience a performance problem.
+
+```sql
+EXPLAIN SELECT * FROM customers
+WHERE state = "CA" OR points > 1000
+```
+
+In all the previous examples we used the AND operator but here we are using the OR operator.  
+This is one of the situation where you need to rewrite the query and utilize the query in the best possible way.  
+In this case we are gonna chop up this query into two smaller queries.  
+
+```sql
+EXPLAIN SELECT customer_id FROM customers
+WHERE state = "CA"
+UNION
+SELECT customer_id FROM customers
+WHERE points > 1000
+```
+The index idx_state_points satisfies the first part of the query because with this index we can quickly find out the customers located in california.  
+But this index is not ideal index for searching customers by their points. Because points is the second column in this index.  
+If you use this index to satisfy this query MySQL has to go through every state and then pick the customer who has more than 1000 points.  
+To speed up the second part of the query we create new index on points column. The number of rows scanned by MySQL will be reduced.  
+
+```sql
+EXPLAIN SELECT customer_id FROM customers
+WHERE points + 10 > 2010
+```
+
+When executing this query we have a index scan but even though we have a index on points column MySQL reads every entry in our index to satisfy this query.  
+The reason we have a full index scan is because of the expression in WHERE clause.  
+So whenever we use a column in an expression MySQL is not able to utilize our index in the best possible way.  
+To solve this problem we can isolate the column and rewrite the expression.
+
+```sql
+EXPLAIN SELECT customer_id FROM customers
+WHERE points > 2000
+```
+Isolating the columns allows MySQL to utilize the indexes in best possible way.
