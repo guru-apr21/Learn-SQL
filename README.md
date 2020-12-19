@@ -2861,3 +2861,13 @@ This is called a covering index a index that covers everything that a query need
 This is the fastest performance that we can get. So when designing your indexes look at your WHERE caluse include the most frequently used columns in index.  
 With this we can narrow down the searches. Next look at the order by clause and finally look at columns included in the select clause.  
 If you include these columns as well then you'll get a covering index. So MySQL can use your index to satisfy your query.
+
+## Index Maintainence
+
+Duplicate indexes are indexes on the same set of columns on the same order. MySQL doesn't stop you from creating these duplicate indexes.  
+It'll maintain each duplicate index separately.
+
+If you have a index on column A and B and create a index on column A that is considered redundant.  
+Because the former index can also work with the query to optimize the column A. And if you create indexes on column B and A or just B that is not redundant.  
+
+ As a best practice always check the existing indexes before creating a new one.  
